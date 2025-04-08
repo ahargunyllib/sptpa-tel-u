@@ -15,8 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('nip')->unique();
+            $table->string('location')->nullable();
+            $table->string('division')->nullable();
+            $table->enum('role', ['tpa', 'kaur', 'wadek', 'sdm'])->default('tpa');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('photo_profile')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
