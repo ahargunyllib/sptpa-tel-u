@@ -1,4 +1,4 @@
-import AuthenticatedLayout from "@/layouts/AuthenticatedLayout";
+import AuthenticatedLayout from "@/layouts/dashboard-layout";
 import type { PageProps } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Head, router, usePage } from "@inertiajs/react";
