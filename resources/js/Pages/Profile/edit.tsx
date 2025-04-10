@@ -114,13 +114,7 @@ export default function Edit({
 	};
 
 	return (
-		<AuthenticatedLayout
-			header={
-				<h2 className="text-xl font-semibold leading-tight text-gray-800">
-					Profile
-				</h2>
-			}
-		>
+		<AuthenticatedLayout header="Akun">
 			<Head title="Profile" />
 
 			<div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
