@@ -1,4 +1,4 @@
-import AuthenticatedLayout from "@/layouts/AuthenticatedLayout";
+import AuthenticatedLayout from "@/layouts/dashboard-layout";
 import type { PageProps } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Head, router, usePage } from "@inertiajs/react";
@@ -114,13 +114,7 @@ export default function Edit({
 	};
 
 	return (
-		<AuthenticatedLayout
-			header={
-				<h2 className="text-xl font-semibold leading-tight text-gray-800">
-					Profile
-				</h2>
-			}
-		>
+		<AuthenticatedLayout header="Akun">
 			<Head title="Profile" />
 
 			<div className="grid grid-cols-1 xl:grid-cols-4 gap-6">

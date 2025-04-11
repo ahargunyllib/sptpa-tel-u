@@ -77,13 +77,13 @@ export function AppSidebar() {
 			{/* Sidebar */}
 			<aside
 				className={cn(
-					"py-12 fixed inset-y-0 left-0 z-50 flex xl:w-[30vh] 2xl:w-[40vh] flex-col bg-white text-[#475467] transition-transform duration-300 px-4 w-full md:w-auto ",
+					"py-6 fixed inset-y-0 left-0 z-50 flex xl:w-[30vh] 2xl:w-[40vh] flex-col bg-white text-[#475467] transition-transform duration-300 px-4 w-full md:w-auto ",
 					isMobile && !isOpen && "-translate-x-full",
 				)}
 			>
 				<div className="flex flex-col h-full gap-8">
 					{/* Logo */}
-					<div className="p-6 text-center">
+					<div className="px-6 text-center">
 						<h1 className="font-bold text-xl text-primary-60">SPTPA</h1>
 					</div>
 
