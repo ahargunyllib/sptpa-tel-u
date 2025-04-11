@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -18,7 +19,7 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
-        return Inertia::render('Profile/Edit', [
+        return Inertia::render('profile/edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
         ]);
@@ -59,5 +60,47 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function updatePhoto(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'photo' => ['required', 'image', 'max:1024'], // 1MB Max
+        ]);
+
+        $user = $request->user();
+
+        // Delete old photo if exists
+        if ($user->photo_profile) {
+            Storage::disk('public')->delete($user->photo_profile);
+        }
+
+        // Store the new photo
+        $path = $request->file('photo')->store('profile-photos', 'public');
+
+        // Update user record with new photo path
+        $user->photo_profile = $path;
+        $user->save();
+
+        return Redirect::route('profile.edit')->with('status', 'photo-updated');
+    }
+
+    /**
+     * Delete the user's profile photo.
+     */
+    public function deletePhoto(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        // Delete the photo from storage if it exists
+        if ($user->photo_profile) {
+            Storage::disk('public')->delete($user->photo_profile);
+        }
+
+        // Clear the profile photo path
+        $user->photo_profile = null;
+        $user->save();
+
+        return Redirect::route('profile.edit')->with('status', 'photo-removed');
     }
 }
