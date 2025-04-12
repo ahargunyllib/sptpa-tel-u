@@ -3,23 +3,27 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use App\Traits\Log;
+
 
 class UserSeeder extends Seeder
 {
+    use Log;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+
         $roles = ['tpa', 'kaur', 'wadek', 'sdm'];
 
         foreach ($roles as $role) {
             for ($i = 1; $i <= 2; $i++) {
-                User::create([
-                    'name' => strtoupper($role) . " User $i",
+                $user = User::create([
+                    'name' => strtoupper($role) . " $i",
                     'nip' => rand(10000000, 99999999),
                     'email' => "$role$i@gmail.com",
                     'location' => "Bandung",
@@ -28,6 +32,7 @@ class UserSeeder extends Seeder
                     'role' => $role,
                     'password' => Hash::make('password123')
                 ]);
+                $this->log("User {$user->name} berhasil dibuat oleh seeder.");
             }
         }
     }
