@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -26,5 +27,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile/photo', [ProfileController::class, 'deletePhoto'])->name('profile.deletePhoto');
 });
 
+
+Route::middleware(['auth', 'role:sdm'])->group(function () {
+    Route::get('/log', [LogController::class, 'index']);
+});
 
 require __DIR__ . '/auth.php';
