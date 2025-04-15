@@ -29,7 +29,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware(['auth', 'role:sdm'])->group(function () {
-    Route::get('/log', [LogController::class, 'index']);
+    Route::get('/dashboard/log', [LogController::class, 'index']);
 });
 
 require __DIR__ . '/auth.php';
