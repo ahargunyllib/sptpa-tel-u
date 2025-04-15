@@ -17,3 +17,25 @@ export type PageProps<
 		user: User;
 	};
 };
+
+export interface PaginationMeta {
+	total_data: number;
+	total_page: number;
+	page: number;
+	limit: number;
+}
+
+export interface Log {
+	id: number;
+	user_id: string;
+	description: string;
+	ip_address: string;
+	created_at: string;
+	updated_at: string;
+	user: User;
+}
+
+export interface DataWithPagination<T> {
+	data: T[];
+	meta: PaginationMeta;
+}

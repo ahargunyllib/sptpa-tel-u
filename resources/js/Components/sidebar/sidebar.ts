@@ -160,7 +160,7 @@ export const sdmPenilaianSections: NavSection[] = [
 			{
 				title: "Website Log",
 				icon: History,
-				href: "/admin/user",
+				href: "/dashboard/log",
 			},
 		],
 	},
