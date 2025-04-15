@@ -77,7 +77,7 @@ export function AppSidebar() {
 			{/* Sidebar */}
 			<aside
 				className={cn(
-					"py-6 fixed inset-y-0 left-0 z-50 flex xl:w-[30vh] 2xl:w-[40vh] flex-col bg-white text-[#475467] transition-transform duration-300 px-4 w-full md:w-auto ",
+					"py-6 fixed inset-y-0 left-0 z-50 flex xl:w-[30vh] 2xl:w-[35vh] flex-col bg-white text-[#475467] transition-transform duration-300 px-4 w-full md:w-auto ",
 					isMobile && !isOpen && "-translate-x-full",
 				)}
 			>
