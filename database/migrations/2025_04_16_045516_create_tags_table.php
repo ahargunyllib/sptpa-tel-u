@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('logs', function (Blueprint $table) {
-            $table->id();
-            $table->foreignUuid('user_id')->nullable()->constrained('users');
-            $table->text('description');
-            $table->string('ip_address')->nullable();
+        Schema::create('tags', function (Blueprint $table) {
+            $table->ulid('id')->primary();
+            $table->string('name');
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('logs');
+        Schema::dropIfExists('tags');
     }
 };

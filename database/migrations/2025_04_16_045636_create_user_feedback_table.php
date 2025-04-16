@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('logs', function (Blueprint $table) {
-            $table->id();
-            $table->foreignUuid('user_id')->nullable()->constrained('users');
-            $table->text('description');
-            $table->string('ip_address')->nullable();
+        Schema::create('user_feedback', function (Blueprint $table) {
+            $table->ulid('id')->primary();
+            $table->foreignUuid('user_id')->constrained('users');
+            $table->string('kaur_feedback', 255);
+            $table->string('wadek_feedback', 255);
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('logs');
+        Schema::dropIfExists('user_feedback');
     }
 };
