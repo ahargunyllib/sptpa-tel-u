@@ -58,11 +58,26 @@ class User extends Authenticatable
     {
         static::created(function ($user) {
             // Create a root folder for the user
-            Folder::create([
+            $userFolder = Folder::create([
                 'name' => $user->name,
                 'parent_id' => null,
                 'user_id' => $user->id,
                 'type' => 'user',
+            ]);
+
+            // Create a kepegawaian folder with the user folder as its parent
+            Folder::create([
+                'name' => 'Kepegawaian',
+                'parent_id' => $userFolder->id,
+                'user_id' => $user->id,
+                'type' => 'kepegawaian',
+            ]);
+
+            Folder::create([
+                'name' => 'Kinerja',
+                'parent_id' => $userFolder->id,
+                'user_id' => $user->id,
+                'type' => 'kinerja',
             ]);
         });
     }
