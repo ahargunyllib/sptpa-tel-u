@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
                     'role' => $role,
                     'password' => Hash::make('password123')
                 ]);
-                $this->log("User {$user->name} berhasil dibuat oleh seeder.");
+                // $this->log(description: "User {$user->name} berhasil dibuat oleh seeder.");
             }
         }
     }
