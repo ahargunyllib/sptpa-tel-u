@@ -23,7 +23,7 @@ export default {
 			},
 			colors: {
 				light: {
-					20: "#FEF4E8",
+					20: "#F9FAFB",
 					40: "#F5F4F4",
 					60: "#CECECE",
 					80: "#AEAEA6",

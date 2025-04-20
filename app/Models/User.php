@@ -66,18 +66,34 @@ class User extends Authenticatable
             ]);
 
             // Create a kepegawaian folder with the user folder as its parent
-            Folder::create([
+            $kepegawaianFolder = Folder::create([
                 'name' => 'Kepegawaian',
                 'parent_id' => $userFolder->id,
                 'user_id' => $user->id,
                 'type' => 'kepegawaian',
             ]);
 
-            Folder::create([
+            $kinerjaFolder = Folder::create([
                 'name' => 'Kinerja',
                 'parent_id' => $userFolder->id,
                 'user_id' => $user->id,
                 'type' => 'kinerja',
+            ]);
+            $kinerjaYearFolder = Folder::create([
+                'name' => date('Y'),
+                'parent_id' => $kinerjaFolder->id,
+                'user_id' => $user->id,
+                'type' => 'kinerja_year',
+            ]);
+
+            File::create([
+                'name' => 'Default File',
+                'type' => 'text/plain',
+                'size' => 0,
+                'path' => 'default-file.txt',
+                'folder_id' => $kepegawaianFolder->id,
+                'user_id' => $user->id,
+                'thumbnail' => null,
             ]);
         });
     }

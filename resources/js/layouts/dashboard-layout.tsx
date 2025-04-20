@@ -15,8 +15,8 @@ export default function DashboardLayout({
 			<div className="min-h-screen bg-[#F2F2F2] max-w-screen overflow-hidden">
 				<AppSidebar />
 				<main className="text-black pl-0 md:pl-[35vh] xl:pl-[30vh] 2xl:pl-[35vh] min-h-screen flex-1 w-screen">
-					<div className="flex flex-col h-full gap-6 \">
-						<div className="w-full py-4 px-6 bg-white flex flex-col gap-1">
+					<div className=" flex flex-col h-full gap-6 ">
+						<div className="pt-16 md:pt-4 w-full py-4 px-6 bg-white flex flex-col gap-1">
 							<h2 className="text-xl font-medium text-black">
 								{header ? header : "Selamat datang di SPTPA"}
 							</h2>
