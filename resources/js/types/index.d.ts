@@ -39,3 +39,15 @@ export interface DataWithPagination<T> {
 	data: T[];
 	meta: PaginationMeta;
 }
+
+export type WorkTarget = {
+	id: string;
+	name: string;
+	staffs: User[];
+	unit: "week" | "total" | "day" | "minute";
+	comparator: "eq" | "gt" | "lt" | "gte" | "lte";
+	first_quarter_target: number;
+	second_quarter_target: number;
+	third_quarter_target: number;
+	fourth_quarter_target: number;
+};
