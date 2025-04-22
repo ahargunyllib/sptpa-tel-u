@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
                     'nip' => rand(10000000, 99999999),
                     'email' => "$role$i@gmail.com",
                     'location' => "Bandung",
-                    'division' => "Divisi $role",
+                    'division' => "humas",
                     'photo_profile' => null,
                     'role' => $role,
                     'password' => Hash::make('password123')

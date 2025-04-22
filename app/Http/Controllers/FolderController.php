@@ -16,37 +16,52 @@ class FolderController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $folderId = null;
+        $role = $user->role;
 
-        if (!$folderId) {
-            $folder = Folder::where('user_id', $user->id)
-                ->where('type', 'user')
-                ->first();
+        if ($role === 'wadek') {
+            // Wadek bisa lihat semua folder user
+            $subfolders = Folder::where('type', 'user')->get();
 
-            if (!$folder) {
-                return response()->json([
-                    'error' => 'Root folder not found'
-                ], 404);
-            }
-
-            $folderId = $folder->id;
-        } else {
-            $folder = Folder::where('id', $folderId)
-                ->where('user_id', $user->id)
-                ->first();
-
-            if (!$folder) {
-                return response()->json([
-                    'error' => 'Folder not found or access denied'
-                ], 404);
-            }
+            return Inertia::render('e-archive/index', [
+                'currentFolder' => null,
+                'breadcrumbs' => [],
+                'subfolders' => $subfolders,
+                'files' => []
+            ]);
         }
 
-        $subfolders = Folder::where('parent_id', $folderId)
+        if ($role === 'kaur') {
+            // Kaur bisa lihat semua folder user dalam satu divisi
+            $subfolders = Folder::where('type', 'user')
+                ->whereHas('user', function ($query) use ($user) {
+                    $query->where('division', $user->division);
+                })
+                ->get();
+
+            return Inertia::render('e-archive/index', [
+                'currentFolder' => null,
+                'breadcrumbs' => [],
+                'subfolders' => $subfolders,
+                'files' => []
+            ]);
+        }
+
+        // Default: role biasa, lihat folder sendiri
+        $folder = Folder::where('user_id', $user->id)
+            ->where('type', 'user')
+            ->first();
+
+        if (!$folder) {
+            return response()->json([
+                'error' => 'Root folder not found'
+            ], 404);
+        }
+
+        $subfolders = Folder::where('parent_id', $folder->id)
             ->where('user_id', $user->id)
             ->get();
 
-        $files = File::where('folder_id', $folderId)
+        $files = File::where('folder_id', $folder->id)
             ->where('user_id', $user->id)
             ->get();
 
@@ -83,41 +98,43 @@ class FolderController extends Controller
     public function show(Request $request, $folderId = null)
     {
         $user = Auth::user();
+        $role = $user->role;
 
         if (!$folderId) {
-            // Ambil root folder milik user
-            $folder = Folder::where('user_id', $user->id)
-                ->where('type', 'user')
-                ->first();
+            return response()->json([
+                'error' => 'Folder ID is required'
+            ], 400);
+        }
 
-            if (!$folder) {
+        $folder = Folder::find($folderId);
+
+        if (!$folder) {
+            return response()->json([
+                'error' => 'Folder not found'
+            ], 404);
+        }
+
+        // Cek akses berdasarkan role
+        if ($role === 'wadek') {
+            // Wadek bisa akses semua folder
+        } elseif ($role === 'kaur') {
+            // Kaur hanya bisa akses folder user satu divisi
+            if ($folder->user->division !== $user->division) {
                 return response()->json([
-                    'error' => 'Root folder not found'
-                ], 404);
+                    'error' => 'Access denied'
+                ], 403);
             }
-
-            $folderId = $folder->id;
         } else {
-            // Ambil folder berdasarkan id dan user
-            $folder = Folder::where('id', $folderId)
-                ->where('user_id', $user->id)
-                ->first();
-
-            if (!$folder) {
+            // User biasa hanya bisa akses folder sendiri
+            if ($folder->user_id !== $user->id) {
                 return response()->json([
-                    'error' => 'Folder not found or access denied'
-                ], 404);
+                    'error' => 'Access denied'
+                ], 403);
             }
         }
 
-        $subfolders = Folder::where('parent_id', $folderId)
-            ->where('user_id', $user->id)
-            ->get();
-
-        $files = File::where('folder_id', $folderId)
-            ->where('user_id', $user->id)
-            ->get();
-
+        $subfolders = Folder::where('parent_id', $folder->id)->get();
+        $files = File::where('folder_id', $folder->id)->get();
         $breadcrumbs = $this->getBreadcrumbs($folder);
 
         return Inertia::render('e-archive/show', [
