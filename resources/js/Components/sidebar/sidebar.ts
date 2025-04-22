@@ -198,12 +198,12 @@ export const wadekPenilaianSections: NavSection[] = [
 			{
 				title: "Kinerja TPA",
 				icon: FileText,
-				href: "/target-kinerja",
+				href: "/dashboard/performance/tpa",
 			},
 			{
 				title: "Kinerja Kaur",
 				icon: FileText,
-				href: "/target-kinerja",
+				href: "/dashboard/performance/kaur",
 			},
 		],
 	},
