@@ -19,4 +19,20 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
 );
 Input.displayName = "Input";
 
-export { Input };
+const LabelInput = React.forwardRef<
+	HTMLInputElement,
+	React.ComponentProps<"input">
+>(({ className, type, ...props }, ref) => {
+	return (
+		<Input
+			className={cn(
+				"disabled:bg-transparent disabled:border-none disabled:opacity-100 disabled:cursor-default bg-transparent disabled:shadow-none text-center",
+				className,
+			)}
+			ref={ref}
+			{...props}
+		/>
+	);
+});
+
+export { Input, LabelInput };
