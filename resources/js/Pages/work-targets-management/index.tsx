@@ -1,0 +1,53 @@
+import { Head } from "@inertiajs/react";
+import PerformanceAssessmentsCard from "../../components/features/work-targets-management/performance-assements-card";
+import StaffsCard from "../../components/features/work-targets-management/staffs-card";
+import WorkTargetsCard from "../../components/features/work-targets-management/work-targets-card";
+import {
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from "../../components/ui/tabs";
+import DashboardLayout from "../../layouts/dashboard-layout";
+import type { User, WorkTarget } from "../../types";
+
+type Props = {
+	role: string;
+	canManageWorkTargets: boolean;
+	users: User[];
+	workTargets: WorkTarget[];
+};
+
+export default function WorkTargetsManagementIndex({
+	role,
+	canManageWorkTargets,
+	users,
+	workTargets,
+}: Props) {
+	return (
+		<DashboardLayout>
+			<Head title={`Kinerja ${role}`} />
+
+			<Tabs defaultValue="work-target">
+				<TabsList className="space-x-2">
+					<TabsTrigger value="work-target">WorkTarget</TabsTrigger>
+					<TabsTrigger value="attitude">Attitude</TabsTrigger>
+				</TabsList>
+				<TabsContent value="work-target" className="space-y-4 ">
+					{canManageWorkTargets && (
+						<WorkTargetsCard
+							role={role}
+							users={users}
+							workTargets={workTargets}
+						/>
+					)}
+
+					<PerformanceAssessmentsCard role={role} />
+				</TabsContent>
+				<TabsContent value="attitude">
+					<StaffsCard role={role} />
+				</TabsContent>
+			</Tabs>
+		</DashboardLayout>
+	);
+}
