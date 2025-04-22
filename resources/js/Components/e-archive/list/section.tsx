@@ -24,13 +24,15 @@ export default function EArchiveListContainer({
 	folders: Folder[];
 }) {
 	return (
-		<div className="rounded-md border">
+		<div className="rounded-md">
 			<Table>
 				<TableHeader>
 					<TableRow>
-						<TableHead>Nama</TableHead>
-						<TableHead>Terakhir diubah</TableHead>
-						<TableHead>Ukuran</TableHead>
+						<TableHead className="text-xs text-[#667085]">Nama</TableHead>
+						<TableHead className="text-xs text-[#667085]">
+							Terakhir diubah
+						</TableHead>
+						<TableHead className="text-xs text-[#667085]">Ukuran</TableHead>
 						{/* <TableHead className="w-[70px]">Action</TableHead> */}
 					</TableRow>
 				</TableHeader>
@@ -46,23 +48,11 @@ export default function EArchiveListContainer({
 
 					{/* File rows */}
 					{files.map((file) => (
-						<TableRow key={`file-${file.id}`}>
-							<TableCell>
-								<Link
-									href={`/dashboard/e-archive/file/${file.id}`}
-									className="flex items-center gap-2 font-medium"
-								>
-									<FileIcon className="w-4 h-4" />
-									{file.name}
-								</Link>
-							</TableCell>
-							<TableCell>
-								{file.updated_at
-									? format(new Date(file.updated_at), "dd MMM yyyy")
-									: "-"}
-							</TableCell>
-							<TableCell>{file.size || "-"}</TableCell>
-						</TableRow>
+						<EArchiveListCard
+							key={`file-${file.id}`}
+							eArchive={file}
+							type="file"
+						/>
 					))}
 				</TableBody>
 			</Table>

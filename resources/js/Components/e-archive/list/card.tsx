@@ -2,7 +2,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import type { File, Folder } from "@/types";
 import { Link } from "@inertiajs/react";
 import { format } from "date-fns";
-import { FileIcon, FolderIcon, MoreHorizontal } from "lucide-react";
+import { Ellipsis, FileIcon, FolderIcon } from "lucide-react";
 import React from "react";
 
 export default function EArchiveListCard({
@@ -13,7 +13,11 @@ export default function EArchiveListCard({
 		<TableRow>
 			<TableCell>
 				<Link
-					href={`/dashboard/e-archive/${eArchive.id}`}
+					href={
+						type === "folder"
+							? `/dashboard/e-archive/${eArchive.id}`
+							: `/dashboard/e-archive/file/${eArchive.id}`
+					}
 					className="flex items-center gap-2 font-medium"
 				>
 					{type === "folder" ? (
@@ -24,13 +28,22 @@ export default function EArchiveListCard({
 					{eArchive.name}
 				</Link>
 			</TableCell>
-			<TableCell>
-				{eArchive.updated_at
-					? format(new Date(eArchive.updated_at), "dd MMM yyyy")
-					: "-"}
+			<TableCell className="w-[160px]">
+				<div className="truncate">
+					{eArchive.updated_at
+						? format(new Date(eArchive.updated_at), "dd MMM yyyy")
+						: "-"}
+				</div>
 			</TableCell>
-			<TableCell>
-				{type === "file" && "size" in eArchive ? eArchive.size || "-" : ""}
+
+			<TableCell className="w-[100px]">
+				<div className="truncate">
+					{type === "file" && "size" in eArchive ? eArchive.size || "-" : ""}
+				</div>
+			</TableCell>
+
+			<TableCell className="w-[50px] text-right">
+				<Ellipsis />
 			</TableCell>
 		</TableRow>
 	);
