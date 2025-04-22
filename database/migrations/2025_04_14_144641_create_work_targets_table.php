@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('work_targets', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->string('name', 255);
-            $table->enum('unit', ['week', 'total', 'day']);
-            $table->enum('comparator', ['equal', 'less_than_equal', 'more_than_equal', 'more_than', 'less_than']);
-            $table->integer('first_quarter_target');
-            $table->integer('second_quarter_target');
-            $table->integer('third_quarter_target');
-            $table->integer('forth_quarter_target');
-            $table->foreignUuid('user_id')->constrained('users');
+            $table->string('name', 255)->notNullable();
+            $table->enum('unit', ['week', 'total', 'day', 'minute'])->default('total');
+            $table->enum('comparator', ['eq', 'lte', 'gte', 'gt', 'lt'])->default('eq');
+            $table->integer('first_quarter_target')->default(0);
+            $table->integer('second_quarter_target')->default(0);
+            $table->integer('third_quarter_target')->default(0);
+            $table->integer('fourth_quarter_target')->default(0);
+            $table->foreignUuid('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
