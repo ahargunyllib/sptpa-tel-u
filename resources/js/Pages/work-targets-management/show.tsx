@@ -1,4 +1,4 @@
-import { Head, usePage } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 import {
 	ArrowUpRightIcon,
 	CheckSquare2Icon,
@@ -40,7 +40,9 @@ export default function WorkTargetsManagementShow({
 }) {
 	const user = usePage().props.auth.user as User;
 
-	const [workTargetId, setWorkTargetId] = useState<string | null>(null);
+	const [selectedWorkTargetId, setSelectedWorkTargetId] = useState<
+		string | null
+	>(null);
 
 	return (
 		<DashboardLayout>
@@ -84,86 +86,13 @@ export default function WorkTargetsManagementShow({
 							<TableBody>
 								{workTargets.map((workTarget, idx) => {
 									return (
-										<TableRow key={workTarget.id}>
-											<TableCell className="py-3 px-4">{idx + 1}</TableCell>
-											<TableCell className="py-3 w-full px-4">
-												{workTarget.name}
-											</TableCell>
-											<TableCell className="py-3 px-4 text-center">
-												{
-													{ light: "Ringan", medium: "Sedang", heavy: "Berat" }[
-														workTarget.category
-													]
-												}
-											</TableCell>
-											<TableCell className="py-3 px-4">
-												<Button
-													variant="ghost"
-													size="sm"
-													className="text-info-60"
-												>
-													<FileTextIcon />
-													Lihat
-												</Button>
-											</TableCell>
-											<TableCell className="py-3 text-center">
-												<LabelInput
-													inputMode="numeric"
-													value={workTarget.first_quarter_score.toString()}
-													disabled={workTargetId !== workTarget.id}
-												/>
-											</TableCell>
-											<TableCell className="py-3 text-center">
-												<LabelInput
-													inputMode="numeric"
-													value={workTarget.second_quarter_score.toString()}
-													disabled={workTargetId !== workTarget.id}
-												/>
-											</TableCell>
-											<TableCell className="py-3 text-center">
-												<LabelInput
-													inputMode="numeric"
-													value={workTarget.third_quarter_score.toString()}
-													disabled={workTargetId !== workTarget.id}
-												/>
-											</TableCell>
-											<TableCell className="py-3 text-center">
-												<LabelInput
-													inputMode="numeric"
-													value={workTarget.fourth_quarter_score.toString()}
-													disabled={workTargetId !== workTarget.id}
-												/>
-											</TableCell>
-											<TableCell className="py-3 px-4">
-												{workTargetId === workTarget.id ? (
-													<div className="flex flex-row gap-2">
-														<CheckSquare2Icon
-															className="h-4 w-4 cursor-pointer text-primary-60"
-															onClick={() => setWorkTargetId(null)}
-														/>
-														<Trash2Icon
-															className="h-4 w-4 cursor-pointer text-danger-80"
-															onClick={() => {
-																// TODO: Reset work target score
-															}}
-														/>
-													</div>
-												) : (
-													<div className="flex flex-row gap-2">
-														<Edit3Icon
-															className="h-4 w-4 cursor-pointer text-warning-80"
-															onClick={() => setWorkTargetId(workTarget.id)}
-														/>
-														<Trash2Icon
-															className="h-4 w-4 cursor-pointer text-danger-80"
-															onClick={() => {
-																// TODO: Remove work target score
-															}}
-														/>
-													</div>
-												)}
-											</TableCell>
-										</TableRow>
+										<WorkTargetRow
+											key={workTarget.id}
+											workTarget={workTarget}
+											idx={idx}
+											selectedWorkTargetId={selectedWorkTargetId}
+											setSelectedWorkTargetId={setSelectedWorkTargetId}
+										/>
 									);
 								})}
 							</TableBody>
@@ -295,5 +224,190 @@ function WorkTargetsUserCard({
 				</div>
 			</DialogContent>
 		</Dialog>
+	);
+}
+
+function WorkTargetRow({
+	workTarget,
+	idx,
+	selectedWorkTargetId,
+	setSelectedWorkTargetId,
+}: {
+	workTarget: WorkTarget & WorkTargetValue;
+	idx: number;
+	selectedWorkTargetId: string | null;
+	setSelectedWorkTargetId: (id: string | null) => void;
+}) {
+	const [scores, setScores] = useState({
+		first_quarter_score: workTarget.first_quarter_score,
+		second_quarter_score: workTarget.second_quarter_score,
+		third_quarter_score: workTarget.third_quarter_score,
+		fourth_quarter_score: workTarget.fourth_quarter_score,
+	});
+
+	const onSubmit = () => {
+		const req = {
+			...scores,
+		};
+
+		router.put(
+			`/dashboard/performance/work-target-value/${workTarget.id}`,
+			req,
+			{
+				preserveState: true,
+			},
+		);
+		setSelectedWorkTargetId(null);
+	};
+
+	return (
+		<TableRow>
+			<TableCell className="py-3 px-4">{idx + 1}</TableCell>
+			<TableCell className="py-3 w-full px-4">{workTarget.name}</TableCell>
+			<TableCell className="py-3 px-4 text-center">
+				{
+					{ light: "Ringan", medium: "Sedang", heavy: "Berat" }[
+						workTarget.category
+					]
+				}
+			</TableCell>
+			<TableCell className="py-3 px-4">
+				<Button variant="ghost" size="sm" className="text-info-60">
+					<FileTextIcon />
+					Lihat
+				</Button>
+			</TableCell>
+			<TableCell className="py-3 text-center">
+				<LabelInput
+					inputMode="numeric"
+					value={scores.first_quarter_score.toString()}
+					onChange={(e) => {
+						const value = e.target.value;
+						if (value === "") {
+							setScores((prev) => ({ ...prev, first_quarter_score: 0 }));
+						}
+
+						if (Number.isNaN(Number(value))) {
+							return;
+						}
+
+						setScores((prev) => ({
+							...prev,
+							first_quarter_score: Number(value),
+						}));
+					}}
+					disabled={selectedWorkTargetId !== workTarget.id}
+				/>
+			</TableCell>
+			<TableCell className="py-3 text-center">
+				<LabelInput
+					inputMode="numeric"
+					value={scores.second_quarter_score.toString()}
+					onChange={(e) => {
+						const value = e.target.value;
+						if (value === "") {
+							setScores((prev) => ({ ...prev, second_quarter_score: 0 }));
+						}
+
+						if (Number.isNaN(Number(value))) {
+							return;
+						}
+
+						setScores((prev) => ({
+							...prev,
+							second_quarter_score: Number(value),
+						}));
+					}}
+					disabled={selectedWorkTargetId !== workTarget.id}
+				/>
+			</TableCell>
+			<TableCell className="py-3 text-center">
+				<LabelInput
+					inputMode="numeric"
+					value={scores.third_quarter_score.toString()}
+					onChange={(e) => {
+						const value = e.target.value;
+						if (value === "") {
+							setScores((prev) => ({ ...prev, third_quarter_score: 0 }));
+						}
+
+						if (Number.isNaN(Number(value))) {
+							return;
+						}
+
+						setScores((prev) => ({
+							...prev,
+							third_quarter_score: Number(value),
+						}));
+					}}
+					disabled={selectedWorkTargetId !== workTarget.id}
+				/>
+			</TableCell>
+			<TableCell className="py-3 text-center">
+				<LabelInput
+					inputMode="numeric"
+					value={scores.fourth_quarter_score.toString()}
+					onChange={(e) => {
+						const value = e.target.value;
+						if (value === "") {
+							setScores((prev) => ({ ...prev, fourth_quarter_score: 0 }));
+						}
+
+						if (Number.isNaN(Number(value))) {
+							return;
+						}
+
+						setScores((prev) => ({
+							...prev,
+							fourth_quarter_score: Number(value),
+						}));
+					}}
+					disabled={selectedWorkTargetId !== workTarget.id}
+				/>
+			</TableCell>
+			<TableCell className="py-3 px-4">
+				{selectedWorkTargetId === workTarget.id ? (
+					<div className="flex flex-row gap-2">
+						<CheckSquare2Icon
+							className="h-4 w-4 cursor-pointer text-primary-60"
+							onClick={() => {
+								onSubmit();
+								setSelectedWorkTargetId(null);
+							}}
+						/>
+						<Trash2Icon
+							className="h-4 w-4 cursor-pointer text-danger-80"
+							onClick={() => {
+								setScores({
+									first_quarter_score: 0,
+									second_quarter_score: 0,
+									third_quarter_score: 0,
+									fourth_quarter_score: 0,
+								});
+							}}
+						/>
+					</div>
+				) : (
+					<div className="flex flex-row gap-2">
+						<Edit3Icon
+							className="h-4 w-4 cursor-pointer text-warning-80"
+							onClick={() => setSelectedWorkTargetId(workTarget.id)}
+						/>
+						<Trash2Icon
+							className="h-4 w-4 cursor-pointer text-danger-80"
+							onClick={() => {
+								setSelectedWorkTargetId(workTarget.id);
+								setScores({
+									first_quarter_score: 0,
+									second_quarter_score: 0,
+									third_quarter_score: 0,
+									fourth_quarter_score: 0,
+								});
+							}}
+						/>
+					</div>
+				)}
+			</TableCell>
+		</TableRow>
 	);
 }

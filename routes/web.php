@@ -3,6 +3,7 @@
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WorkTargetController;
+use App\Http\Controllers\WorkTargetValueController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -47,6 +48,8 @@ Route::middleware(['auth', 'role:wadek'])->group(function () {
     Route::put('/dashboard/performance/work-target/{id}', [WorkTargetController::class, 'update'])->name('dashboard.performance.work-target.update');
 
     Route::delete('/dashboard/performance/work-target/{id}', [WorkTargetController::class, 'destroy'])->name('dashboard.performance.work-target.destroy');
+
+    Route::put('/dashboard/performance/work-target-value/{id}', [WorkTargetValueController::class, 'updateWorkTargetValueScores'])->name('dashboard.performance.work-target-value.updateWorkTargetValueScores');
 });
 
 require __DIR__ . '/auth.php';
