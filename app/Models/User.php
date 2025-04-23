@@ -76,4 +76,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(File::class);
     }
+
+    public function workTargets()
+    {
+        return $this->hasMany(WorkTarget::class);
+    }
+
+    public function workTargetValues()
+    {
+        return $this->hasMany(WorkTargetValue::class);
+    }
 }
