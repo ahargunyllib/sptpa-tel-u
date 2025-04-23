@@ -43,39 +43,55 @@ class WorkTargetController extends Controller
         }
 
         // Get all work targets for the given role but don't filter out work targets with no values
-        $workTargets = WorkTarget::with(['workTargetValues' => function ($query) use ($role) {
-            // This only filters the loaded relationships, not the main query
-            $query->whereHas('user', function ($q) use ($role) {
-                $q->where('role', $role);
-            });
-        }])
-            ->orderByDesc('created_at')
+        // $workTargets = WorkTarget::with(['workTargetValues' => function ($query) use ($role) {
+        //     // This only filters the loaded relationships, not the main query
+        //     $query->whereHas('user', function ($q) use ($role) {
+        //         $q->where('role', $role);
+        //     });
+        // }])
+        //     ->orderByDesc('created_at')
+        //     ->get();
+
+        $rawWorkTargets = DB::table('work_target_values')
+            ->join('work_targets', 'work_targets.id', '=', 'work_target_values.work_target_id')
+            ->join('users', 'users.id', '=', 'work_target_values.user_id')
+            ->where('users.role', $role)
+            ->select(
+                'work_targets.*',
+                'users.id as user_id',
+                'users.name as user_name',
+                'users.nip as nip',
+            )
             ->get();
 
-        $workTargets = WorkTarget::query()->orderByDesc('created_at')->get();
+        $workTargets = [];
 
-        // Format the work targets to include the work target values
-        $workTargets = $workTargets->map(function ($workTarget) {
-            $staffs = $workTarget->workTargetValues->map(function ($workTargetValue) {
-                return [
-                    'id' => $workTargetValue->user->id,
-                    'name' => $workTargetValue->user->name,
-                    'nip' => $workTargetValue->user->nip,
+        foreach ($rawWorkTargets as $rowWorkTarget) {
+            $id = $rowWorkTarget->id;
+
+            if (!isset($workTargets[$id])) {
+                $workTargets[$id] = [
+                    'id' => $rowWorkTarget->id,
+                    'name' => $rowWorkTarget->name,
+                    'unit' => $rowWorkTarget->unit,
+                    'comparator' => $rowWorkTarget->comparator,
+                    'first_quarter_target' => $rowWorkTarget->first_quarter_target,
+                    'second_quarter_target' => $rowWorkTarget->second_quarter_target,
+                    'third_quarter_target' => $rowWorkTarget->third_quarter_target,
+                    'fourth_quarter_target' => $rowWorkTarget->fourth_quarter_target,
+                    'staffs' => [],
                 ];
-            });
+            }
 
-            return [
-                'id' => $workTarget->id,
-                'name' => $workTarget->name,
-                'unit' => $workTarget->unit,
-                'staffs' => $staffs,
-                'comparator' => $workTarget->comparator,
-                'first_quarter_target' => $workTarget->first_quarter_target,
-                'second_quarter_target' => $workTarget->second_quarter_target,
-                'third_quarter_target' => $workTarget->third_quarter_target,
-                'fourth_quarter_target' => $workTarget->fourth_quarter_target,
+            $workTargets[$id]['staffs'][] = [
+                'id' => $rowWorkTarget->user_id,
+                'name' => $rowWorkTarget->user_name,
+                'nip' => $rowWorkTarget->nip,
             ];
-        });
+        }
+
+        // Convert the associative array back to a numerically indexed array
+        $workTargets = array_values($workTargets);
 
         $staffs = DB::table('work_target_values')
             ->rightJoin('users', 'users.id', '=', 'work_target_values.user_id')
@@ -267,5 +283,25 @@ class WorkTargetController extends Controller
 
             return back();
         }
+    }
+
+    public function myWorkTargets(Request $request)
+    {
+        $user = $request->user();
+
+        $workTargets = DB::table('work_target_values')
+            ->rightJoin('work_targets', 'work_targets.id', '=', 'work_target_values.work_target_id')
+            ->where('work_target_values.user_id', $user->id)
+            ->select(
+                "work_targets.*",
+                "work_target_values.*",
+            )
+            ->groupBy('work_targets.id')
+            ->groupBy('work_target_values.id')
+            ->get();
+
+        return Inertia::render('work-targets-management/my-work-targets', [
+            'workTargets' => $workTargets,
+        ]);
     }
 }
