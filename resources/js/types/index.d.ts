@@ -40,6 +40,36 @@ export interface DataWithPagination<T> {
 	meta: PaginationMeta;
 }
 
+export interface Folder {
+	id: string;
+	name: string;
+	parent_id: string;
+	work_target_id: string;
+	user_id: string;
+	type: string;
+	created_at: string;
+	updated_at: string;
+}
+
+export interface File {
+	id: string;
+	name: string;
+	type: string;
+	size: number;
+	path: string;
+	thumbnail: string;
+	folder_id: string;
+	user_id: string;
+	created_at: string;
+	updated_at: string;
+}
+
+export interface BreadCrumbs {
+	id: string;
+	name: string;
+	type: string;
+}
+
 export type WorkTarget = {
 	id: string;
 	name: string;

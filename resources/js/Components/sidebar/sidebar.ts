@@ -256,7 +256,7 @@ export const arsipSections: NavSection[] = [
 			{
 				title: "File",
 				icon: FileText,
-				href: "/target-kinerja",
+				href: "/dashboard/e-archive",
 			},
 		],
 	},

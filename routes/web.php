@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\FolderController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WorkTargetController;
@@ -29,6 +31,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile/photo', [ProfileController::class, 'deletePhoto'])->name('profile.deletePhoto');
 });
 
+Route::middleware(['auth'])->group(function (): void {
+    Route::get('/dashboard/e-archive', [FolderController::class, 'index'])
+        ->name('folders.index');
+
+    // Route to show a specific folder by ID
+    Route::get('/dashboard/e-archive/{folderId}', [FolderController::class, 'show'])
+        ->name('folders.show');
+});
 
 Route::middleware(['auth', 'role:sdm'])->group(function () {
     Route::get('/dashboard/log', [LogController::class, 'index']);
