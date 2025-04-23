@@ -6,6 +6,7 @@ use App\Http\Controllers\LogController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WorkTargetController;
 use App\Http\Controllers\WorkTargetValueController;
+use App\Http\Controllers\TagController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,7 +17,7 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-    ]);
+    ]); 
 });
 
 Route::get('/dashboard', function () {
@@ -42,6 +43,10 @@ Route::middleware(['auth'])->group(function (): void {
 
 Route::middleware(['auth', 'role:sdm'])->group(function () {
     Route::get('/dashboard/log', [LogController::class, 'index']);
+    Route::get('/dashboard/tag', [TagController::class, 'index'])->name('tags.index');
+    Route::post('/dashboard/tags', [TagController::class, 'store'])->name('tags.store');
+    Route::patch('/dashboard/tags/{tag}', [TagController::class, 'update'])->name('tags.update');
+    Route::delete('/dashboard/tags/{tag}', [TagController::class, 'destroy'])->name('tags.destroy');
 });
 
 Route::middleware(['auth', 'role:wadek'])->group(function () {

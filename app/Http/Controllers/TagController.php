@@ -4,15 +4,51 @@ namespace App\Http\Controllers;
 
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TagController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        // ->with('user')
+        // ->when($search, function ($q) use ($search) {
+        //     $q->whereHas('user', fn($q) => $q->where('name', 'like', "%{$search}%"))
+        //         ->orWhere('title', 'like', "%{$search}%");
+        // })
+        $query = Tag::query()
+            ->when($startDate, function ($q) use ($startDate) {
+                $q->whereDate('created_at', '>=', $startDate);
+            })
+            ->when($endDate, function ($q) use ($endDate) {
+                $q->whereDate('created_at', '<=', $endDate);
+            })
+            ->orderByDesc('created_at');
+
+        $tags = $query->paginate($perPage)->withQueryString();
+        return Inertia::render('weekly-report/tag/index', [
+            'tags' => [
+                'data' => $tags->items(),
+                'meta' => [
+                    'current_page' => $tags->currentPage(),
+                    'last_page' => $tags->lastPage(),
+                    'per_page' => $tags->perPage(),
+                    'total' => $tags->total(),
+                ]
+            ],
+            'filters' => [
+                'search' => $search,
+                'per_page' => $perPage,
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+            ]
+        ]);
     }
 
     /**
@@ -28,7 +64,16 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|min:3',
+        ]);
+
+        try {
+            Tag::create($validated);
+            return redirect()->back()->with('success', 'Tag berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menambahkan tag.');
+        }
     }
 
     /**
@@ -52,14 +97,35 @@ class TagController extends Controller
      */
     public function update(Request $request, Tag $tag)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|min:3',
+        ]);
+
+        try {
+            if ($tag->name === $validated['name']) {
+                return redirect()->back()->with('info', 'Tidak ada perubahan pada tag.');
+            }
+
+            $tag->name = $validated['name'];
+            $tag->save();
+
+            return redirect()->back()->with('success', 'Tag berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memperbarui tag: ' . $e->getMessage());
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Tag $tag)
     {
-        //
+        try {
+            $tag->delete();
+            return redirect()->back()->with('success', 'Tag berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus tag.');
+        }
     }
 }

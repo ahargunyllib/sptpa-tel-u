@@ -150,12 +150,12 @@ export const sdmPenilaianSections: NavSection[] = [
 			{
 				title: "Data Atasan & Pegawai",
 				icon: Users,
-				href: "/admin/user",
+				href: "/dashboard/user",
 			},
 			{
 				title: "Weekly Report",
 				icon: MessageSquareText,
-				href: "/admin/user",
+				href: "/dashboard/tag",
 			},
 			{
 				title: "Website Log",
