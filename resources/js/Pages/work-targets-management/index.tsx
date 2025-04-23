@@ -16,6 +16,12 @@ type Props = {
 	canManageWorkTargets: boolean;
 	users: User[];
 	workTargets: WorkTarget[];
+	staffs: (User & {
+		average_first_quarter_score: number;
+		average_second_quarter_score: number;
+		average_third_quarter_score: number;
+		average_fourth_quarter_score: number;
+	})[];
 };
 
 export default function WorkTargetsManagementIndex({
@@ -23,6 +29,7 @@ export default function WorkTargetsManagementIndex({
 	canManageWorkTargets,
 	users,
 	workTargets,
+	staffs,
 }: Props) {
 	return (
 		<DashboardLayout>
@@ -42,7 +49,7 @@ export default function WorkTargetsManagementIndex({
 						/>
 					)}
 
-					<PerformanceAssessmentsCard role={role} />
+					<PerformanceAssessmentsCard role={role} staffs={staffs} />
 				</TabsContent>
 				<TabsContent value="attitude">
 					<StaffsCard role={role} />

@@ -77,11 +77,25 @@ class WorkTargetController extends Controller
             ];
         });
 
+        $staffs = DB::table('work_target_values')
+        ->rightJoin('users', 'users.id', '=', 'work_target_values.user_id')
+        ->where('users.role', $role)
+        ->select(
+            'users.*',
+            DB::raw('CEIL(COALESCE(AVG(first_quarter_score), 0)) as average_first_quarter_score'),
+            DB::raw('CEIL(COALESCE(AVG(second_quarter_score), 0)) as average_second_quarter_score'),
+            DB::raw('CEIL(COALESCE(AVG(third_quarter_score), 0)) as average_third_quarter_score'),
+            DB::raw('CEIL(COALESCE(AVG(fourth_quarter_score), 0)) as average_fourth_quarter_score'),
+        )
+        ->groupBy('users.id')
+        ->get();
+
         return Inertia::render('work-targets-management/index', [
             'role' => $role,
             'canManageWorkTargets' => $canManageWorkTargets,
             'users' => $users,
             'workTargets' => $workTargets,
+            'staffs' => $staffs,
         ]);
     }
 

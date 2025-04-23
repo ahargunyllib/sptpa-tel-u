@@ -1,6 +1,7 @@
 import { Link } from "@inertiajs/react";
 import { ArrowUpRightIcon } from "lucide-react";
 import { capitalize } from "../../../lib/utils";
+import type { User } from "../../../types";
 import Pagination from "../../pagination";
 import { Button } from "../../ui/button";
 import {
@@ -26,22 +27,17 @@ import {
 	TableRow,
 } from "../../ui/table";
 
-const performanceAssessments = [
-	{
-		id: "1",
-		name: "Kenzie",
-		role: "kaur",
-		average_first_quarter_score: 90,
-		average_second_quarter_score: 90,
-		average_third_quarter_score: 90,
-		average_fourth_quarter_score: 90,
-	},
-];
-
 export default function PerformanceAssessmentsCard({
 	role,
+	staffs,
 }: {
 	role: string;
+	staffs: (User & {
+		average_first_quarter_score: number;
+		average_second_quarter_score: number;
+		average_third_quarter_score: number;
+		average_fourth_quarter_score: number;
+	})[];
 }) {
 	return (
 		<Card className="shadow-sm">
@@ -78,12 +74,12 @@ export default function PerformanceAssessmentsCard({
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							{performanceAssessments.map((performanceAssessment, idx) => {
+							{staffs.map((staff, idx) => {
 								return (
-									<TableRow key={performanceAssessment.id}>
+									<TableRow key={staff.id}>
 										<TableCell className="py-3 px-4">{idx + 1}</TableCell>
 										<TableCell className="py-3 w-full px-4">
-											{performanceAssessment.name}
+											{staff.name}
 										</TableCell>
 										<TableCell className="py-3 w-full px-4">
 											<Button
@@ -94,9 +90,9 @@ export default function PerformanceAssessmentsCard({
 											>
 												<Link
 													href={route(
-														`dashboard.performance.${performanceAssessment.role}.show`,
+														`dashboard.performance.${staff.role}.show`,
 														{
-															id: performanceAssessment.id,
+															id: staff.id,
 														},
 													)}
 												>
@@ -106,16 +102,16 @@ export default function PerformanceAssessmentsCard({
 											</Button>
 										</TableCell>
 										<TableCell className="py-3 px-4 text-center">
-											{performanceAssessment.average_first_quarter_score}
+											{staff.average_first_quarter_score}
 										</TableCell>
 										<TableCell className="py-3 px-4 text-center">
-											{performanceAssessment.average_second_quarter_score}
+											{staff.average_second_quarter_score}
 										</TableCell>
 										<TableCell className="py-3 px-4 text-center">
-											{performanceAssessment.average_third_quarter_score}
+											{staff.average_third_quarter_score}
 										</TableCell>
 										<TableCell className="py-3 px-4 text-center">
-											{performanceAssessment.average_fourth_quarter_score}
+											{staff.average_fourth_quarter_score}
 										</TableCell>
 									</TableRow>
 								);
