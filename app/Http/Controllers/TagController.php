@@ -32,15 +32,16 @@ class TagController extends Controller
             ->orderByDesc('created_at');
 
         $tags = $query->paginate($perPage)->withQueryString();
+        $paginationMeta = [
+            'total_data' => $tags->total(),
+            'total_page' => $tags->lastPage(),
+            'page' => $tags->currentPage(),
+            'limit' => $tags->perPage(),
+        ];
         return Inertia::render('weekly-report/tag/index', [
             'tags' => [
                 'data' => $tags->items(),
-                'meta' => [
-                    'current_page' => $tags->currentPage(),
-                    'last_page' => $tags->lastPage(),
-                    'per_page' => $tags->perPage(),
-                    'total' => $tags->total(),
-                ]
+                'meta' => $paginationMeta,
             ],
             'filters' => [
                 'search' => $search,
