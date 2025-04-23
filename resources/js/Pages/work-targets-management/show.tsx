@@ -1,4 +1,4 @@
-import { Head } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
 import {
 	ArrowUpRightIcon,
 	CheckSquare2Icon,
@@ -31,39 +31,15 @@ import {
 	TableRow,
 } from "../../components/ui/table";
 import DashboardLayout from "../../layouts/dashboard-layout";
+import type { User, WorkTarget, WorkTargetValue } from "../../types";
 
-const user = {
-	name: "Kenzie",
-};
+export default function WorkTargetsManagementShow({
+	workTargets,
+}: {
+	workTargets: (WorkTarget & WorkTargetValue)[];
+}) {
+	const user = usePage().props.auth.user as User;
 
-type User = typeof user;
-
-const workTargets = [
-	{
-		id: "1",
-		name: "Mengerjakan appendix",
-		unit: "week",
-		comparator: "eq",
-		first_quarter_target: 2,
-		second_quarter_target: 2,
-		third_quarter_target: 2,
-		fourth_quarter_target: 2,
-		first_quarter_value: 2,
-		second_quarter_value: 2,
-		third_quarter_value: 2,
-		fourth_quarter_value: 2,
-
-		category: "light",
-		first_quarter_score: 2,
-		second_quarter_score: 2,
-		third_quarter_score: 2,
-		fourth_quarter_score: 2,
-	},
-];
-
-type WorkTarget = (typeof workTargets)[number];
-
-export default function WorkTargetsManagementShow() {
 	const [workTargetId, setWorkTargetId] = useState<string | null>(null);
 
 	return (
@@ -204,7 +180,7 @@ function WorkTargetsUserCard({
 	workTargets,
 }: {
 	user: User;
-	workTargets: WorkTarget[];
+	workTargets: (WorkTarget & WorkTargetValue)[];
 }) {
 	return (
 		<Dialog>

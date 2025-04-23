@@ -154,10 +154,20 @@ class WorkTargetController extends Controller
           abort(404);
       }
 
-      $workTargets = WorkTarget::with('user')->where('id', $id);
+      $workTargets = DB::table('work_target_values')
+      ->rightJoin('work_targets', 'work_targets.id', '=', 'work_target_values.work_target_id')
+      ->where('work_target_values.user_id', $id)
+      ->select(
+        "work_targets.*",
+        "work_target_values.*",
+      )
+      ->groupBy('work_targets.id')
+      ->groupBy('work_target_values.id')
+      ->get();
 
       return Inertia::render('work-targets-management/show', [
-          'role' => $role
+          'role' => $role,
+          'workTargets' => $workTargets,
       ]);
     }
 

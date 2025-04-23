@@ -51,3 +51,18 @@ export type WorkTarget = {
 	third_quarter_target: number;
 	fourth_quarter_target: number;
 };
+
+export type WorkTargetValue = {
+	id: string;
+	user_id: string;
+	work_target_id: string;
+	first_quarter_value: number;
+	second_quarter_value: number;
+	third_quarter_value: number;
+	fourth_quarter_value: number;
+	category: "light" | "medium" | "heavy";
+	first_quarter_score: number;
+	second_quarter_score: number;
+	third_quarter_score: number;
+	fourth_quarter_score: number;
+};
