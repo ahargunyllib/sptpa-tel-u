@@ -37,8 +37,8 @@ export default function WorkTargetsManagementIndex({
 
 			<Tabs defaultValue="work-target">
 				<TabsList className="space-x-2">
-					<TabsTrigger value="work-target">WorkTarget</TabsTrigger>
-					<TabsTrigger value="attitude">Attitude</TabsTrigger>
+					<TabsTrigger value="work-target">Target kinerja pegawai</TabsTrigger>
+					<TabsTrigger value="attitude">Sikap kerja</TabsTrigger>
 				</TabsList>
 				<TabsContent value="work-target" className="space-y-4 ">
 					{canManageWorkTargets && (

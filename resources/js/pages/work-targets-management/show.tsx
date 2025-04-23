@@ -35,11 +35,11 @@ import type { User, WorkTarget, WorkTargetValue } from "../../types";
 
 export default function WorkTargetsManagementShow({
 	workTargets,
+	user,
 }: {
 	workTargets: (WorkTarget & WorkTargetValue)[];
+	user: User;
 }) {
-	const user = usePage().props.auth.user as User;
-
 	const [selectedWorkTargetId, setSelectedWorkTargetId] = useState<
 		string | null
 	>(null);

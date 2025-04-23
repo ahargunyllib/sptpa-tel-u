@@ -82,12 +82,12 @@ export const kaurPenilaianSections: NavSection[] = [
 			{
 				title: "Target kinerja pegawai",
 				icon: FileText,
-				href: "/target-kinerja",
+				href: "/dashboard/performance/me",
 			},
 			{
-				title: "Penilaian TPA",
-				icon: Users,
-				href: "/target-kinerja",
+				title: "Kinerja TPA",
+				icon: FileText,
+				href: "/dashboard/performance/tpa",
 			},
 		],
 	},

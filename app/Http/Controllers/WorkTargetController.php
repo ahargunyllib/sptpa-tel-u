@@ -16,7 +16,7 @@ class WorkTargetController extends Controller
      */
     public function index(Request $request)
     {
-        $role = $request->route()->getName() === 'dashboard.performance.tpa' ? 'tpa' : ( request()->route()->getName() === 'dashboard.performance.kaur' ? 'kaur' : null);
+        $role = $request->route()->getName() === 'dashboard.performance.tpa' ? 'tpa' : (request()->route()->getName() === 'dashboard.performance.kaur' ? 'kaur' : null);
 
         if (!$role) {
             abort(404);
@@ -25,8 +25,8 @@ class WorkTargetController extends Controller
         $userRole = $request->user()->role;
 
         $canManageWorkTargets = true;
-        if ($userRole === 'wadek' && $role === 'tpa'){
-          $canManageWorkTargets = false;
+        if ($userRole === 'wadek' && $role === 'tpa') {
+            $canManageWorkTargets = false;
         }
 
         $search = $request->input('search', '');
@@ -36,59 +36,75 @@ class WorkTargetController extends Controller
             $users = User::query()
                 ->where(function ($query) use ($search) {
                     $query->where('name', 'like', "%{$search}%")
-                          ->orWhere('email', 'like', "%{$search}%");
+                        ->orWhere('email', 'like', "%{$search}%");
                 })
                 ->where('role', $role)
                 ->get()->toArray();
         }
 
         // Get all work targets for the given role but don't filter out work targets with no values
-        $workTargets = WorkTarget::with(['workTargetValues' => function($query) use ($role) {
-            // This only filters the loaded relationships, not the main query
-            $query->whereHas('user', function($q) use ($role) {
-                $q->where('role', $role);
-            });
-        }])
-        ->orderByDesc('created_at')
-        ->get();
+        // $workTargets = WorkTarget::with(['workTargetValues' => function ($query) use ($role) {
+        //     // This only filters the loaded relationships, not the main query
+        //     $query->whereHas('user', function ($q) use ($role) {
+        //         $q->where('role', $role);
+        //     });
+        // }])
+        //     ->orderByDesc('created_at')
+        //     ->get();
 
-        $workTargets = WorkTarget::query()->orderByDesc('created_at')->get();
+        $rawWorkTargets = DB::table('work_target_values')
+            ->join('work_targets', 'work_targets.id', '=', 'work_target_values.work_target_id')
+            ->join('users', 'users.id', '=', 'work_target_values.user_id')
+            ->where('users.role', $role)
+            ->select(
+                'work_targets.*',
+                'users.id as user_id',
+                'users.name as user_name',
+                'users.nip as nip',
+            )
+            ->get();
 
-        // Format the work targets to include the work target values
-        $workTargets = $workTargets->map(function ($workTarget) {
-            $staffs = $workTarget->workTargetValues->map(function ($workTargetValue) {
-                return [
-                    'id' => $workTargetValue->user->id,
-                    'name' => $workTargetValue->user->name,
-                    'nip' => $workTargetValue->user->nip,
+        $workTargets = [];
+
+        foreach ($rawWorkTargets as $rowWorkTarget) {
+            $id = $rowWorkTarget->id;
+
+            if (!isset($workTargets[$id])) {
+                $workTargets[$id] = [
+                    'id' => $rowWorkTarget->id,
+                    'name' => $rowWorkTarget->name,
+                    'unit' => $rowWorkTarget->unit,
+                    'comparator' => $rowWorkTarget->comparator,
+                    'first_quarter_target' => $rowWorkTarget->first_quarter_target,
+                    'second_quarter_target' => $rowWorkTarget->second_quarter_target,
+                    'third_quarter_target' => $rowWorkTarget->third_quarter_target,
+                    'fourth_quarter_target' => $rowWorkTarget->fourth_quarter_target,
+                    'staffs' => [],
                 ];
-            });
+            }
 
-            return [
-                'id' => $workTarget->id,
-                'name' => $workTarget->name,
-                'unit' => $workTarget->unit,
-                'staffs' => $staffs,
-                'comparator' => $workTarget->comparator,
-                'first_quarter_target' => $workTarget->first_quarter_target,
-                'second_quarter_target' => $workTarget->second_quarter_target,
-                'third_quarter_target' => $workTarget->third_quarter_target,
-                'fourth_quarter_target' => $workTarget->fourth_quarter_target,
+            $workTargets[$id]['staffs'][] = [
+                'id' => $rowWorkTarget->user_id,
+                'name' => $rowWorkTarget->user_name,
+                'nip' => $rowWorkTarget->nip,
             ];
-        });
+        }
+
+        // Convert the associative array back to a numerically indexed array
+        $workTargets = array_values($workTargets);
 
         $staffs = DB::table('work_target_values')
-        ->rightJoin('users', 'users.id', '=', 'work_target_values.user_id')
-        ->where('users.role', $role)
-        ->select(
-            'users.*',
-            DB::raw('CEIL(COALESCE(AVG(first_quarter_score), 0)) as average_first_quarter_score'),
-            DB::raw('CEIL(COALESCE(AVG(second_quarter_score), 0)) as average_second_quarter_score'),
-            DB::raw('CEIL(COALESCE(AVG(third_quarter_score), 0)) as average_third_quarter_score'),
-            DB::raw('CEIL(COALESCE(AVG(fourth_quarter_score), 0)) as average_fourth_quarter_score'),
-        )
-        ->groupBy('users.id')
-        ->get();
+            ->rightJoin('users', 'users.id', '=', 'work_target_values.user_id')
+            ->where('users.role', $role)
+            ->select(
+                'users.*',
+                DB::raw('CEIL(COALESCE(AVG(first_quarter_score), 0)) as average_first_quarter_score'),
+                DB::raw('CEIL(COALESCE(AVG(second_quarter_score), 0)) as average_second_quarter_score'),
+                DB::raw('CEIL(COALESCE(AVG(third_quarter_score), 0)) as average_third_quarter_score'),
+                DB::raw('CEIL(COALESCE(AVG(fourth_quarter_score), 0)) as average_fourth_quarter_score'),
+            )
+            ->groupBy('users.id')
+            ->get();
 
         return Inertia::render('work-targets-management/index', [
             'role' => $role,
@@ -113,28 +129,28 @@ class WorkTargetController extends Controller
     public function store(Request $request)
     {
 
-      try {
-          // Validate the request data
-          $validatedData = $request->validate([
-              'name' => 'required|string|max:255'
-          ]);
+        try {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255'
+            ]);
 
-          $userId = $request->user()->id;
+            $userId = $request->user()->id;
 
-          // Begin a database transaction
-          DB::beginTransaction();
+            // Begin a database transaction
+            DB::beginTransaction();
 
-          // Create a new work target
-          $workTarget = new WorkTarget();
-          $workTarget->name = $validatedData['name'];
-          $workTarget->user_id = $userId;
+            // Create a new work target
+            $workTarget = new WorkTarget();
+            $workTarget->name = $validatedData['name'];
+            $workTarget->user_id = $userId;
 
-          // Save the work target to the database
-          $workTarget->save();
+            // Save the work target to the database
+            $workTarget->save();
 
-          DB::commit();
+            DB::commit();
 
-          return back();
+            return back();
         } catch (\Exception $e) {
             // Rollback the transaction if an error occurs
             DB::rollBack();
@@ -148,27 +164,30 @@ class WorkTargetController extends Controller
      */
     public function show(String $id, Request $request)
     {
-      $role = $request->route()->getName() === 'dashboard.performance.tpa.show' ? 'tpa' : ( request()->route()->getName() === 'dashboard.performance.kaur.show' ? 'kaur' : null);
+        $role = $request->route()->getName() === 'dashboard.performance.tpa.show' ? 'tpa' : (request()->route()->getName() === 'dashboard.performance.kaur.show' ? 'kaur' : null);
 
-      if (!$role) {
-          abort(404);
-      }
+        if (!$role) {
+            abort(404);
+        }
 
-      $workTargets = DB::table('work_target_values')
-      ->rightJoin('work_targets', 'work_targets.id', '=', 'work_target_values.work_target_id')
-      ->where('work_target_values.user_id', $id)
-      ->select(
-        "work_targets.*",
-        "work_target_values.*",
-      )
-      ->groupBy('work_targets.id')
-      ->groupBy('work_target_values.id')
-      ->get();
+        $workTargets = DB::table('work_target_values')
+            ->rightJoin('work_targets', 'work_targets.id', '=', 'work_target_values.work_target_id')
+            ->where('work_target_values.user_id', $id)
+            ->select(
+                "work_targets.*",
+                "work_target_values.*",
+            )
+            ->groupBy('work_targets.id')
+            ->groupBy('work_target_values.id')
+            ->get();
 
-      return Inertia::render('work-targets-management/show', [
-          'role' => $role,
-          'workTargets' => $workTargets,
-      ]);
+        $user = User::findOrFail($id);
+
+        return Inertia::render('work-targets-management/show', [
+            'role' => $role,
+            'workTargets' => $workTargets,
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -176,7 +195,7 @@ class WorkTargetController extends Controller
      */
     public function update(Request $request, string $id)
     {
-      try {
+        try {
             // Validate the request data
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
@@ -212,8 +231,8 @@ class WorkTargetController extends Controller
             $staffIdsToDelete = array_diff($existingStaffIds, $validatedData['staffIds']);
 
             WorkTargetValue::whereIn('user_id', $staffIdsToDelete)
-              ->where('work_target_id', $workTarget->id)
-              ->delete();
+                ->where('work_target_id', $workTarget->id)
+                ->delete();
 
             // Create work target values for each staff that is not already in the database
             foreach ($validatedData['staffIds'] as $staffId) {
@@ -244,7 +263,7 @@ class WorkTargetController extends Controller
     public function destroy(string $id)
     {
 
-      try {
+        try {
             // Find the work target by ID
             $workTarget = WorkTarget::findOrFail($id);
 
@@ -264,5 +283,25 @@ class WorkTargetController extends Controller
 
             return back();
         }
+    }
+
+    public function myWorkTargets(Request $request)
+    {
+        $user = $request->user();
+
+        $workTargets = DB::table('work_target_values')
+            ->rightJoin('work_targets', 'work_targets.id', '=', 'work_target_values.work_target_id')
+            ->where('work_target_values.user_id', $user->id)
+            ->select(
+                "work_targets.*",
+                "work_target_values.*",
+            )
+            ->groupBy('work_targets.id')
+            ->groupBy('work_target_values.id')
+            ->get();
+
+        return Inertia::render('work-targets-management/my-work-targets', [
+            'workTargets' => $workTargets,
+        ]);
     }
 }

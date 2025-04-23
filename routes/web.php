@@ -45,13 +45,21 @@ Route::middleware(['auth', 'role:sdm'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:wadek'])->group(function () {
-    Route::get('/dashboard/performance/tpa', [WorkTargetController::class, 'index'])->name('dashboard.performance.tpa');
-
-    Route::get('/dashboard/performance/tpa/{id}', [WorkTargetController::class, 'show'])->name('dashboard.performance.tpa.show');
-
     Route::get('/dashboard/performance/kaur', [WorkTargetController::class, 'index'])->name('dashboard.performance.kaur');
 
     Route::get('/dashboard/performance/kaur/{id}', [WorkTargetController::class, 'show'])->name('dashboard.performance.kaur.show');
+});
+
+Route::middleware(['auth', 'role:kaur'])->group(function () {
+    Route::get('/dashboard/performance/me', [WorkTargetController::class, 'myWorkTargets'])->name('dashboard.performance.me');
+    Route::get('/dashboard/performance/me/detail', [WorkTargetValueController::class, 'index'])->name('dashboard.performance.me.index');
+    Route::put('/dashboard/performance/me/detail/{id}', [WorkTargetValueController::class, 'update'])->name('dashboard.performance.me.update');
+});
+
+Route::middleware(['auth', 'role:kaur,wadek'])->group(function () {
+    Route::get('/dashboard/performance/tpa', [WorkTargetController::class, 'index'])->name('dashboard.performance.tpa');
+
+    Route::get('/dashboard/performance/tpa/{id}', [WorkTargetController::class, 'show'])->name('dashboard.performance.tpa.show');
 
     Route::post('/dashboard/performance/work-target', [WorkTargetController::class, 'store'])->name('dashboard.performance.work-target.store');
 
