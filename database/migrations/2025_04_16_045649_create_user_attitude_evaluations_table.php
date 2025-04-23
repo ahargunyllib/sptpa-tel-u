@@ -19,14 +19,14 @@ return new class extends Migration
             $table->integer('collaboration');
             $table->integer('solidarity');
             $table->integer('work_ethic');
-            $table->integer('techonology_usage');
+            $table->integer('technology_usage');
             $table->integer('work_smart');
             $table->integer('initiative');
             $table->integer('role_model');
             $table->integer('responsibility');
             $table->integer('professional_ethic');
             $table->integer('image_maintenance');
-            $table->integer('dicipline');
+            $table->integer('discipline');
             $table->timestamps();
         });
     }

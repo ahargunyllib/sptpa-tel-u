@@ -13,15 +13,17 @@ return new class extends Migration
     {
         Schema::create('work_target_values', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->foreignUuid('user_id')->constrained('users');
-            $table->foreignUlid('work_target_id')->constrained('work_targets');
-            $table->integer('first_quarter_value');
-            $table->integer('second_quarter_value');
-            $table->integer('third_quarter_value');
-            $table->integer('forth_quarter_value');
-            $table->enum('category', ['performance', 'behavior']);
-            $table->integer('first_half_score');
-            $table->integer('second_half_score');
+            $table->foreignUuid('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignUlid('work_target_id')->constrained('work_targets')->onDelete('cascade');
+            $table->integer('first_quarter_value')->default(0);
+            $table->integer('second_quarter_value')->default(0);
+            $table->integer('third_quarter_value')->default(0);
+            $table->integer('fourth_quarter_value')->default(0);
+            $table->enum('category', ['light', 'medium', 'heavy'])->default('light');
+            $table->integer('first_quarter_score')->default(0);
+            $table->integer('second_quarter_score')->default(0);
+            $table->integer('third_quarter_score')->default(0);
+            $table->integer('fourth_quarter_score')->default(0);
             $table->timestamps();
         });
     }
