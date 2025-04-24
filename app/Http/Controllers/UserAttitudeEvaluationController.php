@@ -52,9 +52,36 @@ class UserAttitudeEvaluationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, UserAttitudeEvaluation $userAttitudeEvaluation)
+    public function update(Request $request)
     {
-        //
+        try {
+            $userId = $request->user()->id;
+
+            $validatedData = $request->validate([
+                'evidance' => 'required|string|max:255',
+            ]);
+
+            $userAttitudeEvaluation = UserAttitudeEvaluation::where('user_id', $userId)->first();
+
+            if (!$userAttitudeEvaluation) {
+                $newEvaluation = new UserAttitudeEvaluation();
+
+                $newEvaluation->user_id = $userId;
+                $newEvaluation->evidance = $validatedData['evidance'];
+
+                $newEvaluation->save();
+
+                return back()->with('success', 'User attitude evaluation created successfully.');
+            }
+
+            $userAttitudeEvaluation->evidance = $validatedData['evidance'];
+
+            $userAttitudeEvaluation->save();
+
+            return back()->with('success', 'User attitude evaluation updated successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to update user attitude evaluation: ' . $e->getMessage());
+        }
     }
 
     /**

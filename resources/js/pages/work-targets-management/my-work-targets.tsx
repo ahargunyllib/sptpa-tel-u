@@ -1,6 +1,10 @@
 import DashboardLayout from "@/layouts/dashboard-layout";
-import { Head, Link, usePage } from "@inertiajs/react";
-import { ArrowUpRightIcon } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Head, Link, router, usePage } from "@inertiajs/react";
+import { ArrowUpRightIcon, FileTextIcon } from "lucide-react";
+import { useMemo } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import Pagination from "../../components/pagination";
 import { Button } from "../../components/ui/button";
 import {
@@ -10,6 +14,20 @@ import {
 	CardHeader,
 	CardTitle,
 } from "../../components/ui/card";
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "../../components/ui/dialog";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+} from "../../components/ui/form";
+import { Input } from "../../components/ui/input";
 import {
 	Select,
 	SelectContent,
@@ -31,16 +49,60 @@ import {
 	TabsList,
 	TabsTrigger,
 } from "../../components/ui/tabs";
-import type { User, WorkTargetValue } from "../../types";
+import type {
+	User,
+	UserAttitudeEvaluation,
+	UserFeedback,
+	WorkTargetValue,
+} from "../../types";
 import type { WorkTarget } from "../../types/index";
 
 export default function MyWorkTargets({
 	workTargets,
+	userAttitudeEvaluation,
+	userFeedback,
 }: {
 	workTargets: (WorkTarget & WorkTargetValue)[];
+	userAttitudeEvaluation: UserAttitudeEvaluation;
+	userFeedback: UserFeedback;
 }) {
 	const { props } = usePage();
 	const user = props.auth.user as User;
+
+	const userAttitudeEvaluationSchema = z.object({
+		evidance: z.string(),
+	});
+
+	const form = useForm<z.infer<typeof userAttitudeEvaluationSchema>>({
+		resolver: zodResolver(userAttitudeEvaluationSchema),
+		defaultValues: {
+			evidance: userAttitudeEvaluation.evidance || "",
+		},
+	});
+
+	const onSubmit = form.handleSubmit((data) => {
+		router.put("/dashboard/user-attitude-evaluation/me", data);
+		form.reset();
+	});
+
+	const average = useMemo(() => {
+		return (
+			(userAttitudeEvaluation.collaboration +
+				userAttitudeEvaluation.communication +
+				userAttitudeEvaluation.discipline +
+				userAttitudeEvaluation.image_maintenance +
+				userAttitudeEvaluation.initiative +
+				userAttitudeEvaluation.professional_ethic +
+				userAttitudeEvaluation.responsibility +
+				userAttitudeEvaluation.role_model +
+				userAttitudeEvaluation.solidarity +
+				userAttitudeEvaluation.teamwork +
+				userAttitudeEvaluation.technology_usage +
+				userAttitudeEvaluation.work_ethic +
+				userAttitudeEvaluation.work_smart) /
+			13
+		);
+	}, [userAttitudeEvaluation]);
 
 	return (
 		<DashboardLayout>
@@ -268,12 +330,322 @@ export default function MyWorkTargets({
 						</Card>
 					</div>
 				</TabsContent>
-				<TabsContent value="attitude">
-					<Card className="shadow-sm">
-						<CardHeader>
-							<CardTitle>Data Sikap Kerja</CardTitle>
-						</CardHeader>
-					</Card>
+				<TabsContent value="attitude" className="flex flex-row gap-4 h-full">
+					<div className="w-3/5 flex flex-col gap-4">
+						<Card className="shadow-sm">
+							<CardHeader>
+								<CardTitle>Data Pegawai</CardTitle>
+							</CardHeader>
+							<CardContent className="flex flex-col gap-2">
+								<span>Nama Pegawai : {user.name}</span>
+								<span>NIP : {user.nip}</span>
+								<span>
+									Deskripsi kerja sebagai :{" "}
+									{
+										{
+											kaur: "Kepala Urusan",
+											wadek: "Wakil Dekan",
+											tpa: "Tenaga Pengurus Akademik",
+										}[user.role]
+									}
+								</span>
+								<span>Lokasi Kerja : {user.location}</span>
+								<span>
+									Periode Penilaian :{" "}
+									{new Date().toLocaleDateString("id-ID", {
+										year: "numeric",
+									})}
+								</span>
+							</CardContent>
+						</Card>
+						<Card className="shadow-sm">
+							<CardHeader>
+								<CardTitle>Penilaian Sikap Kerja</CardTitle>
+							</CardHeader>
+							<CardContent className="flex flex-col gap-2">
+								<div className="flex flex-row bg-[#f5faf7] text-[#3a5a50] p-4 gap-4 rounded-md">
+									<p className="break-words text-justify border-r-2 pr-4 border-[#4d8d78]">
+										Penilaian Sikap Kerja memerlukan waktu pengerjaan kurang
+										lebih 7-10 menit. Silahkan input nilai berdasarkan rentang
+										nilai yang telah ditentukan, sesuai dengan item pada pada
+										masing-masing aspek penilaian.
+									</p>
+									<p className="break-words text-justify">
+										Bapak/bu Atasan langsung maupun Atasan tidak langsung
+										dimohon untuk setiap jawaban dapat dibaca dengan seksama
+										karena tidak ada pilihan untuk edit dan perubahan apabila
+										sudah tersimpan
+									</p>
+								</div>
+								<p>
+									Penilaian Sikap Kerja terdiri dari 3 aspek yang telah
+									ditentukan diantaranya:
+								</p>
+								<p>1. Aspek Harmony</p>
+								<p>2. Aspek Excellent</p>
+								<p>3. Aspek Integrity</p>
+							</CardContent>
+						</Card>
+					</div>
+					<div className="w-full flex flex-col gap-4">
+						<Card className="shadow-sm">
+							<CardHeader className="flex flex-row items-center justify-between">
+								<div>
+									<CardTitle>Sikap Kerja</CardTitle>
+									<CardDescription>
+										Dibawah merupakan detail dari setiap penilai
+									</CardDescription>
+								</div>
+
+								<Dialog>
+									<DialogTrigger asChild>
+										<Button variant="ghost">
+											<FileTextIcon />
+											Lihat Detail
+										</Button>
+									</DialogTrigger>
+									<DialogContent>
+										<DialogHeader>
+											<DialogTitle>Penilaian Sikap</DialogTitle>
+										</DialogHeader>
+										<Table>
+											<TableHeader>
+												<TableRow>
+													<TableHead className="py-3 px-4 w-full">
+														Detail Sikap (Harmony)
+													</TableHead>
+													<TableHead className="py-3 px-4 text-center">
+														Nilai
+													</TableHead>
+												</TableRow>
+											</TableHeader>
+											<TableBody>
+												<TableRow>
+													<TableCell className="py-3 px-4">
+														Komunikasi
+													</TableCell>
+													<TableCell className="py-3 px-4 text-center">
+														{userAttitudeEvaluation.communication}
+													</TableCell>
+												</TableRow>
+												<TableRow>
+													<TableCell className="py-3 px-4">Kerjasama</TableCell>
+													<TableCell className="py-3 px-4 text-center">
+														{userAttitudeEvaluation.teamwork}
+													</TableCell>
+												</TableRow>
+												<TableRow>
+													<TableCell className="py-3 px-4">
+														Kolaborasi
+													</TableCell>
+													<TableCell className="py-3 px-4 text-center">
+														{userAttitudeEvaluation.collaboration}
+													</TableCell>
+												</TableRow>
+												<TableRow>
+													<TableCell className="py-3 px-4">
+														Solidaritas
+													</TableCell>
+													<TableCell className="py-3 px-4 text-center">
+														{userAttitudeEvaluation.solidarity}
+													</TableCell>
+												</TableRow>
+											</TableBody>
+										</Table>
+										<Table>
+											<TableHeader>
+												<TableRow>
+													<TableHead className="py-3 px-4 w-full">
+														Detail Sikap (Excellent)
+													</TableHead>
+													<TableHead className="py-3 px-4 text-center">
+														Nilai
+													</TableHead>
+												</TableRow>
+											</TableHeader>
+											<TableBody>
+												<TableRow>
+													<TableCell className="py-3 px-4">
+														Etos Kerja
+													</TableCell>
+													<TableCell className="py-3 px-4 text-center">
+														{userAttitudeEvaluation.work_ethic}
+													</TableCell>
+												</TableRow>
+												<TableRow>
+													<TableCell className="py-3 px-4">
+														Pemanfaatan media & teknologi (mediatek)
+													</TableCell>
+													<TableCell className="py-3 px-4 text-center">
+														{userAttitudeEvaluation.technology_usage}
+													</TableCell>
+												</TableRow>
+												<TableRow>
+													<TableCell className="py-3 px-4">
+														Kerja Cerdas
+													</TableCell>
+													<TableCell className="py-3 px-4 text-center">
+														{userAttitudeEvaluation.work_smart}
+													</TableCell>
+												</TableRow>
+												<TableRow>
+													<TableCell className="py-3 px-4">Inisiatif</TableCell>
+													<TableCell className="py-3 px-4 text-center">
+														{userAttitudeEvaluation.initiative}
+													</TableCell>
+												</TableRow>
+											</TableBody>
+										</Table>
+										<Table>
+											<TableHeader>
+												<TableRow>
+													<TableHead className="py-3 px-4 w-full">
+														Detail Sikap (Integrity)
+													</TableHead>
+													<TableHead className="py-3 px-4 text-center">
+														Nilai
+													</TableHead>
+												</TableRow>
+											</TableHeader>
+											<TableBody>
+												<TableRow>
+													<TableCell className="py-3 px-4">
+														Role Model
+													</TableCell>
+													<TableCell className="py-3 px-4 text-center">
+														{userAttitudeEvaluation.role_model}
+													</TableCell>
+												</TableRow>
+												<TableRow>
+													<TableCell className="py-3 px-4">
+														Tanggung Jawab
+													</TableCell>
+													<TableCell className="py-3 px-4 text-center">
+														{userAttitudeEvaluation.responsibility}
+													</TableCell>
+												</TableRow>
+												<TableRow>
+													<TableCell className="py-3 px-4">
+														Etika Profesi
+													</TableCell>
+													<TableCell className="py-3 px-4 text-center">
+														{userAttitudeEvaluation.work_ethic}
+													</TableCell>
+												</TableRow>
+												<TableRow>
+													<TableCell className="py-3 px-4">
+														Menjaga citra institusi
+													</TableCell>
+													<TableCell className="py-3 px-4 text-center">
+														{userAttitudeEvaluation.image_maintenance}
+													</TableCell>
+												</TableRow>
+												<TableRow>
+													<TableCell className="py-3 px-4">Disipline</TableCell>
+													<TableCell className="py-3 px-4 text-center">
+														{userAttitudeEvaluation.discipline}
+													</TableCell>
+												</TableRow>
+											</TableBody>
+										</Table>
+									</DialogContent>
+								</Dialog>
+							</CardHeader>
+							<CardContent className="space-y-4">
+								<div>
+									<Form {...form}>
+										<form
+											onSubmit={onSubmit}
+											className="flex flex-row gap-2 w-full"
+										>
+											<FormField
+												name="evidance"
+												control={form.control}
+												render={({ field }) => {
+													return (
+														<FormItem className="w-full">
+															<FormControl>
+																<Input
+																	className="w-full"
+																	placeholder="Tuliskan evidance sikap"
+																	disabled={!!userAttitudeEvaluation.evidance}
+																	{...field}
+																/>
+															</FormControl>
+															{/* <FormMessage/> */}
+														</FormItem>
+													);
+												}}
+											/>
+											<Button
+												type="submit"
+												disabled={!!userAttitudeEvaluation.evidance}
+											>
+												Simpan
+											</Button>
+										</form>
+									</Form>
+								</div>
+								<div className="overflow-x-auto">
+									<Table>
+										<TableHeader>
+											<TableRow>
+												<TableHead>Hasil Penilaian</TableHead>
+											</TableRow>
+										</TableHeader>
+										<TableBody>
+											<TableRow>
+												<TableCell>
+													Rata - rata penilaian dari {average} (Unknown)
+												</TableCell>
+											</TableRow>
+											<TableRow>
+												<TableCell>
+													Rata - rata Penilaian Sikap Kerja sebelum pembobotan
+													adalah {average} dengan keterangan ditunjukkan dengan
+													(unknown)
+												</TableCell>
+											</TableRow>
+										</TableBody>
+									</Table>
+								</div>
+							</CardContent>
+						</Card>
+						<Card className="shadow-sm">
+							<CardHeader>
+								<CardTitle>Feedback Atasan</CardTitle>
+								<CardDescription>
+									Dibawah merupakan saran & masukan dari atasan secara langsung
+									maupun tidak
+								</CardDescription>
+							</CardHeader>
+							<CardContent>
+								<div className="overflow-x-auto">
+									<Table>
+										<TableHeader>
+											<TableRow>
+												<TableHead>Saran & Masukan</TableHead>
+											</TableRow>
+										</TableHeader>
+										<TableBody>
+											<TableRow>
+												<TableCell>
+													Atasan langsung :{" "}
+													<strong>{userFeedback.kaur_feedback}</strong>
+												</TableCell>
+											</TableRow>
+											<TableRow>
+												<TableCell>
+													Atasan tidak langsung :{" "}
+													<strong>{userFeedback.wadek_feedback}</strong>
+												</TableCell>
+											</TableRow>
+										</TableBody>
+									</Table>
+								</div>
+							</CardContent>
+						</Card>
+					</div>
 				</TabsContent>
 			</Tabs>
 		</DashboardLayout>
