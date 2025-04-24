@@ -13,20 +13,21 @@ return new class extends Migration
     {
         Schema::create('user_attitude_evaluations', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->foreignUuid('user_id')->constrained('users');
-            $table->integer('communication');
-            $table->integer('teamwork');
-            $table->integer('collaboration');
-            $table->integer('solidarity');
-            $table->integer('work_ethic');
-            $table->integer('technology_usage');
-            $table->integer('work_smart');
-            $table->integer('initiative');
-            $table->integer('role_model');
-            $table->integer('responsibility');
-            $table->integer('professional_ethic');
-            $table->integer('image_maintenance');
-            $table->integer('discipline');
+            $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
+            $table->integer('communication')->default(0);
+            $table->integer('teamwork')->default(0);
+            $table->integer('collaboration')->default(0);
+            $table->integer('solidarity')->default(0);
+            $table->integer('work_ethic')->default(0);
+            $table->integer('technology_usage')->default(0);
+            $table->integer('work_smart')->default(0);
+            $table->integer('initiative')->default(0);
+            $table->integer('role_model')->default(0);
+            $table->integer('responsibility')->default(0);
+            $table->integer('professional_ethic')->default(0);
+            $table->integer('image_maintenance')->default(0);
+            $table->integer('discipline')->default(0);
+            $table->string('evidance')->nullable();
             $table->timestamps();
         });
     }

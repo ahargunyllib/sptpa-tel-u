@@ -106,12 +106,44 @@ class WorkTargetController extends Controller
             ->groupBy('users.id')
             ->get();
 
+        $selectFields = [
+            'users.*',
+            DB::raw('COALESCE(user_attitude_evaluations.communication, 0) as communication'),
+            DB::raw('COALESCE(user_attitude_evaluations.teamwork, 0) as teamwork'),
+            DB::raw('COALESCE(user_attitude_evaluations.collaboration, 0) as collaboration'),
+            DB::raw('COALESCE(user_attitude_evaluations.solidarity, 0) as solidarity'),
+            DB::raw('COALESCE(user_attitude_evaluations.work_ethic, 0) as work_ethic'),
+            DB::raw('COALESCE(user_attitude_evaluations.technology_usage, 0) as technology_usage'),
+            DB::raw('COALESCE(user_attitude_evaluations.work_smart, 0) as work_smart'),
+            DB::raw('COALESCE(user_attitude_evaluations.initiative, 0) as initiative'),
+            DB::raw('COALESCE(user_attitude_evaluations.role_model, 0) as role_model'),
+            DB::raw('COALESCE(user_attitude_evaluations.responsibility, 0) as responsibility'),
+            DB::raw('COALESCE(user_attitude_evaluations.professional_ethic, 0) as professional_ethic'),
+            DB::raw('COALESCE(user_attitude_evaluations.image_maintenance, 0) as image_maintenance'),
+            DB::raw('COALESCE(user_attitude_evaluations.discipline, 0) as discipline'),
+            DB::raw('user_attitude_evaluations.evidance as evidance'),
+        ];
+
+        if ($userRole === 'wadek') {
+            $selectFields[] = DB::raw("COALESCE(user_feedback.wadek_feedback, '-') as note");
+        } else if ($userRole === 'kaur') {
+            $selectFields[] = DB::raw("COALESCE(user_feedback.kaur_feedback, '-') as note");
+        }
+
+        $userAttitudeEvaluations = DB::table('users')
+            ->where('users.role', $role)
+            ->leftJoin('user_attitude_evaluations', 'user_attitude_evaluations.user_id', '=', 'users.id')
+            ->leftJoin('user_feedback', 'user_feedback.user_id', '=', 'users.id')
+            ->select(...$selectFields)
+            ->get();
+
         return Inertia::render('work-targets-management/index', [
             'role' => $role,
             'canManageWorkTargets' => $canManageWorkTargets,
             'users' => $users,
             'workTargets' => $workTargets,
             'staffs' => $staffs,
+            'userAttitudeEvaluations' => $userAttitudeEvaluations,
         ]);
     }
 

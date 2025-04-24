@@ -4,6 +4,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserAttitudeEvaluationController;
 use App\Http\Controllers\WorkTargetController;
 use App\Http\Controllers\WorkTargetValueController;
 use App\Http\Controllers\TagController;
@@ -17,7 +18,7 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-    ]); 
+    ]);
 });
 
 Route::get('/dashboard', function () {
@@ -77,6 +78,8 @@ Route::middleware(['auth', 'role:kaur,wadek'])->group(function () {
     Route::delete('/dashboard/performance/work-target/{id}', [WorkTargetController::class, 'destroy'])->name('dashboard.performance.work-target.destroy');
 
     Route::put('/dashboard/performance/work-target-value/{id}', [WorkTargetValueController::class, 'updateWorkTargetValueScores'])->name('dashboard.performance.work-target-value.updateWorkTargetValueScores');
+
+    Route::put('/dashboard/user-attitude-evaluation/{user_id}', [UserAttitudeEvaluationController::class, 'updateUserAttitudeEvaluation'])->name('dashboard.performance.user-attitude-evaluation.updateUserAttitudeEvaluation');
 });
 
 require __DIR__ . '/auth.php';

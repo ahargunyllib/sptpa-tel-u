@@ -108,3 +108,29 @@ export type Tag = {
 	created_at: string;
 	updated_at: string;
 };
+
+export type UserAttitudeEvaluation = {
+	id: string;
+	user_id: string;
+	communication: number;
+	teamwork: number;
+	collaboration: number;
+	solidarity: number;
+	work_ethic: number;
+	technology_usage: number;
+	work_smart: number;
+	initiative: number;
+	role_model: number;
+	responsibility: number;
+	professional_ethic: number;
+	image_maintenance: number;
+	discipline: number;
+	evidance: string | null;
+};
+
+export type UserFeedback = {
+	id: string;
+	user_id: string;
+	kaur_feedback: string;
+	wadek_feedback: string;
+};
