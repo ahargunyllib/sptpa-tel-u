@@ -6,6 +6,7 @@ use App\Models\File;
 use App\Models\Folder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class FileController extends Controller
@@ -105,6 +106,29 @@ class FileController extends Controller
      */
     public function destroy(File $file)
     {
-        //
+        try {
+            // Find the file
+            $file = File::where('id', $file->id)
+                ->where('user_id', Auth::id())
+                ->first();
+
+            if (!$file) {
+                return redirect()->back()->with('error', 'File not found');
+            }
+
+            if (Storage::disk('public')->exists($file->path)) {
+                Storage::disk('public')->delete($file->path);
+            }
+
+            if ($file->thumbnail && Storage::disk('public')->exists($file->thumbnail)) {
+                Storage::disk('public')->delete($file->thumbnail);
+            }
+
+            $file->delete();
+
+            return redirect()->back()->with('success', 'File deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'File gagal ditambahkan.');
+        }
     }
 }

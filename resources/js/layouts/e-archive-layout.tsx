@@ -126,9 +126,17 @@ export default function EArchiveLayout({
                     Tidak ada data
                 </div>
             ) : layout === "grid" ? (
-                <EArchiveBlockContainer folders={subfolders} files={files} />
+                <EArchiveBlockContainer
+                    folders={subfolders}
+                    files={files}
+                    folderType={currentFolder.type}
+                />
             ) : (
-                <EArchiveListContainer folders={subfolders} files={files} />
+                <EArchiveListContainer
+                    folders={subfolders}
+                    files={files}
+                    folderType={currentFolder.type}
+                />
             )}
             <FileUploadModal
                 onOpenChange={setIsModalOpen}

@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function (): void {
 
     Route::post('/dashboard/e-archive', [FileController::class, 'store'])
         ->name('files.store');
+    Route::delete('/dashboard/e-archive/{file}', [FileController::class, 'destroy'])->name('files.destroy');
 });
 
 Route::middleware(['auth', 'role:sdm'])->group(function () {
