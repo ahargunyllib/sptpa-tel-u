@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_feedback', function (Blueprint $table) {
+        Schema::create('user_feedbacks', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('kaur_feedback', 255)->default('-');
