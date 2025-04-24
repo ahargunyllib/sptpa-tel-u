@@ -9,7 +9,7 @@ import {
 	TabsTrigger,
 } from "../../components/ui/tabs";
 import DashboardLayout from "../../layouts/dashboard-layout";
-import type { User, WorkTarget } from "../../types";
+import type { User, UserAttitudeEvaluation, WorkTarget } from "../../types";
 
 type Props = {
 	role: string;
@@ -22,6 +22,10 @@ type Props = {
 		average_third_quarter_score: number;
 		average_fourth_quarter_score: number;
 	})[];
+	userAttitudeEvaluations: (User &
+		UserAttitudeEvaluation & {
+			note: string;
+		})[];
 };
 
 export default function WorkTargetsManagementIndex({
@@ -30,6 +34,7 @@ export default function WorkTargetsManagementIndex({
 	users,
 	workTargets,
 	staffs,
+	userAttitudeEvaluations,
 }: Props) {
 	return (
 		<DashboardLayout>
@@ -52,7 +57,10 @@ export default function WorkTargetsManagementIndex({
 					<PerformanceAssessmentsCard role={role} staffs={staffs} />
 				</TabsContent>
 				<TabsContent value="attitude">
-					<StaffsCard role={role} />
+					<StaffsCard
+						role={role}
+						userAttitudeEvaluations={userAttitudeEvaluations}
+					/>
 				</TabsContent>
 			</Tabs>
 		</DashboardLayout>
