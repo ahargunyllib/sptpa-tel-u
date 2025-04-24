@@ -16,6 +16,10 @@ export type PageProps<
 	auth: {
 		user: User;
 	};
+	flash: {
+		success?: string;
+		error?: string;
+	};
 };
 
 export interface PaginationMeta {
@@ -95,4 +99,12 @@ export type WorkTargetValue = {
 	second_quarter_score: number;
 	third_quarter_score: number;
 	fourth_quarter_score: number;
+};
+
+export type Tag = {
+	id: string;
+	name: string;
+	slug: string;
+	created_at: string;
+	updated_at: string;
 };

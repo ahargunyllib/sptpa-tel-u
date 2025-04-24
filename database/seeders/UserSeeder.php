@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -33,6 +34,13 @@ class UserSeeder extends Seeder
                     'password' => Hash::make('password123')
                 ]);
                 // $this->log(description: "User {$user->name} berhasil dibuat oleh seeder.");
+
+                if ($role === 'sdm') {
+                    Tag::create([
+                        'name' => "Tag $i",
+                        // 'slug' => "tag-$i-" . uniqid(),
+                    ]);
+                }
             }
         }
     }

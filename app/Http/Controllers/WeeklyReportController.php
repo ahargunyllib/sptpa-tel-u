@@ -12,7 +12,19 @@ class WeeklyReportController extends Controller
      */
     public function index()
     {
-        //
+        $search = request('search');
+        $weeklyReports = WeeklyReport::with('tags', 'user')
+            ->when($search, function ($query, $search) {
+                $query->where('title', 'like', "%{$search}%");
+            })
+            ->paginate(10);
+
+        return inertia('WeeklyReport/Index', [
+            'weeklyReports' => $weeklyReports,
+            'filters' => [
+                'search' => $search,
+            ],
+        ]);
     }
 
     /**
