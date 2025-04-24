@@ -39,6 +39,10 @@ Route::middleware(['auth'])->group(function (): void {
     // Route to show a specific folder by ID
     Route::get('/dashboard/e-archive/{folderId}', [FolderController::class, 'show'])
         ->name('folders.show');
+
+    Route::post('/dashboard/e-archive', [FileController::class, 'store'])
+        ->name('files.store');
+    Route::delete('/dashboard/e-archive/{file}', [FileController::class, 'destroy'])->name('files.destroy');
 });
 
 Route::middleware(['auth', 'role:sdm'])->group(function () {
