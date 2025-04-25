@@ -8,6 +8,7 @@ use App\Http\Controllers\UserAttitudeEvaluationController;
 use App\Http\Controllers\WorkTargetController;
 use App\Http\Controllers\WorkTargetValueController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\WeeklyReportController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,13 +38,14 @@ Route::middleware(['auth'])->group(function (): void {
     Route::get('/dashboard/e-archive', [FolderController::class, 'index'])
         ->name('folders.index');
 
-    // Route to show a specific folder by ID
     Route::get('/dashboard/e-archive/{folderId}', [FolderController::class, 'show'])
         ->name('folders.show');
 
     Route::post('/dashboard/e-archive', [FileController::class, 'store'])
         ->name('files.store');
     Route::delete('/dashboard/e-archive/{file}', [FileController::class, 'destroy'])->name('files.destroy');
+    Route::get('/dashboard/weekly-report', [WeeklyReportController::class, 'index'])->name('weekly-report.index');
+    Route::post('/dashboard/weekly-report', [WeeklyReportController::class, 'store'])->name('weekly-report.store');
 });
 
 Route::middleware(['auth', 'role:sdm'])->group(function () {
