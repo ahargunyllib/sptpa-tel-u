@@ -23,14 +23,8 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { X } from "lucide-react";
+import type { Tag } from "@/types";
 
-// Define Tag type
-interface Tag {
-    id: string;
-    name: string;
-}
-
-// Define the form schema with Zod
 const formSchema = z.object({
     report: z.string().min(1, "Laporan harus diisi"),
     tags: z.array(z.string()).min(1, "Minimal satu tag harus ditambahkan"),
@@ -43,11 +37,13 @@ export function CreateReportModal({
     onOpenChange,
     tags,
     onSubmit,
+    initialValues,
 }: {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     tags: Tag[];
     onSubmit: (values: FormValues) => void;
+    initialValues?: FormValues;
 }) {
     const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
 
@@ -84,26 +80,39 @@ export function CreateReportModal({
     };
 
     useEffect(() => {
-        if (!open) {
-            form.reset({
-                report: "",
-                tags: [],
-            });
-            setSelectedTags([]);
+        if (open) {
+            if (initialValues) {
+                form.reset(initialValues);
+                setSelectedTags(
+                    tags.filter((tag) => initialValues.tags.includes(tag.id))
+                );
+            } else {
+                form.reset({
+                    report: "",
+                    tags: [],
+                });
+                setSelectedTags([]);
+            }
         }
-    }, [open, form.reset]);
+        console.log("tes infinite")
+    }, [open, initialValues, tags, form]);
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
                     <DialogTitle className="text-xl font-bold">
-                        Tambah Weekly report
+                        {initialValues
+                            ? "Edit Weekly Report"
+                            : "Tambah Weekly Report"}
                     </DialogTitle>
                     <DialogDescription>
-                        Isi semua kolom untuk menambahkan report
+                        {initialValues
+                            ? "Edit laporan dan tag yang ingin diubah"
+                            : "Isi semua kolom untuk menambahkan report"}
                     </DialogDescription>
                 </DialogHeader>
+
 
                 <Form {...form}>
                     <form

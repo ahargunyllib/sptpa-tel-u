@@ -31,6 +31,8 @@ export default function WeeklyReportIndex({
         null
     );
     const user = usePage<PageProps>().props.auth.user;
+    const [isEditReportModalOpen, setIsEditReportModalOpen] = useState(false);
+    const [reportToEdit, setReportToEdit] = useState<WeeklyReport | null>(null);
 
     return (
         <DashboardLayout>
@@ -61,6 +63,10 @@ export default function WeeklyReportIndex({
                                 weeklyReport={weeklyReport}
                                 user={user}
                                 onDelete={() => setReportToDelete(weeklyReport)}
+                                onEdit={() => {
+                                    setReportToEdit(weeklyReport);
+                                    setIsEditReportModalOpen(true);
+                                }}
                             />
                         ))}
                     </div>
@@ -69,14 +75,41 @@ export default function WeeklyReportIndex({
                 <Calendar className="bg-white rounded-lg p-6" />
             </div>
             <CreateReportModal
-                open={isCreateReportModalOpen}
-                onOpenChange={setIsCreateReportModalOpen}
+                open={isCreateReportModalOpen || isEditReportModalOpen}
+                onOpenChange={(open) => {
+                    setIsCreateReportModalOpen(open);
+                    if (!open) setReportToEdit(null);
+                }}
                 tags={weeklyReports.data[0].tags}
+                initialValues={
+                    reportToEdit
+                        ? {
+                              report: reportToEdit.content,
+                              tags: reportToEdit.tags.map((t) => t.id),
+                          }
+                        : undefined
+                }
                 onSubmit={(values) => {
-                    router.post(route("weekly-report.store"), values);
-                    setIsCreateReportModalOpen(false);
+                    if (reportToEdit) {
+                        router.put(
+                            route("weekly-report.update", reportToEdit.id),
+                            values,
+                            {
+                                onSuccess: () => {
+                                    setIsEditReportModalOpen(false);
+                                    setReportToEdit(null);
+                                },
+                                preserveState: true,
+                            }
+                        );
+                    } else {
+                        router.post(route("weekly-report.store"), values, {
+                            onSuccess: () => setIsCreateReportModalOpen(false),
+                        });
+                    }
                 }}
             />
+
             <AlertDialog
                 open={!!reportToDelete}
                 onOpenChange={() => setReportToDelete(null)}
@@ -92,7 +125,6 @@ export default function WeeklyReportIndex({
                         <AlertDialogAction
                             className="bg-danger-80"
                             onClick={() => {
-                                console.log("kontol")
                                 if (reportToDelete) {
                                     router.delete(
                                         route(

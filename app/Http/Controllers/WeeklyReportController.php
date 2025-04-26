@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreWeeklyReportRequest;
+use App\Http\Requests\UpdateWeeklyReportRequest;
+use App\Models\Tag;
 use App\Models\TagWeeklyReport;
 use App\Models\WeeklyReport;
 use Illuminate\Http\Request;
@@ -30,7 +32,7 @@ class WeeklyReportController extends Controller
             });
 
         $weeklyReports = $weeklyReportsQuery->paginate($perPage);
-
+        $tags = Tag::all();
         $paginationMeta = [
             'current_page' => $weeklyReports->currentPage(),
             'last_page' => $weeklyReports->lastPage(),
@@ -45,6 +47,7 @@ class WeeklyReportController extends Controller
                 'data' => $weeklyReports->items(),
                 'meta' => $paginationMeta,
             ],
+            'tags' => $tags,
             'filters' => [
                 'search' => $search,
                 'per_page' => $perPage,
@@ -110,9 +113,30 @@ class WeeklyReportController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, WeeklyReport $weeklyReport)
+    public function update(UpdateWeeklyReportRequest $request, WeeklyReport $weeklyReport)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $weeklyReport->update([
+                'content' => $request->report,
+            ]);
+
+            TagWeeklyReport::where('weekly_report_id', $weeklyReport->id)->delete();
+
+            foreach ($request->tags as $tagId) {
+                TagWeeklyReport::create([
+                    'tag_id' => $tagId,
+                    'weekly_report_id' => $weeklyReport->id,
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Weekly report updated successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to update weekly report: ' . $e->getMessage());
+        }
     }
 
     /**
