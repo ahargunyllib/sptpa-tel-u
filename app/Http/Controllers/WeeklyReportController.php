@@ -120,6 +120,18 @@ class WeeklyReportController extends Controller
      */
     public function destroy(WeeklyReport $weeklyReport)
     {
-        //
+        DB::beginTransaction();
+        try {
+            TagWeeklyReport::where('weekly_report_id', $weeklyReport->id)->delete();
+
+            $weeklyReport->delete();
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Weekly report deleted successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to delete weekly report: ' . $e->getMessage());
+        }
     }
 }

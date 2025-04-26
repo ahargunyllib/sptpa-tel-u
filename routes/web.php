@@ -46,6 +46,7 @@ Route::middleware(['auth'])->group(function (): void {
     Route::delete('/dashboard/e-archive/{file}', [FileController::class, 'destroy'])->name('files.destroy');
     Route::get('/dashboard/weekly-report', [WeeklyReportController::class, 'index'])->name('weekly-report.index');
     Route::post('/dashboard/weekly-report', [WeeklyReportController::class, 'store'])->name('weekly-report.store');
+    Route::delete('/dashboard/weekly-report/{weeklyReport}', [WeeklyReportController::class, 'destroy'])->name('weekly-report.destroy');
 });
 
 Route::middleware(['auth', 'role:sdm'])->group(function () {
