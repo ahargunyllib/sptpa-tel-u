@@ -19,16 +19,23 @@ class WeeklyReportController extends Controller
     public function index()
     {
         $search = request('search');
-        $perPage = request('per_page', 10);
+        $perPage = request('per_page', 9999);
         $startDate = request('start_date');
         $endDate = request('end_date');
+        $tagIds = request('tag_ids'); 
 
         $weeklyReportsQuery = WeeklyReport::with('tags', 'user')
             ->when($search, function ($query, $search) {
-                $query->where('title', 'like', "%{$search}%");
+                $query->where('content', 'like', "%{$search}%");
             })
             ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
                 $query->whereBetween('created_at', [$startDate, $endDate]);
+            })
+            ->when($tagIds, function ($query) use ($tagIds) {
+                $tagIds = is_array($tagIds) ? $tagIds : explode(',', $tagIds);
+                $query->whereHas('tags', function ($q) use ($tagIds) {
+                    $q->whereIn('tags.id', $tagIds);
+                });
             });
 
         $weeklyReports = $weeklyReportsQuery->paginate($perPage);
@@ -38,8 +45,6 @@ class WeeklyReportController extends Controller
             'last_page' => $weeklyReports->lastPage(),
             'per_page' => $weeklyReports->perPage(),
             'total' => $weeklyReports->total(),
-            // 'from' => $weeklyReports->firstItem(),
-            // 'to' => $weeklyReports->lastItem(),
         ];
 
         return Inertia::render('weekly-report/index', [
@@ -53,9 +58,11 @@ class WeeklyReportController extends Controller
                 'per_page' => $perPage,
                 'start_date' => $startDate,
                 'end_date' => $endDate,
+                'tag_ids' => $tagIds ? (is_array($tagIds) ? $tagIds : explode(',', $tagIds)) : [],
             ],
         ]);
     }
+
 
 
     /**
