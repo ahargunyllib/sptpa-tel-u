@@ -43,7 +43,7 @@ class WorkTargetController extends Controller
         }
 
         // Get all work targets for the given role but don't filter out work targets with no values
-        // $workTargets = WorkTarget::with(['workTargetValues' => function ($query) use ($role) {
+        // $rawWorkTargets = WorkTarget::with(['workTargetValues' => function ($query) use ($role) {
         //     // This only filters the loaded relationships, not the main query
         //     $query->whereHas('user', function ($q) use ($role) {
         //         $q->where('role', $role);
@@ -52,15 +52,33 @@ class WorkTargetController extends Controller
         //     ->orderByDesc('created_at')
         //     ->get();
 
-        $rawWorkTargets = DB::table('work_target_values')
-            ->join('work_targets', 'work_targets.id', '=', 'work_target_values.work_target_id')
-            ->join('users', 'users.id', '=', 'work_target_values.user_id')
-            ->where('users.role', $role)
+        // $rawWorkTargets = DB::table('work_target_values')
+        //     ->join('work_targets', 'work_targets.id', '=', 'work_target_values.work_target_id')
+        //     ->join('users', 'users.id', '=', 'work_target_values.user_id')
+        //     ->where('users.role', $role)
+        //     ->select(
+        //         'work_targets.*',
+        //         'users.id as user_id',
+        //         'users.name as user_name',
+        //         'users.nip as nip',
+        //     )
+        //     ->get();
+
+        $rawWorkTargets = DB::table('work_targets')
+            ->leftJoin('work_target_values', 'work_target_values.work_target_id', '=', 'work_targets.id')
+            ->leftJoin('users', function ($join) use ($role) {
+                $join->on('users.id', '=', 'work_target_values.user_id')
+                    ->where(function ($q) use ($role) {
+                        $q->whereNull('users.role')
+                            ->orWhere('users.role', '=', $role);
+                    });
+            })
             ->select(
                 'work_targets.*',
                 'users.id as user_id',
                 'users.name as user_name',
                 'users.nip as nip',
+                'users.role as user_role',
             )
             ->get();
 
@@ -81,6 +99,10 @@ class WorkTargetController extends Controller
                     'fourth_quarter_target' => $rowWorkTarget->fourth_quarter_target,
                     'staffs' => [],
                 ];
+            }
+
+            if ($rowWorkTarget->user_id === null) {
+                continue;
             }
 
             $workTargets[$id]['staffs'][] = [
@@ -184,6 +206,8 @@ class WorkTargetController extends Controller
 
             return back();
         } catch (\Exception $e) {
+            dd($e);
+
             // Rollback the transaction if an error occurs
             DB::rollBack();
 
@@ -352,7 +376,7 @@ class WorkTargetController extends Controller
             )
             ->first();
 
-        if (!$userAttitudeEvaluation){
+        if (!$userAttitudeEvaluation) {
             $userAttitudeEvaluation = [
                 'communication' => 0,
                 'teamwork' => 0,
@@ -379,7 +403,7 @@ class WorkTargetController extends Controller
             )
             ->first();
 
-        if (!$userFeedback){
+        if (!$userFeedback) {
             $userFeedback = [
                 'kaur_feedback' => '-',
                 'wadek_feedback' => '-'
