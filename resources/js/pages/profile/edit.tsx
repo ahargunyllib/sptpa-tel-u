@@ -35,7 +35,7 @@ export default function Edit({
 }: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [processing, setProcessing] = useState(false);
-	const user = usePage().props.auth.user;
+	const user = usePage<PageProps>().props.auth.user;
 
 	const defaultValues: FormValues = {
 		name: user.name,

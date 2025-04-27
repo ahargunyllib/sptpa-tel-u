@@ -50,6 +50,7 @@ import {
 	TabsTrigger,
 } from "../../components/ui/tabs";
 import type {
+	PageProps,
 	User,
 	UserAttitudeEvaluation,
 	UserFeedback,
@@ -66,7 +67,7 @@ export default function MyWorkTargets({
 	userAttitudeEvaluation: UserAttitudeEvaluation;
 	userFeedback: UserFeedback;
 }) {
-	const { props } = usePage();
+	const { props } = usePage<PageProps>();
 	const user = props.auth.user as User;
 
 	const userAttitudeEvaluationSchema = z.object({

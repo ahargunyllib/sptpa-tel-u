@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
-import type { User } from "@/types";
+import type { PageProps, User } from "@/types";
 
 import {
 	type NavSection,
@@ -18,7 +18,7 @@ import { ClipboardList, Folder, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function AppSidebar() {
-	const user = usePage().props.auth.user as User;
+	const user = usePage<PageProps>().props.auth.user as User;
 	const [isOpen, setIsOpen] = useState(true);
 	const [activeMenu, setActiveMenu] = useState<"penilaian" | "e-archive">(
 		"penilaian",
