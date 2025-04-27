@@ -44,7 +44,7 @@ export const tpaPenilaianSections: NavSection[] = [
 			{
 				title: "Weekly Report",
 				icon: MessageSquareText,
-				href: "/admin/user",
+				href: "/dashboard/weekly-report",
 			},
 		],
 	},
