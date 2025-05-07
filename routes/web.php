@@ -44,19 +44,19 @@ Route::middleware(['auth'])->group(function (): void {
     Route::post('/dashboard/e-archive', [FileController::class, 'store'])
         ->name('files.store');
     Route::delete('/dashboard/e-archive/{file}', [FileController::class, 'destroy'])->name('files.destroy');
-    Route::get('/dashboard/weekly-report', [WeeklyReportController::class, 'index'])->name('weekly-report.index');
-    Route::post('/dashboard/weekly-report', [WeeklyReportController::class, 'store'])->name('weekly-report.store');
-    Route::put('/dashboard/weekly-report/{weeklyReport}', [WeeklyReportController::class, 'update'])->name('weekly-report.update');
-    Route::delete('/dashboard/weekly-report/{weeklyReport}', [WeeklyReportController::class, 'destroy'])->name('weekly-report.destroy');
+    // Route::get('/dashboard/weekly-report', [WeeklyReportController::class, 'index'])->name('weekly-report.index');
+    // Route::post('/dashboard/weekly-report', [WeeklyReportController::class, 'store'])->name('weekly-report.store');
+    // Route::put('/dashboard/weekly-report/{weeklyReport}', [WeeklyReportController::class, 'update'])->name('weekly-report.update');
+    // Route::delete('/dashboard/weekly-report/{weeklyReport}', [WeeklyReportController::class, 'destroy'])->name('weekly-report.destroy');
 
 });
 
 Route::middleware(['auth', 'role:sdm'])->group(function () {
     Route::get('/dashboard/log', [LogController::class, 'index']);
-    Route::get('/dashboard/tag', [TagController::class, 'index'])->name('tags.index');
-    Route::post('/dashboard/tags', [TagController::class, 'store'])->name('tags.store');
-    Route::patch('/dashboard/tags/{tag}', [TagController::class, 'update'])->name('tags.update');
-    Route::delete('/dashboard/tags/{tag}', [TagController::class, 'destroy'])->name('tags.destroy');
+    // Route::get('/dashboard/tag', [TagController::class, 'index'])->name('tags.index');
+    // Route::post('/dashboard/tags', [TagController::class, 'store'])->name('tags.store');
+    // Route::patch('/dashboard/tags/{tag}', [TagController::class, 'update'])->name('tags.update');
+    // Route::delete('/dashboard/tags/{tag}', [TagController::class, 'destroy'])->name('tags.destroy');
 });
 
 Route::middleware(['auth', 'role:wadek'])->group(function () {
