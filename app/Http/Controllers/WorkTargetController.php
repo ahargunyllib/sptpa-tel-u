@@ -169,6 +169,21 @@ class WorkTargetController extends Controller
         ]);
     }
 
+    public function indexMe(Request $request)
+    {
+        return Inertia::render('my-work-targets/index');
+    }
+
+    public function indexKaur(Request $request)
+    {
+        return Inertia::render('work-targets-management/index');
+    }
+
+    public function indexStaf(Request $request)
+    {
+        return Inertia::render('work-targets-management/index');
+    }
+
     /**
      * Show the form for creating a new resource.
      */

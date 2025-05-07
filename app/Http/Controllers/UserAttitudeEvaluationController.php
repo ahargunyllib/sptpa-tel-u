@@ -6,6 +6,7 @@ use App\Models\UserAttitudeEvaluation;
 use App\Models\UserFeedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class UserAttitudeEvaluationController extends Controller
 {
@@ -15,6 +16,21 @@ class UserAttitudeEvaluationController extends Controller
     public function index()
     {
         //
+    }
+
+    public function indexMe(Request $request)
+    {
+        return Inertia::render('my-user-attitude-evaluation/index');
+    }
+
+    public function indexKaur(Request $request)
+    {
+        return Inertia::render('user-attitude-evaluation-management/index');
+    }
+
+    public function indexStaf(Request $request)
+    {
+        return Inertia::render('user-attitude-evaluation-management/index');
     }
 
     /**

@@ -62,26 +62,26 @@ Route::middleware(['auth', 'role:sdm'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:wadek'])->group(function () {
-    Route::get('/dashboard/work-target/kaur', [WorkTargetController::class, 'index'])->name('dashboard.work-target.kaur');
+    Route::get('/dashboard/work-target/kaur', [WorkTargetController::class, 'indexKaur'])->name('dashboard.work-target.kaur');
 
-    Route::get('/dashboard/user-attitude-evaluation/kaur', [UserAttitudeEvaluationController::class, 'index'])->name('dashboard.user-attitude-evaluation.kaur');
+    Route::get('/dashboard/user-attitude-evaluation/kaur', [UserAttitudeEvaluationController::class, 'indexKaur'])->name('dashboard.user-attitude-evaluation.kaur');
 
     Route::get(
         '/dashboard/work-report/kaur',
-        [WorkTargetController::class, 'index'] // TODO:
+        [WorkTargetController::class, 'indexKaur'] // TODO:
     )->name('dashboard.work-report.kaur');
 
     // Route::get('/dashboard/performance/kaur/{id}', [WorkTargetController::class, 'show'])->name('dashboard.performance.kaur.show');
 });
 
 Route::middleware(['auth', 'role:kaur,tpa'])->group(function () {
-    Route::get('/dashboard/work-target/me', [WorkTargetController::class, 'index'])->name('dashboard.work-target.me');
+    Route::get('/dashboard/work-target/me', [WorkTargetController::class, 'indexMe'])->name('dashboard.work-target.me');
 
-    Route::get('/dashboard/user-attitude-evaluation/me', [UserAttitudeEvaluationController::class, 'index'])->name('dashboard.user-attitude-evaluation.me');
+    Route::get('/dashboard/user-attitude-evaluation/me', [UserAttitudeEvaluationController::class, 'indexMe'])->name('dashboard.user-attitude-evaluation.me');
 
     Route::get(
         '/dashboard/work-report/me',
-        [WorkTargetController::class, 'index'] // TODO:
+        [WorkTargetController::class, 'indexMe'] // TODO:
     )->name('dashboard.work-report.me');
 
     // Route::get('/dashboard/performance/me', [WorkTargetController::class, 'myWorkTargets'])->name('dashboard.performance.me');
@@ -91,15 +91,15 @@ Route::middleware(['auth', 'role:kaur,tpa'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:kaur,wadek'])->group(function () {
-    Route::get('/dashboard/work-target/staf', [WorkTargetController::class, 'index'])->name('dashboard.work-target.staf');
+    Route::get('/dashboard/work-target/staf', [WorkTargetController::class, 'indexStaf'])->name('dashboard.work-target.staf');
 
-    Route::get('/dashboard/user-attitude-evaluation/staf', [UserAttitudeEvaluationController::class, 'index'])->name('dashboard.user-attitude-evaluation.staf');
+    Route::get('/dashboard/user-attitude-evaluation/staf', [UserAttitudeEvaluationController::class, 'indexStaf'])->name('dashboard.user-attitude-evaluation.staf');
 
     Route::get(
         '/dashboard/work-report/staf',
-        [WorkTargetController::class, 'index'] // TODO:
+        [WorkTargetController::class, 'indexStaf'] // TODO:
     )->name('dashboard.work-report.staf');
-    
+
     // Route::get('/dashboard/performance/tpa', [WorkTargetController::class, 'index'])->name('dashboard.performance.tpa');
 
     // Route::get('/dashboard/performance/tpa/{id}', [WorkTargetController::class, 'show'])->name('dashboard.performance.tpa.show');
