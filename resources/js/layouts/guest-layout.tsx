@@ -1,4 +1,3 @@
-import { Link } from "@inertiajs/react";
 import type { PropsWithChildren } from "react";
 
 export default function Guest({ children }: PropsWithChildren) {
