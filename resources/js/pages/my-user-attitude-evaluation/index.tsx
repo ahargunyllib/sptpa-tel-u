@@ -1,12 +1,12 @@
 import DashboardLayout from "@/layouts/dashboard-layout";
 import { Head } from "@inertiajs/react";
 
-export default function WorkTargetsManagement() {
+export default function MyUserAttitudeEvaluation() {
 	return (
 		<DashboardLayout>
-			<Head title="Target Kinerja Staf/Kaur" />
+			<Head title="Sikap Kerja" />
 
-			<h1>Work Targets Management</h1>
+			<h1>My User Attitude Evaluation</h1>
 		</DashboardLayout>
 	);
 }
