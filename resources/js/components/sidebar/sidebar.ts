@@ -26,7 +26,7 @@ export const tpaPenilaianSections: NavSection[] = [
 			{
 				title: "Sikap Kerja",
 				icon: FileText,
-				href: "/dashboard/attitude/me",
+				href: "/dashboard/user-attitude-evaluation/me",
 			},
 			{
 				title: "Laporan Kinerja",
@@ -59,7 +59,7 @@ export const kaurPenilaianSections: NavSection[] = [
 			{
 				title: "Sikap Kerja",
 				icon: FileText,
-				href: "/dashboard/attitude/me",
+				href: "/dashboard/user-attitude-evaluation/me",
 			},
 			{
 				title: "Laporan Kinerja",
@@ -79,7 +79,7 @@ export const kaurPenilaianSections: NavSection[] = [
 			{
 				title: "Sikap Kerja Staf",
 				icon: FileText,
-				href: "/dashboard/attitude/staf",
+				href: "/dashboard/user-attitude-evaluation/staf",
 			},
 			{
 				title: "Laporan Kinerja Staf",
@@ -130,7 +130,7 @@ export const wadekPenilaianSections: NavSection[] = [
 			{
 				title: "Sikap Kerja Kaur",
 				icon: FileText,
-				href: "/dashboard/attitude/kaur",
+				href: "/dashboard/user-attitude-evaluation/kaur",
 			},
 			{
 				title: "Laporan Kinerja Kaur",
@@ -150,7 +150,7 @@ export const wadekPenilaianSections: NavSection[] = [
 			{
 				title: "Sikap Kerja Staf",
 				icon: FileText,
-				href: "/dashboard/attitude/staf",
+				href: "/dashboard/user-attitude-evaluation/staf",
 			},
 			{
 				title: "Laporan Kinerja Staf",
