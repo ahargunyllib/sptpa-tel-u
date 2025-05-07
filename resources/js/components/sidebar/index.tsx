@@ -17,7 +17,7 @@ import {
 } from "@/components/sidebar/sidebar";
 import { useUser } from "@/hooks/use-user";
 import { Link } from "@inertiajs/react";
-import { ClipboardList, Folder, Menu, X } from "lucide-react";
+import { ClipboardList, Folder, LayoutDashboard, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function AppSidebar() {
@@ -165,7 +165,28 @@ export function AppSidebar() {
 					</div>
 
 					{/* Navigation */}
-					<nav className="flex-1 px-4 space-y-8">
+					<nav className="flex-1 px-4 space-y-8 overflow-y-scroll">
+						<Link
+							href="/dashboard"
+							className={cn(
+								"flex items-center gap-6 px-6 py-4 rounded-lg text-body-lg xl:text-h6 transition-colors",
+								pathName === "/dashboard" ? "bg-primary-60" : "bg",
+							)}
+						>
+							<LayoutDashboard
+								className={`${
+									pathName === "/dashboard" ? "text-white" : "text-dark-60"
+								} w-5 h-5`}
+							/>
+							<span
+								className={`${
+									pathName === "/dashboard" ? "text-white" : "text-dark-60"
+								}`}
+							>
+								Menu Utama
+							</span>
+						</Link>
+
 						{menus.map((section) => (
 							<div key={section.title} className="space-y-2">
 								<h2 className="text-xs tracking-wider text-dark-100 font-semibold px-2">
