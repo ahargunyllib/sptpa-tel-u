@@ -1,12 +1,4 @@
-import {
-	BookOpenText,
-	FileText,
-	History,
-	LogOut,
-	MessageSquareText,
-	UserIcon,
-	Users,
-} from "lucide-react";
+import { BookOpenText, FileText, History, Users } from "lucide-react";
 
 import type { ElementType } from "react";
 
@@ -24,27 +16,22 @@ export interface NavSection {
 
 export const tpaPenilaianSections: NavSection[] = [
 	{
-		title: "PENILAIAN KINERJA",
+		title: "KINERJA ANDA",
 		items: [
 			{
-				title: "Target kinerja pegawai",
+				title: "Target Kinerja",
 				icon: FileText,
-				href: "/target-kinerja",
-			},
-		],
-	},
-	{
-		title: "MANAGEMEN DATA & LAPORAN",
-		items: [
-			{
-				title: "Data Atasan & Pegawai",
-				icon: Users,
-				href: "/admin/user",
+				href: "/dashboard/work-target/me",
 			},
 			{
-				title: "Weekly Report",
-				icon: MessageSquareText,
-				href: "/dashboard/weekly-report",
+				title: "Sikap Kerja",
+				icon: FileText,
+				href: "/dashboard/attitude/me",
+			},
+			{
+				title: "Laporan Kinerja",
+				icon: FileText,
+				href: "/dashboard/work-report/me",
 			},
 		],
 	},
@@ -55,21 +42,6 @@ export const tpaPenilaianSections: NavSection[] = [
 				title: "Panduan Pengguna",
 				icon: BookOpenText,
 				href: "/admin/user",
-			},
-		],
-	},
-	{
-		title: "UMUM",
-		items: [
-			{
-				title: "Akun",
-				icon: UserIcon,
-				href: "/profile",
-			},
-			{
-				title: "Logout",
-				icon: LogOut,
-				href: "/logout",
 			},
 		],
 	},
@@ -77,32 +49,42 @@ export const tpaPenilaianSections: NavSection[] = [
 
 export const kaurPenilaianSections: NavSection[] = [
 	{
-		title: "PENILAIAN KINERJA",
+		title: "KINERJA ANDA",
 		items: [
 			{
-				title: "Target kinerja pegawai",
+				title: "Target Kinerja",
 				icon: FileText,
-				href: "/dashboard/performance/me",
+				href: "/dashboard/work-target/me",
 			},
 			{
-				title: "Kinerja TPA",
+				title: "Sikap Kerja",
 				icon: FileText,
-				href: "/dashboard/performance/tpa",
+				href: "/dashboard/attitude/me",
+			},
+			{
+				title: "Laporan Kinerja",
+				icon: FileText,
+				href: "/dashboard/work-report/me",
 			},
 		],
 	},
 	{
-		title: "MANAGEMEN DATA & LAPORAN",
+		title: "KINERJA STAF",
 		items: [
 			{
-				title: "Data Atasan & Pegawai",
-				icon: Users,
-				href: "/admin/user",
+				title: "Target Kinerja Staf",
+				icon: FileText,
+				href: "/dashboard/work-target/staf",
 			},
 			{
-				title: "Weekly Report",
-				icon: MessageSquareText,
-				href: "/admin/user",
+				title: "Sikap Kerja Staf",
+				icon: FileText,
+				href: "/dashboard/attitude/staf",
+			},
+			{
+				title: "Laporan Kinerja Staf",
+				icon: FileText,
+				href: "/dashboard/work-report/staf",
 			},
 		],
 	},
@@ -116,34 +98,9 @@ export const kaurPenilaianSections: NavSection[] = [
 			},
 		],
 	},
-	{
-		title: "UMUM",
-		items: [
-			{
-				title: "Akun",
-				icon: UserIcon,
-				href: "/profile",
-			},
-			{
-				title: "Logout",
-				icon: LogOut,
-				href: "/logout",
-			},
-		],
-	},
 ];
 
 export const sdmPenilaianSections: NavSection[] = [
-	{
-		title: "PENILAIAN KINERJA",
-		items: [
-			{
-				title: "Target kinerja pegawai",
-				icon: FileText,
-				href: "/target-kinerja",
-			},
-		],
-	},
 	{
 		title: "MANAGEMEN DATA & LAPORAN",
 		items: [
@@ -153,39 +110,9 @@ export const sdmPenilaianSections: NavSection[] = [
 				href: "/dashboard/user",
 			},
 			{
-				title: "Weekly Report",
-				icon: MessageSquareText,
-				href: "/dashboard/tag",
-			},
-			{
 				title: "Website Log",
 				icon: History,
 				href: "/dashboard/log",
-			},
-		],
-	},
-	{
-		title: "BANTUAN",
-		items: [
-			{
-				title: "Panduan Pengguna",
-				icon: BookOpenText,
-				href: "/admin/user",
-			},
-		],
-	},
-	{
-		title: "UMUM",
-		items: [
-			{
-				title: "Akun",
-				icon: UserIcon,
-				href: "/profile",
-			},
-			{
-				title: "Logout",
-				icon: LogOut,
-				href: "/logout",
 			},
 		],
 	},
@@ -193,32 +120,42 @@ export const sdmPenilaianSections: NavSection[] = [
 
 export const wadekPenilaianSections: NavSection[] = [
 	{
-		title: "PENILAIAN KINERJA",
+		title: "KINERJA KAUR",
 		items: [
 			{
-				title: "Kinerja TPA",
+				title: "Target Kinerja Kaur",
 				icon: FileText,
-				href: "/dashboard/performance/tpa",
+				href: "/dashboard/work-target/kaur",
 			},
 			{
-				title: "Kinerja Kaur",
+				title: "Sikap Kerja Kaur",
 				icon: FileText,
-				href: "/dashboard/performance/kaur",
+				href: "/dashboard/attitude/kaur",
+			},
+			{
+				title: "Laporan Kinerja Kaur",
+				icon: FileText,
+				href: "/dashboard/work-report/kaur",
 			},
 		],
 	},
 	{
-		title: "MANAGEMEN DATA & LAPORAN",
+		title: "KINERJA STAF",
 		items: [
 			{
-				title: "Data Atasan & Pegawai",
-				icon: Users,
-				href: "/admin/user",
+				title: "Target Kinerja Staf",
+				icon: FileText,
+				href: "/dashboard/work-target/staf",
 			},
 			{
-				title: "Weekly Report",
-				icon: MessageSquareText,
-				href: "/admin/user",
+				title: "Sikap Kerja Staf",
+				icon: FileText,
+				href: "/dashboard/attitude/staf",
+			},
+			{
+				title: "Laporan Kinerja Staf",
+				icon: FileText,
+				href: "/dashboard/work-report/staf",
 			},
 		],
 	},
@@ -229,34 +166,29 @@ export const wadekPenilaianSections: NavSection[] = [
 				title: "Panduan Pengguna",
 				icon: BookOpenText,
 				href: "/admin/user",
-			},
-		],
-	},
-	{
-		title: "UMUM",
-		items: [
-			{
-				title: "Akun",
-				icon: UserIcon,
-				href: "/profile",
-			},
-			{
-				title: "Logout",
-				icon: LogOut,
-				href: "/logout",
 			},
 		],
 	},
 ];
 
-export const arsipSections: NavSection[] = [
+export const wadekArsipSections: NavSection[] = [
 	{
-		title: "ARSIP DOKUMEN",
+		title: "DOKUMEN",
 		items: [
 			{
-				title: "File",
+				title: "Dokumen",
 				icon: FileText,
 				href: "/dashboard/e-archive",
+			},
+			{
+				title: "Dokumen Staf",
+				icon: FileText,
+				href: "/dashboard/e-archive", // TODO:
+			},
+			{
+				title: "Dokumen Kaur",
+				icon: FileText,
+				href: "/dashboard/e-archive", // TODO:
 			},
 		],
 	},
@@ -270,18 +202,76 @@ export const arsipSections: NavSection[] = [
 			},
 		],
 	},
+];
+
+export const sdmArsipSections: NavSection[] = [
 	{
-		title: "UMUM",
+		title: "DOKUMEN",
+		items: [],
+	},
+	{
+		title: "BANTUAN",
 		items: [
 			{
-				title: "Akun",
-				icon: UserIcon,
-				href: "/profile",
+				title: "Panduan Pengguna",
+				icon: BookOpenText,
+				href: "/admin/user",
+			},
+		],
+	},
+];
+
+export const kaurArsipSections: NavSection[] = [
+	{
+		title: "DOKUMEN ANDA",
+		items: [
+			{
+				title: "Dokumen Kerja",
+				icon: FileText,
+				href: "/dashboard/e-archive",
 			},
 			{
-				title: "Logout",
-				icon: LogOut,
-				href: "/logout",
+				title: "Dokumen Pegawai",
+				icon: FileText,
+				href: "/dashboard/e-archive", // TODO:
+			},
+		],
+	},
+	{
+		title: "BANTUAN",
+		items: [
+			{
+				title: "Panduan Pengguna",
+				icon: BookOpenText,
+				href: "/admin/user",
+			},
+		],
+	},
+];
+
+export const tpaArsipSections: NavSection[] = [
+	{
+		title: "DOKUMEN ANDA",
+		items: [
+			{
+				title: "Dokumen Kerja",
+				icon: FileText,
+				href: "/dashboard/e-archive",
+			},
+			{
+				title: "Dokumen Pegawai",
+				icon: FileText,
+				href: "/dashboard/e-archive", // TODO:
+			},
+		],
+	},
+	{
+		title: "BANTUAN",
+		items: [
+			{
+				title: "Panduan Pengguna",
+				icon: BookOpenText,
+				href: "/admin/user",
 			},
 		],
 	},

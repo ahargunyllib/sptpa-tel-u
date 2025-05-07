@@ -3,22 +3,26 @@
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
-import type { PageProps, User } from "@/types";
 
 import {
 	type NavSection,
-	arsipSections,
+	kaurArsipSections,
 	kaurPenilaianSections,
+	sdmArsipSections,
 	sdmPenilaianSections,
+	tpaArsipSections,
 	tpaPenilaianSections,
+	wadekArsipSections,
 	wadekPenilaianSections,
 } from "@/components/sidebar/sidebar";
-import { Link, usePage } from "@inertiajs/react";
+import { useUser } from "@/hooks/use-user";
+import { Link } from "@inertiajs/react";
 import { ClipboardList, Folder, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function AppSidebar() {
-	const user = usePage<PageProps>().props.auth.user as User;
+	const user = useUser();
+
 	const [isOpen, setIsOpen] = useState(true);
 	const [activeMenu, setActiveMenu] = useState<"penilaian" | "e-archive">(
 		"penilaian",
@@ -37,16 +41,34 @@ export function AppSidebar() {
 
 	useEffect(() => {
 		const role = user.role;
-		if (activeMenu === "e-archive") {
-			setMenus(arsipSections);
-		} else if (role === "tpa") {
-			setMenus(tpaPenilaianSections);
-		} else if (role === "kaur") {
-			setMenus(kaurPenilaianSections);
-		} else if (role === "sdm") {
-			setMenus(sdmPenilaianSections);
-		} else if (role === "wadek") {
-			setMenus(wadekPenilaianSections);
+		if (role === "tpa") {
+			const menu =
+				activeMenu === "e-archive" ? tpaArsipSections : tpaPenilaianSections;
+			setMenus(menu);
+			return;
+		}
+
+		if (role === "kaur") {
+			const menu =
+				activeMenu === "e-archive" ? kaurArsipSections : kaurPenilaianSections;
+			setMenus(menu);
+			return;
+		}
+
+		if (role === "sdm") {
+			const menu =
+				activeMenu === "e-archive" ? sdmArsipSections : sdmPenilaianSections;
+			setMenus(menu);
+			return;
+		}
+
+		if (role === "wadek") {
+			const menu =
+				activeMenu === "e-archive"
+					? wadekArsipSections
+					: wadekPenilaianSections;
+			setMenus(menu);
+			return;
 		}
 	}, [activeMenu, user.role]);
 
@@ -82,11 +104,6 @@ export function AppSidebar() {
 				)}
 			>
 				<div className="flex flex-col h-full gap-8">
-					{/* Logo */}
-					<div className="px-6 text-center">
-						<h1 className="font-bold text-xl text-primary-60">SPTPA</h1>
-					</div>
-
 					<div className="grid grid-cols-2">
 						{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
 						<div
@@ -106,7 +123,11 @@ export function AppSidebar() {
 									)}
 								/>
 								<span
-									className={`${activeMenu === "penilaian" ? "text-danger-80 " : "text-light-100"}`}
+									className={`${
+										activeMenu === "penilaian"
+											? "text-danger-80 "
+											: "text-light-100"
+									}`}
 								>
 									Penilaian
 								</span>
@@ -131,9 +152,13 @@ export function AppSidebar() {
 									)}
 								/>
 								<span
-									className={`${activeMenu === "e-archive" ? "text-danger-80 " : "text-light-100"}`}
+									className={`${
+										activeMenu === "e-archive"
+											? "text-danger-80 "
+											: "text-light-100"
+									}`}
 								>
-									E-Arsip
+									Arsip
 								</span>
 							</div>
 						</div>
@@ -160,10 +185,18 @@ export function AppSidebar() {
 												)}
 											>
 												<item.icon
-													className={`${pathName.startsWith(item.href) ? "text-white" : "text-dark-60"} w-5 h-5`}
+													className={`${
+														pathName.startsWith(item.href)
+															? "text-white"
+															: "text-dark-60"
+													} w-5 h-5`}
 												/>
 												<span
-													className={`${pathName.startsWith(item.href) ? "text-white" : "text-dark-60"}`}
+													className={`${
+														pathName.startsWith(item.href)
+															? "text-white"
+															: "text-dark-60"
+													}`}
 												>
 													{item.title}
 												</span>
