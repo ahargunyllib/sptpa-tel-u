@@ -87,7 +87,7 @@ Route::middleware(['auth', 'role:kaur,tpa'])->group(function () {
     // Route::get('/dashboard/performance/me', [WorkTargetController::class, 'myWorkTargets'])->name('dashboard.performance.me');
     // Route::get('/dashboard/performance/me/detail', [WorkTargetValueController::class, 'index'])->name('dashboard.performance.me.index');
     // Route::put('/dashboard/performance/me/detail/{id}', [WorkTargetValueController::class, 'update'])->name('dashboard.performance.me.update');
-    // Route::put('/dashboard/user-attitude-evaluation/me', [UserAttitudeEvaluationController::class, 'update'])->name('dashboard.performance.me.user-attitude-evaluation.update');
+    Route::put('/dashboard/user-attitude-evaluation/me', [UserAttitudeEvaluationController::class, 'update'])->name('dashboard.performance.me.user-attitude-evaluation.update');
 });
 
 Route::middleware(['auth', 'role:kaur,wadek'])->group(function () {
@@ -112,7 +112,7 @@ Route::middleware(['auth', 'role:kaur,wadek'])->group(function () {
 
     // Route::put('/dashboard/performance/work-target-value/{id}', [WorkTargetValueController::class, 'updateWorkTargetValueScores'])->name('dashboard.performance.work-target-value.updateWorkTargetValueScores');
 
-    // Route::put('/dashboard/user-attitude-evaluation/{user_id}', [UserAttitudeEvaluationController::class, 'updateUserAttitudeEvaluation'])->name('dashboard.performance.user-attitude-evaluation.updateUserAttitudeEvaluation');
+    Route::put('/dashboard/user-attitude-evaluation/{user_id}', [UserAttitudeEvaluationController::class, 'updateUserAttitudeEvaluation'])->name('dashboard.performance.user-attitude-evaluation.updateUserAttitudeEvaluation');
 });
 
 require __DIR__ . '/auth.php';

@@ -14,6 +14,8 @@ class UserFeedback extends Model
         'wadek_feedback',
     ];
 
+    protected $table = 'user_feedbacks';
+
     public function user()
     {
         return $this->belongsTo(User::class);
