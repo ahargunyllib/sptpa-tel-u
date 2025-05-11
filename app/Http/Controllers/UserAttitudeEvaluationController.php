@@ -329,7 +329,6 @@ class UserAttitudeEvaluationController extends Controller
 
             return back()->with('success', 'User attitude evaluation updated successfully.');
         } catch (\Exception $e) {
-            dd($e);
             DB::rollBack();
 
             return back()->with('error', 'Failed to update user attitude evaluation: ' . $e->getMessage());
