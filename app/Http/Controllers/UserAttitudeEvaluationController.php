@@ -25,12 +25,84 @@ class UserAttitudeEvaluationController extends Controller
 
     public function indexKaur(Request $request)
     {
-        return Inertia::render('user-attitude-evaluation-management/index');
+        $userRole = $request->user()->role;
+
+        $selectFields = [
+            'users.*',
+            DB::raw('COALESCE(user_attitude_evaluations.communication, 0) as communication'),
+            DB::raw('COALESCE(user_attitude_evaluations.teamwork, 0) as teamwork'),
+            DB::raw('COALESCE(user_attitude_evaluations.collaboration, 0) as collaboration'),
+            DB::raw('COALESCE(user_attitude_evaluations.solidarity, 0) as solidarity'),
+            DB::raw('COALESCE(user_attitude_evaluations.work_ethic, 0) as work_ethic'),
+            DB::raw('COALESCE(user_attitude_evaluations.technology_usage, 0) as technology_usage'),
+            DB::raw('COALESCE(user_attitude_evaluations.work_smart, 0) as work_smart'),
+            DB::raw('COALESCE(user_attitude_evaluations.initiative, 0) as initiative'),
+            DB::raw('COALESCE(user_attitude_evaluations.role_model, 0) as role_model'),
+            DB::raw('COALESCE(user_attitude_evaluations.responsibility, 0) as responsibility'),
+            DB::raw('COALESCE(user_attitude_evaluations.professional_ethic, 0) as professional_ethic'),
+            DB::raw('COALESCE(user_attitude_evaluations.image_maintenance, 0) as image_maintenance'),
+            DB::raw('COALESCE(user_attitude_evaluations.discipline, 0) as discipline'),
+            DB::raw('user_attitude_evaluations.evidance as evidance'),
+        ];
+
+        if ($userRole === 'wadek') {
+            $selectFields[] = DB::raw("COALESCE(user_feedbacks.wadek_feedback, '-') as note");
+        } else if ($userRole === 'kaur') {
+            $selectFields[] = DB::raw("COALESCE(user_feedbacks.kaur_feedback, '-') as note");
+        }
+
+        $userAttitudeEvaluations = DB::table('users')
+            ->where('users.role', 'kaur')
+            ->leftJoin('user_attitude_evaluations', 'user_attitude_evaluations.user_id', '=', 'users.id')
+            ->leftJoin('user_feedbacks', 'user_feedbacks.user_id', '=', 'users.id')
+            ->select(...$selectFields)
+            ->get();
+
+        return Inertia::render('user-attitude-evaluation-management/index', [
+            'role' => 'kaur',
+            'userAttitudeEvaluations' => $userAttitudeEvaluations,
+        ]);
     }
 
     public function indexStaf(Request $request)
     {
-        return Inertia::render('user-attitude-evaluation-management/index');
+        $userRole = $request->user()->role;
+
+        $selectFields = [
+            'users.*',
+            DB::raw('COALESCE(user_attitude_evaluations.communication, 0) as communication'),
+            DB::raw('COALESCE(user_attitude_evaluations.teamwork, 0) as teamwork'),
+            DB::raw('COALESCE(user_attitude_evaluations.collaboration, 0) as collaboration'),
+            DB::raw('COALESCE(user_attitude_evaluations.solidarity, 0) as solidarity'),
+            DB::raw('COALESCE(user_attitude_evaluations.work_ethic, 0) as work_ethic'),
+            DB::raw('COALESCE(user_attitude_evaluations.technology_usage, 0) as technology_usage'),
+            DB::raw('COALESCE(user_attitude_evaluations.work_smart, 0) as work_smart'),
+            DB::raw('COALESCE(user_attitude_evaluations.initiative, 0) as initiative'),
+            DB::raw('COALESCE(user_attitude_evaluations.role_model, 0) as role_model'),
+            DB::raw('COALESCE(user_attitude_evaluations.responsibility, 0) as responsibility'),
+            DB::raw('COALESCE(user_attitude_evaluations.professional_ethic, 0) as professional_ethic'),
+            DB::raw('COALESCE(user_attitude_evaluations.image_maintenance, 0) as image_maintenance'),
+            DB::raw('COALESCE(user_attitude_evaluations.discipline, 0) as discipline'),
+            DB::raw('user_attitude_evaluations.evidance as evidance'),
+        ];
+
+        if ($userRole === 'wadek') {
+            $selectFields[] = DB::raw("COALESCE(user_feedbacks.wadek_feedback, '-') as note");
+        } else if ($userRole === 'kaur') {
+            $selectFields[] = DB::raw("COALESCE(user_feedbacks.kaur_feedback, '-') as note");
+        }
+
+        $userAttitudeEvaluations = DB::table('users')
+            ->where('users.role', 'tpa')
+            ->leftJoin('user_attitude_evaluations', 'user_attitude_evaluations.user_id', '=', 'users.id')
+            ->leftJoin('user_feedbacks', 'user_feedbacks.user_id', '=', 'users.id')
+            ->select(...$selectFields)
+            ->get();
+
+        return Inertia::render('user-attitude-evaluation-management/index', [
+            'role' => 'kaur',
+            'userAttitudeEvaluations' => $userAttitudeEvaluations,
+        ]);
     }
 
     /**
@@ -198,6 +270,7 @@ class UserAttitudeEvaluationController extends Controller
 
             return back()->with('success', 'User attitude evaluation updated successfully.');
         } catch (\Exception $e) {
+            dd($e);
             DB::rollBack();
 
             return back()->with('error', 'Failed to update user attitude evaluation: ' . $e->getMessage());
