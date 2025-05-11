@@ -58,7 +58,6 @@ export default function MyUserAttitudeEvaluation({
 
 	const onSubmit = form.handleSubmit((data) => {
 		router.put("/dashboard/user-attitude-evaluation/me", data);
-		form.reset();
 	});
 
 	const average = useMemo(() => {
