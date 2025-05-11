@@ -20,7 +20,66 @@ class UserAttitudeEvaluationController extends Controller
 
     public function indexMe(Request $request)
     {
-        return Inertia::render('my-user-attitude-evaluation/index');
+        $user = $request->user();
+
+        $userAttitudeEvaluation = DB::table('user_attitude_evaluations')
+            ->where('user_id', $user->id)
+            ->select(
+                DB::raw('COALESCE(communication, 0) as communication'),
+                DB::raw('COALESCE(teamwork, 0) as teamwork'),
+                DB::raw('COALESCE(collaboration, 0) as collaboration'),
+                DB::raw('COALESCE(solidarity, 0) as solidarity'),
+                DB::raw('COALESCE(work_ethic, 0) as work_ethic'),
+                DB::raw('COALESCE(technology_usage, 0) as technology_usage'),
+                DB::raw('COALESCE(work_smart, 0) as work_smart'),
+                DB::raw('COALESCE(initiative, 0) as initiative'),
+                DB::raw('COALESCE(role_model, 0) as role_model'),
+                DB::raw('COALESCE(responsibility, 0) as responsibility'),
+                DB::raw('COALESCE(professional_ethic, 0) as professional_ethic'),
+                DB::raw('COALESCE(image_maintenance, 0) as image_maintenance'),
+                DB::raw('COALESCE(discipline, 0) as discipline'),
+                DB::raw('evidance as evidance'),
+            )
+            ->first();
+
+        if (!$userAttitudeEvaluation) {
+            $userAttitudeEvaluation = [
+                'communication' => 0,
+                'teamwork' => 0,
+                'collaboration' => 0,
+                'solidarity' => 0,
+                'work_ethic' => 0,
+                'technology_usage' => 0,
+                'work_smart' => 0,
+                'initiative' => 0,
+                'role_model' => 0,
+                'responsibility' => 0,
+                'professional_ethic' => 0,
+                'image_maintenance' => 0,
+                'discipline' => 0,
+                'evidance' => null
+            ];
+        }
+
+        $userFeedback = DB::table('user_feedbacks')
+            ->where('user_id', $user->id)
+            ->select(
+                DB::raw("COALESCE(kaur_feedback, '-') as kaur_feedback"),
+                DB::raw("COALESCE(wadek_feedback, '-') as wadek_feedback"),
+            )
+            ->first();
+
+        if (!$userFeedback) {
+            $userFeedback = [
+                'kaur_feedback' => '-',
+                'wadek_feedback' => '-'
+            ];
+        }
+
+        return Inertia::render('my-user-attitude-evaluation/index', [
+            'userAttitudeEvaluation' => $userAttitudeEvaluation,
+            'userFeedback' => $userFeedback,
+        ]);
     }
 
     public function indexKaur(Request $request)
