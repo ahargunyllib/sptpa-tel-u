@@ -112,7 +112,7 @@ Route::middleware(['auth', 'role:kaur,wadek'])->group(function () {
 
     // Route::put('/dashboard/performance/work-target-value/{id}', [WorkTargetValueController::class, 'updateWorkTargetValueScores'])->name('dashboard.performance.work-target-value.updateWorkTargetValueScores');
 
-    // Route::put('/dashboard/user-attitude-evaluation/{user_id}', [UserAttitudeEvaluationController::class, 'updateUserAttitudeEvaluation'])->name('dashboard.performance.user-attitude-evaluation.updateUserAttitudeEvaluation');
+    Route::put('/dashboard/user-attitude-evaluation/{user_id}', [UserAttitudeEvaluationController::class, 'updateUserAttitudeEvaluation'])->name('dashboard.performance.user-attitude-evaluation.updateUserAttitudeEvaluation');
 });
 
 require __DIR__ . '/auth.php';
