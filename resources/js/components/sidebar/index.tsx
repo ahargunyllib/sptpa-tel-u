@@ -104,65 +104,68 @@ export function AppSidebar() {
 				)}
 			>
 				<div className="flex flex-col h-full gap-8">
-					<div className="grid grid-cols-2">
-						{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
-						<div
-							className={cn(
-								"cursor-pointer rounded-t-xl border-b-2 py-3 px-5 border-transparent",
-								activeMenu === "penilaian" && "bg-[#FFF0F1] border-b-danger-80",
-							)}
-							onClick={() => setActiveMenu("penilaian")}
-						>
-							<div className="flex justify-center items-center flex-col gap-2">
-								<ClipboardList
-									className={cn(
-										activeMenu === "penilaian"
-											? "text-danger-80 "
-											: "text-light-100",
-										"w-4 h-4",
-									)}
-								/>
-								<span
-									className={`${
-										activeMenu === "penilaian"
-											? "text-danger-80 "
-											: "text-light-100"
-									}`}
-								>
-									Penilaian
-								</span>
+					{user.role !== "sdm" && (
+						<div className="grid grid-cols-2">
+							{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+							<div
+								className={cn(
+									"cursor-pointer rounded-t-xl border-b-2 py-3 px-5 border-transparent",
+									activeMenu === "penilaian" &&
+										"bg-[#FFF0F1] border-b-danger-80",
+								)}
+								onClick={() => setActiveMenu("penilaian")}
+							>
+								<div className="flex justify-center items-center flex-col gap-2">
+									<ClipboardList
+										className={cn(
+											activeMenu === "penilaian"
+												? "text-danger-80 "
+												: "text-light-100",
+											"w-4 h-4",
+										)}
+									/>
+									<span
+										className={`${
+											activeMenu === "penilaian"
+												? "text-danger-80 "
+												: "text-light-100"
+										}`}
+									>
+										Penilaian
+									</span>
+								</div>
+							</div>
+							{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+							<div
+								className={cn(
+									"cursor-pointer rounded-t-xl border-b-2 border-transparent py-3 px-5",
+									activeMenu === "e-archive" &&
+										"bg-[#FFF0F1] border-b-danger-80 ",
+								)}
+								onClick={() => setActiveMenu("e-archive")}
+							>
+								<div className="flex justify-center items-center flex-col gap-2">
+									<Folder
+										className={cn(
+											activeMenu === "e-archive"
+												? "text-danger-80 "
+												: "text-light-100",
+											"w-4 h-4",
+										)}
+									/>
+									<span
+										className={`${
+											activeMenu === "e-archive"
+												? "text-danger-80 "
+												: "text-light-100"
+										}`}
+									>
+										Arsip
+									</span>
+								</div>
 							</div>
 						</div>
-						{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
-						<div
-							className={cn(
-								"cursor-pointer rounded-t-xl border-b-2 border-transparent py-3 px-5",
-								activeMenu === "e-archive" &&
-									"bg-[#FFF0F1] border-b-danger-80 ",
-							)}
-							onClick={() => setActiveMenu("e-archive")}
-						>
-							<div className="flex justify-center items-center flex-col gap-2">
-								<Folder
-									className={cn(
-										activeMenu === "e-archive"
-											? "text-danger-80 "
-											: "text-light-100",
-										"w-4 h-4",
-									)}
-								/>
-								<span
-									className={`${
-										activeMenu === "e-archive"
-											? "text-danger-80 "
-											: "text-light-100"
-									}`}
-								>
-									Arsip
-								</span>
-							</div>
-						</div>
-					</div>
+					)}
 
 					{/* Navigation */}
 					<nav className="flex-1 px-4 space-y-8 overflow-y-scroll">
