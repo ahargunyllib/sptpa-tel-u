@@ -1,4 +1,15 @@
-import { BookOpenText, FileText, History, Users } from "lucide-react";
+import {
+	BookOpenText,
+	ClipboardList,
+	ClipboardListIcon,
+	FileText,
+	FolderIcon,
+	History,
+	Inbox,
+	StarIcon,
+	Upload,
+	Users,
+} from "lucide-react";
 
 import type { ElementType } from "react";
 
@@ -25,12 +36,12 @@ export const tpaPenilaianSections: NavSection[] = [
 			},
 			{
 				title: "Sikap Kerja",
-				icon: FileText,
+				icon: StarIcon,
 				href: "/dashboard/user-attitude-evaluation/me",
 			},
 			{
 				title: "Laporan Kinerja",
-				icon: FileText,
+				icon: ClipboardListIcon,
 				href: "/dashboard/work-report/me",
 			},
 		],
@@ -58,12 +69,12 @@ export const kaurPenilaianSections: NavSection[] = [
 			},
 			{
 				title: "Sikap Kerja",
-				icon: FileText,
+				icon: StarIcon,
 				href: "/dashboard/user-attitude-evaluation/me",
 			},
 			{
 				title: "Laporan Kinerja",
-				icon: FileText,
+				icon: ClipboardList,
 				href: "/dashboard/work-report/me",
 			},
 		],
@@ -72,18 +83,18 @@ export const kaurPenilaianSections: NavSection[] = [
 		title: "KINERJA STAF",
 		items: [
 			{
-				title: "Target Kinerja Staf",
+				title: "Target Kinerja",
 				icon: FileText,
 				href: "/dashboard/work-target/staf",
 			},
 			{
-				title: "Sikap Kerja Staf",
-				icon: FileText,
+				title: "Sikap Kerja",
+				icon: StarIcon,
 				href: "/dashboard/user-attitude-evaluation/staf",
 			},
 			{
-				title: "Laporan Kinerja Staf",
-				icon: FileText,
+				title: "Laporan Kinerja",
+				icon: ClipboardList,
 				href: "/dashboard/work-report/staf",
 			},
 		],
@@ -91,6 +102,11 @@ export const kaurPenilaianSections: NavSection[] = [
 	{
 		title: "BANTUAN",
 		items: [
+			{
+				title: "Rubrikasi Penilaian",
+				icon: Inbox,
+				href: "/dashboard/rubric",
+			},
 			{
 				title: "Panduan Pengguna",
 				icon: BookOpenText,
@@ -102,17 +118,47 @@ export const kaurPenilaianSections: NavSection[] = [
 
 export const sdmPenilaianSections: NavSection[] = [
 	{
-		title: "MANAGEMEN DATA & LAPORAN",
+		title: "MANAJEMEN DATA & LAPORAN",
 		items: [
 			{
-				title: "Data Atasan & Pegawai",
+				title: "Data Pegawai",
 				icon: Users,
 				href: "/dashboard/user",
 			},
 			{
-				title: "Website Log",
+				title: "Aktifitas Website",
 				icon: History,
 				href: "/dashboard/log",
+			},
+		],
+	},
+	{
+		title: "UNGGAH DOKUMEN BANTUAN",
+		items: [
+			{
+				title: "Unggah Rubrikasi",
+				icon: Upload,
+				href: "/dashboard/upload", // TODO
+			},
+			{
+				title: "Unggah Panduan",
+				icon: Upload,
+				href: "/dashboard/upload", // TODO
+			},
+		],
+	},
+	{
+		title: "BANTUAN",
+		items: [
+			{
+				title: "Rubrikasi Penilaian",
+				icon: Inbox,
+				href: "/dashboard/rubric",
+			},
+			{
+				title: "Panduan Pengguna",
+				icon: BookOpenText,
+				href: "/admin/user",
 			},
 		],
 	},
@@ -123,18 +169,18 @@ export const wadekPenilaianSections: NavSection[] = [
 		title: "KINERJA KAUR",
 		items: [
 			{
-				title: "Target Kinerja Kaur",
+				title: "Target Kinerja",
 				icon: FileText,
 				href: "/dashboard/work-target/kaur",
 			},
 			{
-				title: "Sikap Kerja Kaur",
-				icon: FileText,
+				title: "Sikap Kerja",
+				icon: StarIcon,
 				href: "/dashboard/user-attitude-evaluation/kaur",
 			},
 			{
-				title: "Laporan Kinerja Kaur",
-				icon: FileText,
+				title: "Laporan Kinerja",
+				icon: ClipboardList,
 				href: "/dashboard/work-report/kaur",
 			},
 		],
@@ -143,18 +189,18 @@ export const wadekPenilaianSections: NavSection[] = [
 		title: "KINERJA STAF",
 		items: [
 			{
-				title: "Target Kinerja Staf",
+				title: "Target Kinerja",
 				icon: FileText,
 				href: "/dashboard/work-target/staf",
 			},
 			{
-				title: "Sikap Kerja Staf",
-				icon: FileText,
+				title: "Sikap Kerja",
+				icon: StarIcon,
 				href: "/dashboard/user-attitude-evaluation/staf",
 			},
 			{
-				title: "Laporan Kinerja Staf",
-				icon: FileText,
+				title: "Laporan Kinerja",
+				icon: ClipboardList,
 				href: "/dashboard/work-report/staf",
 			},
 		],
@@ -162,6 +208,11 @@ export const wadekPenilaianSections: NavSection[] = [
 	{
 		title: "BANTUAN",
 		items: [
+			{
+				title: "Rubrikasi Penilaian",
+				icon: Inbox,
+				href: "/dashboard/rubric",
+			},
 			{
 				title: "Panduan Pengguna",
 				icon: BookOpenText,
@@ -173,21 +224,46 @@ export const wadekPenilaianSections: NavSection[] = [
 
 export const wadekArsipSections: NavSection[] = [
 	{
-		title: "DOKUMEN",
+		title: "DOKUMEN ANDA",
 		items: [
 			{
-				title: "Dokumen",
-				icon: FileText,
+				title: "Dokumen Kerja",
+				icon: FolderIcon,
 				href: "/dashboard/e-archive",
 			},
 			{
-				title: "Dokumen Staf",
-				icon: FileText,
+				title: "Dokumen Pegawai",
+				icon: FolderIcon,
 				href: "/dashboard/e-archive", // TODO:
 			},
+		],
+	},
+	{
+		title: "DOKUMEN KAUR",
+		items: [
 			{
-				title: "Dokumen Kaur",
-				icon: FileText,
+				title: "Dokumen Kerja",
+				icon: FolderIcon,
+				href: "/dashboard/e-archive",
+			},
+			{
+				title: "Dokumen Pegawai",
+				icon: FolderIcon,
+				href: "/dashboard/e-archive", // TODO:
+			},
+		],
+	},
+	{
+		title: "DOKUMEN STAF",
+		items: [
+			{
+				title: "Dokumen Kerja",
+				icon: FolderIcon,
+				href: "/dashboard/e-archive",
+			},
+			{
+				title: "Dokumen Pegawai",
+				icon: FolderIcon,
 				href: "/dashboard/e-archive", // TODO:
 			},
 		],
@@ -227,12 +303,27 @@ export const kaurArsipSections: NavSection[] = [
 		items: [
 			{
 				title: "Dokumen Kerja",
-				icon: FileText,
+				icon: FolderIcon,
 				href: "/dashboard/e-archive",
 			},
 			{
 				title: "Dokumen Pegawai",
-				icon: FileText,
+				icon: FolderIcon,
+				href: "/dashboard/e-archive", // TODO:
+			},
+		],
+	},
+	{
+		title: "DOKUMEN STAF",
+		items: [
+			{
+				title: "Dokumen Kerja",
+				icon: FolderIcon,
+				href: "/dashboard/e-archive",
+			},
+			{
+				title: "Dokumen Pegawai",
+				icon: FolderIcon,
 				href: "/dashboard/e-archive", // TODO:
 			},
 		],
@@ -255,12 +346,12 @@ export const tpaArsipSections: NavSection[] = [
 		items: [
 			{
 				title: "Dokumen Kerja",
-				icon: FileText,
+				icon: FolderIcon,
 				href: "/dashboard/e-archive",
 			},
 			{
 				title: "Dokumen Pegawai",
-				icon: FileText,
+				icon: FolderIcon,
 				href: "/dashboard/e-archive", // TODO:
 			},
 		],
