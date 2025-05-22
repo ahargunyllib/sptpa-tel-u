@@ -18,26 +18,27 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $roles = ['tpa', 'kaur', 'wadek', 'sdm'];
-       
+        $roles = ['staf', 'kaur', 'wadek1', 'wadek2', 'sdm'];
+        $divisions = ['academic_service', 'laboratory', 'secretary', 'student_affair', 'finance_logistic_resource'];
 
         foreach ($roles as $role) {
-            for ($i = 1; $i <= 2; $i++) {
-                $user = User::create([
-                    'name' => strtoupper($role) . " $i",
-                    'nip' => rand(10000000, 99999999),
-                    'email' => "$role$i@gmail.com",
-                    'location' => "Bandung",
-                    'division' => "humas",
-                    'photo_profile' => null,
-                    'role' => $role,
-                    'password' => Hash::make('password123')
-                ]);
-
-               
+            foreach ($divisions as $division) {
+                for ($i = 1; $i <= 2; $i++) {
+                    $user = User::create([
+                        'name' => strtoupper($role) . " $i",
+                        'nip' => rand(10000000, 99999999),
+                        'email' => "$role{$division}$i@gmail.com",
+                        'location' => "Bandung",
+                        'division' => $division,
+                        'photo_profile' => null,
+                        'role' => $role,
+                        'password' => Hash::make('password123')
+                    ]);
+                }
             }
+        }
         }
 
        
-    }
+    
 }
