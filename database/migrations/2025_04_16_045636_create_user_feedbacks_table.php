@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('user_feedbacks', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
-            $table->string('kaur_feedback', 255)->default('-');
-            $table->string('wadek_feedback', 255)->default('-');
+            $table->string('kaur_feedback', 255)->nullable();
+            $table->string('wadek_feedback', 255)->nullable();
             $table->timestamps();
         });
     }

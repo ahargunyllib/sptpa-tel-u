@@ -17,8 +17,18 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('nip')->unique();
             $table->string('location')->nullable();
-            $table->string('division')->nullable();
-            $table->enum('role', ['tpa', 'kaur', 'wadek', 'sdm'])->default('tpa');
+            $table->enum('division',['academic_service', 'laboratory', 'secretary', 'student_affair','finance_logistic_resource']); //for staff and kaur
+            // academic_service [note: 'under wadek1'] 
+            // laboratorium [note: 'under wadek1']
+            // secretary [note: 'under wadek2']
+            // student_affair [note: 'under wadek2']
+            // finance_logistic_resource [note: 'under wadek2']
+            $table->enum('role', ['staf', 'kaur', 'wadek1', 'wadek2','sdm'])->default('staf');
+            // staf
+            // kaur
+            // wadek1
+            // wadek2
+            // sdm
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('photo_profile')->nullable();

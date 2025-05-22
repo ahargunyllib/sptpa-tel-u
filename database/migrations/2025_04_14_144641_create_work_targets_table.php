@@ -14,13 +14,31 @@ return new class extends Migration
         Schema::create('work_targets', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('name', 255)->notNullable();
-            $table->enum('unit', ['week', 'total', 'day', 'minute'])->default('total');
-            $table->enum('comparator', ['eq', 'lte', 'gte', 'gt', 'lt'])->default('eq');
+            $table->enum('unit', ['at_week', 'work_day', 'total', 'percentage'])->default('at_week');
+            $table->enum('category', ['light', 'medium', 'heavy'])->default('light');
+
+            // $table->enum('comparator', ['eq', 'lte', 'gte', 'gt', 'lt'])->default('eq');
             $table->integer('first_quarter_target')->default(0);
             $table->integer('second_quarter_target')->default(0);
             $table->integer('third_quarter_target')->default(0);
             $table->integer('fourth_quarter_target')->default(0);
-            $table->foreignUuid('user_id')->constrained('users')->onDelete('cascade');
+
+            $table->integer('first_quarter_value')->default(0);
+            $table->integer('second_quarter_value')->default(0);
+            $table->integer('third_quarter_value')->default(0);
+            $table->integer('fourth_quarter_value')->default(0);
+
+
+            $table->integer('first_quarter_score')->default(0);
+            $table->integer('second_quarter_score')->default(0);
+            $table->integer('third_quarter_score')->default(0);
+            $table->integer('fourth_quarter_score')->default(0);
+
+            $table->integer('final_score')->default(0);
+
+            $table->foreignUuid('creator_id')->constrained('users')->onDelete('cascade');
+            $table->foreignUuid('assigned_id')->constrained('users')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

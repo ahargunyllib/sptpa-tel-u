@@ -27,7 +27,7 @@ return new class extends Migration
             $table->integer('professional_ethic')->default(0);
             $table->integer('image_maintenance')->default(0);
             $table->integer('discipline')->default(0);
-            $table->string('evidance')->nullable();
+            $table->string('evidence')->nullable();
             $table->timestamps();
         });
     }
