@@ -54,7 +54,7 @@ export default function WorkTargetsManagementIndex({
 						/>
 					)}
 
-					<PerformanceAssessmentsCard role={role} staffs={staffs} />
+					{/* <PerformanceAssessmentsCard role={role} staffs={staffs} /> */}
 				</TabsContent>
 				<TabsContent value="attitude">
 					<StaffsCard
