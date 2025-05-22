@@ -171,7 +171,9 @@ class WorkTargetController extends Controller
 
     public function indexMe(Request $request)
     {
-        return Inertia::render('my-work-targets/index');
+        return Inertia::render('my-work-targets/index', [
+            'workTargets' => [],
+        ]);
     }
 
     public function indexKaur(Request $request)
