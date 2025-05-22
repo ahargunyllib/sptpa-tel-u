@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('work_targets', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('name', 255)->notNullable();
-            // $table->enum('unit', ['week', 'total', 'day', 'minute'])->default('total');
+            $table->enum('unit', ['at_week', 'work_day', 'total', 'percentage'])->default('at_week');
             $table->enum('category', ['light', 'medium', 'heavy'])->default('light');
 
             // $table->enum('comparator', ['eq', 'lte', 'gte', 'gt', 'lt'])->default('eq');
