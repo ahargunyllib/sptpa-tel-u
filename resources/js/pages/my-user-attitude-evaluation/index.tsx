@@ -24,12 +24,7 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import DashboardLayout from "@/layouts/dashboard-layout";
-import type {
-	UserAttitudeEvaluation,
-	UserFeedback,
-	WorkTarget,
-	WorkTargetValue,
-} from "@/types";
+import type { UserAttitudeEvaluation, UserFeedback, WorkTarget } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Head, router } from "@inertiajs/react";
 import { FileTextIcon } from "lucide-react";
@@ -41,18 +36,17 @@ export default function MyUserAttitudeEvaluation({
 	userAttitudeEvaluation,
 	userFeedback,
 }: {
-	workTargets: (WorkTarget & WorkTargetValue)[];
 	userAttitudeEvaluation: UserAttitudeEvaluation;
 	userFeedback: UserFeedback;
 }) {
 	const userAttitudeEvaluationSchema = z.object({
-		evidance: z.string(),
+		evidence: z.string(),
 	});
 
 	const form = useForm<z.infer<typeof userAttitudeEvaluationSchema>>({
 		resolver: zodResolver(userAttitudeEvaluationSchema),
 		defaultValues: {
-			evidance: userAttitudeEvaluation.evidance || "",
+			evidence: userAttitudeEvaluation.evidence || "",
 		},
 	});
 
@@ -241,7 +235,7 @@ export default function MyUserAttitudeEvaluation({
 									className="flex flex-row gap-2 w-full"
 								>
 									<FormField
-										name="evidance"
+										name="evidence"
 										control={form.control}
 										render={({ field }) => {
 											return (
@@ -249,8 +243,8 @@ export default function MyUserAttitudeEvaluation({
 													<FormControl>
 														<Input
 															className="w-full"
-															placeholder="Tuliskan evidance sikap"
-															disabled={!!userAttitudeEvaluation.evidance}
+															placeholder="Tuliskan evidence sikap"
+															disabled={!!userAttitudeEvaluation.evidence}
 															{...field}
 														/>
 													</FormControl>
@@ -261,7 +255,7 @@ export default function MyUserAttitudeEvaluation({
 									/>
 									<Button
 										type="submit"
-										disabled={!!userAttitudeEvaluation.evidance}
+										disabled={!!userAttitudeEvaluation.evidence}
 									>
 										Simpan
 									</Button>

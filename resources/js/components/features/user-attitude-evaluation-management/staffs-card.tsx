@@ -74,7 +74,7 @@ export default function StaffsCard({
 									Nama {capitalize(role)}
 								</TableHead>
 								<TableHead className="py-3 px-4 text-center">
-									Evidance
+									Evidence
 								</TableHead>
 								<TableHead className="py-3 px-4 text-center">
 									Nilai Harmony
@@ -236,9 +236,9 @@ function StaffRow({
 						</Button>
 					</DialogTrigger>
 					<DialogContent>
-						<DialogTitle>Evidance sikap kerja : {staff.name}</DialogTitle>
+						<DialogTitle>Evidence sikap kerja : {staff.name}</DialogTitle>
 						<p className="w-full p-4 border text-muted-foreground rounded-lg">
-							{staff.evidance || "Belum ada."}
+							{staff.evidence || "Belum ada."}
 						</p>
 					</DialogContent>
 				</Dialog>

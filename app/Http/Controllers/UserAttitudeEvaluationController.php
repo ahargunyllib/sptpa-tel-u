@@ -7,6 +7,7 @@ use App\Models\UserFeedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Symfony\Component\Uid\Ulid;
 
 class UserAttitudeEvaluationController extends Controller
 {
@@ -38,7 +39,7 @@ class UserAttitudeEvaluationController extends Controller
                 DB::raw('COALESCE(professional_ethic, 0) as professional_ethic'),
                 DB::raw('COALESCE(image_maintenance, 0) as image_maintenance'),
                 DB::raw('COALESCE(discipline, 0) as discipline'),
-                DB::raw('evidance as evidance'),
+                DB::raw('evidence as evidence'),
             )
             ->first();
 
@@ -57,7 +58,7 @@ class UserAttitudeEvaluationController extends Controller
                 'professional_ethic' => 0,
                 'image_maintenance' => 0,
                 'discipline' => 0,
-                'evidance' => null
+                'evidence' => null
             ];
         }
 
@@ -101,7 +102,7 @@ class UserAttitudeEvaluationController extends Controller
             DB::raw('COALESCE(user_attitude_evaluations.professional_ethic, 0) as professional_ethic'),
             DB::raw('COALESCE(user_attitude_evaluations.image_maintenance, 0) as image_maintenance'),
             DB::raw('COALESCE(user_attitude_evaluations.discipline, 0) as discipline'),
-            DB::raw('user_attitude_evaluations.evidance as evidance'),
+            DB::raw('user_attitude_evaluations.evidence as evidence'),
         ];
 
         if ($userRole === 'wadek') {
@@ -142,7 +143,7 @@ class UserAttitudeEvaluationController extends Controller
             DB::raw('COALESCE(user_attitude_evaluations.professional_ethic, 0) as professional_ethic'),
             DB::raw('COALESCE(user_attitude_evaluations.image_maintenance, 0) as image_maintenance'),
             DB::raw('COALESCE(user_attitude_evaluations.discipline, 0) as discipline'),
-            DB::raw('user_attitude_evaluations.evidance as evidance'),
+            DB::raw('user_attitude_evaluations.evidence as evidence'),
         ];
 
         if ($userRole === 'wadek') {
@@ -165,38 +166,6 @@ class UserAttitudeEvaluationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(UserAttitudeEvaluation $userAttitudeEvaluation)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(UserAttitudeEvaluation $userAttitudeEvaluation)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request)
@@ -205,18 +174,19 @@ class UserAttitudeEvaluationController extends Controller
             $userId = $request->user()->id;
 
             $validatedData = $request->validate([
-                'evidance' => 'required|string|max:255',
+                'evidence' => 'required|string|max:255',
             ]);
 
-            $userAttitudeEvaluation = UserAttitudeEvaluation::where('user_id', $userId)->first();
+            $userAttitudeEvaluation = DB::table('user_attitude_evaluations')
+                ->where('user_id', $userId)
+                ->first();
 
             if (!$userAttitudeEvaluation) {
-                $newEvaluation = new UserAttitudeEvaluation();
-
-                $newEvaluation->user_id = $userId;
-                $newEvaluation->evidance = $validatedData['evidance'];
-
-                $newEvaluation->save();
+                DB::table('user_attitude_evaluations')->insert([
+                    'id' => Ulid::generate(),
+                    'user_id' => $userId,
+                    'evidence' => $validatedData['evidence'],
+                ]);
 
                 return back()->with('success', 'User attitude evaluation created successfully.');
             }
@@ -229,14 +199,6 @@ class UserAttitudeEvaluationController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to update user attitude evaluation: ' . $e->getMessage());
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(UserAttitudeEvaluation $userAttitudeEvaluation)
-    {
-        //
     }
 
     public function updateUserAttitudeEvaluation(Request $request, string $user_id)
@@ -259,70 +221,70 @@ class UserAttitudeEvaluationController extends Controller
                 'note' => 'nullable|string|max:255',
             ]);
 
-            $userAttitudeEvaluation = UserAttitudeEvaluation::where('user_id', $user_id)->first();
+            $userAttitudeEvaluation = DB::table('user_attitude_evaluations')
+                ->where('user_id', $user_id)
+                ->first();
 
             $userRole = $request->user()->role;
 
             DB::beginTransaction();
 
             if (!$userAttitudeEvaluation) {
-                $newEvaluation = new UserAttitudeEvaluation();
-
-                $newEvaluation->user_id = $user_id;
-                $newEvaluation->communication = $validatedData['communication'];
-                $newEvaluation->teamwork = $validatedData['teamwork'];
-                $newEvaluation->collaboration = $validatedData['collaboration'];
-                $newEvaluation->solidarity = $validatedData['solidarity'];
-                $newEvaluation->work_ethic = $validatedData['work_ethic'];
-                $newEvaluation->technology_usage = $validatedData['technology_usage'];
-                $newEvaluation->work_smart = $validatedData['work_smart'];
-                $newEvaluation->initiative = $validatedData['initiative'];
-                $newEvaluation->role_model = $validatedData['role_model'];
-                $newEvaluation->responsibility = $validatedData['responsibility'];
-                $newEvaluation->professional_ethic = $validatedData['professional_ethic'];
-                $newEvaluation->image_maintenance = $validatedData['image_maintenance'];
-                $newEvaluation->discipline = $validatedData['discipline'];
-
-                $newEvaluation->save();
+                DB::table('user_attitude_evaluations')->insert([
+                    'id' => Ulid::generate(),
+                    'user_id' => $user_id,
+                    'communication' => $validatedData['communication'],
+                    'teamwork' => $validatedData['teamwork'],
+                    'collaboration' => $validatedData['collaboration'],
+                    'solidarity' => $validatedData['solidarity'],
+                    'work_ethic' => $validatedData['work_ethic'],
+                    'technology_usage' => $validatedData['technology_usage'],
+                    'work_smart' => $validatedData['work_smart'],
+                    'initiative' => $validatedData['initiative'],
+                    'role_model' => $validatedData['role_model'],
+                    'responsibility' => $validatedData['responsibility'],
+                    'professional_ethic' => $validatedData['professional_ethic'],
+                    'image_maintenance' => $validatedData['image_maintenance'],
+                    'discipline' => $validatedData['discipline'],
+                ]);
             } else {
-                $userAttitudeEvaluation->communication = $validatedData['communication'];
-                $userAttitudeEvaluation->teamwork = $validatedData['teamwork'];
-                $userAttitudeEvaluation->collaboration = $validatedData['collaboration'];
-                $userAttitudeEvaluation->solidarity = $validatedData['solidarity'];
-                $userAttitudeEvaluation->work_ethic = $validatedData['work_ethic'];
-                $userAttitudeEvaluation->technology_usage = $validatedData['technology_usage'];
-                $userAttitudeEvaluation->work_smart = $validatedData['work_smart'];
-                $userAttitudeEvaluation->initiative = $validatedData['initiative'];
-                $userAttitudeEvaluation->role_model = $validatedData['role_model'];
-                $userAttitudeEvaluation->responsibility = $validatedData['responsibility'];
-                $userAttitudeEvaluation->professional_ethic = $validatedData['professional_ethic'];
-                $userAttitudeEvaluation->image_maintenance = $validatedData['image_maintenance'];
-                $userAttitudeEvaluation->discipline = $validatedData['discipline'];
-
-                $userAttitudeEvaluation->save();
+                DB::table('user_attitude_evaluations')
+                    ->where('id', $userAttitudeEvaluation->id)
+                    ->update([
+                        'communication' => $validatedData['communication'],
+                        'teamwork' => $validatedData['teamwork'],
+                        'collaboration' => $validatedData['collaboration'],
+                        'solidarity' => $validatedData['solidarity'],
+                        'work_ethic' => $validatedData['work_ethic'],
+                        'technology_usage' => $validatedData['technology_usage'],
+                        'work_smart' => $validatedData['work_smart'],
+                        'initiative' => $validatedData['initiative'],
+                        'role_model' => $validatedData['role_model'],
+                        'responsibility' => $validatedData['responsibility'],
+                        'professional_ethic' => $validatedData['professional_ethic'],
+                        'image_maintenance' => $validatedData['image_maintenance'],
+                        'discipline' => $validatedData['discipline'],
+                    ]);
             }
 
-            $userFeedback = UserFeedback::where('user_id', $user_id)->first();
+            $userFeedback = DB::table('user_feedbacks')
+                ->where('user_id', $user_id)
+                ->first();
 
             if (!$userFeedback) {
-                $userFeedback = new UserFeedback();
-                $userFeedback->user_id = $user_id;
-
-                if ($userRole === 'kaur') {
-                    $userFeedback->kaur_feedback = $validatedData['note'];
-                } elseif ($userRole === 'wadek') {
-                    $userFeedback->wadek_feedback = $validatedData['note'];
-                }
-
-                $userFeedback->save();
+                DB::table('user_feedbacks')->insert([
+                    'id' => Ulid::generate(),
+                    'user_id' => $user_id,
+                    'kaur_feedback' => $userRole === 'kaur' ? $validatedData['note'] : null,
+                    'wadek_feedback' => $userRole === 'wadek' ? $validatedData['note'] : null,
+                ]);
             } else {
-                if ($userRole === 'kaur') {
-                    $userFeedback->kaur_feedback = $validatedData['note'];
-                } elseif ($userRole === 'wadek') {
-                    $userFeedback->wadek_feedback = $validatedData['note'];
-                }
-
-                $userFeedback->save();
+                DB::table('user_feedbacks')
+                    ->where('id', $userFeedback->id)
+                    ->update([
+                        'kaur_feedback' => $userRole === 'kaur' ? $validatedData['note'] : null,
+                        'wadek_feedback' => $userRole === 'wadek' ? $validatedData['note'] : null,
+                    ]);
             }
 
             DB::commit();
