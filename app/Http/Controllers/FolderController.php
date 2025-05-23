@@ -235,6 +235,67 @@ class FolderController extends Controller
         ]);
     }
 
+    public function getStafDocumentKerjaByDivision(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($user->role !== 'kaur') {
+            return response()->json([
+                'error' => 'Access denied'
+            ], 403);
+        }
+
+
+        $subfolders = Folder::where('type', 'kinerja')
+            ->whereHas('user', function ($query) use ($user) {
+                $query->where('role', 'staf')
+                    ->where('division', $user->division);
+            })
+            ->get();
+
+        $currentFolder = Folder::where('user_id', $user->id)
+            ->where('type', 'user')
+            ->first();
+
+        return Inertia::render('e-archive/staf/kerja', [
+            'currentFolder' => $currentFolder,
+            'breadcrumbs' => [],
+            'subfolders' => $subfolders,
+            'files' => []
+        ]);
+    }
+
+
+    public function getStafDocumentKepegawaianByDivision(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($user->role !== 'kaur') {
+            return response()->json([
+                'error' => 'Access denied'
+            ], 403);
+        }
+
+
+        $subfolders = Folder::where('type', 'kepegawaian')
+            ->whereHas('user', function ($query) use ($user) {
+                $query->where('role', 'staf')
+                    ->where('division', $user->division);
+            })
+            ->get();
+
+        $currentFolder = Folder::where('user_id', $user->id)
+            ->where('type', 'user')
+            ->first();
+
+        return Inertia::render('e-archive/staf/kerja', [
+            'currentFolder' => $currentFolder,
+            'breadcrumbs' => [],
+            'subfolders' => $subfolders,
+            'files' => []
+        ]);
+    }
+
 
     public function getKaurDokumenKepegawaianByWadek()
     {

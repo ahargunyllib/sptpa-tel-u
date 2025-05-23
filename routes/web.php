@@ -62,6 +62,10 @@ Route::middleware(['auth', 'role:sdm'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:kaur'])->group(function () {
+    Route::get('/dashboard/e-archive/staf/kerja', [FolderController::class, 'getStafDocumentKerjaByDivision'])
+        ->name('folders.kaur-kerja');
+    Route::get('/dashboard/e-archive/staf/pegawai', [FolderController::class, 'getStafDocumentKepegawaianByDivision'])
+        ->name('folders.kaur-pegawai');
 });
 
 Route::middleware(['auth', 'role:wadek1,wadek2'])->group(function () {
