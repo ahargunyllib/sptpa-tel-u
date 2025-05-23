@@ -41,7 +41,7 @@ export function AppSidebar() {
 
 	useEffect(() => {
 		const role = user.role;
-		if (role === "tpa") {
+		if (role === "staf") {
 			const menu =
 				activeMenu === "e-archive" ? tpaArsipSections : tpaPenilaianSections;
 			setMenus(menu);
@@ -62,7 +62,7 @@ export function AppSidebar() {
 			return;
 		}
 
-		if (role === "wadek") {
+		if (role === "wadek1" || role === "wadek2") {
 			const menu =
 				activeMenu === "e-archive"
 					? wadekArsipSections
