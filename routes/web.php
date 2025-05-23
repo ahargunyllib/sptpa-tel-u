@@ -56,7 +56,7 @@ Route::middleware(['auth', 'role:sdm'])->group(function () {
     // Route::delete('/dashboard/tags/{tag}', [TagController::class, 'destroy'])->name('tags.destroy');
 });
 
-Route::middleware(['auth', 'role:wadek'])->group(function () {
+Route::middleware(['auth', 'role:wadek1,wadek2'])->group(function () {
     Route::get('/dashboard/work-target/kaur', [WorkTargetController::class, 'indexKaur'])->name('dashboard.work-target.kaur');
 
     Route::get('/dashboard/user-attitude-evaluation/kaur', [UserAttitudeEvaluationController::class, 'indexKaur'])->name('dashboard.user-attitude-evaluation.kaur');
@@ -65,6 +65,10 @@ Route::middleware(['auth', 'role:wadek'])->group(function () {
         '/dashboard/work-report/kaur',
         [WorkTargetController::class, 'indexKaur'] // TODO:
     )->name('dashboard.work-report.kaur');
+    Route::get('/dashboard/e-archive/staf/kerja', [FolderController::class, 'getStafDokumenKinerjaByWadek'])
+        ->name('folders.wadek-kerja');
+    Route::get('/dashboard/e-archive/staf/pegawai', [FolderController::class, 'getStafDokumenKepegawaianByWadek'])
+        ->name('folders.wadek-pegawai');
 
     // Route::get('/dashboard/performance/kaur/{id}', [WorkTargetController::class, 'show'])->name('dashboard.performance.kaur.show');
 });
