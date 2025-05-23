@@ -347,12 +347,12 @@ export const tpaArsipSections: NavSection[] = [
 			{
 				title: "Dokumen Kerja",
 				icon: FolderIcon,
-				href: "/dashboard/e-archive",
+				href: "/dashboard/e-archive/kerja",
 			},
 			{
 				title: "Dokumen Pegawai",
 				icon: FolderIcon,
-				href: "/dashboard/e-archive", // TODO:
+				href: "/dashboard/e-archive/pegawai",
 			},
 		],
 	},
