@@ -35,12 +35,17 @@ Route::middleware(['auth'])->group(function (): void {
     Route::get('/dashboard/e-archive', [FolderController::class, 'index'])
         ->name('folders.index');
 
-    Route::get('/dashboard/e-archive/{folderId}', [FolderController::class, 'show'])
-        ->name('folders.show');
+
 
     Route::post('/dashboard/e-archive', [FileController::class, 'store'])
         ->name('files.store');
     Route::delete('/dashboard/e-archive/{file}', [FileController::class, 'destroy'])->name('files.destroy');
+    Route::get('/dashboard/e-archive/kerja', [FolderController::class, 'getMyDocumentKinerja'])
+        ->name('folders.earchive.kerja-me');
+    Route::get('/dashboard/e-archive/pegawai', [FolderController::class, 'getMyDocumentKepegawaian'])
+        ->name('folders.earchive.pegawai-me');
+    Route::get('/dashboard/e-archive/{folderId}', [FolderController::class, 'show'])
+        ->name('folders.show');
     // Route::get('/dashboard/weekly-report', [WeeklyReportController::class, 'index'])->name('weekly-report.index');
     // Route::post('/dashboard/weekly-report', [WeeklyReportController::class, 'store'])->name('weekly-report.store');
     // Route::put('/dashboard/weekly-report/{weeklyReport}', [WeeklyReportController::class, 'update'])->name('weekly-report.update');
@@ -56,7 +61,14 @@ Route::middleware(['auth', 'role:sdm'])->group(function () {
     // Route::delete('/dashboard/tags/{tag}', [TagController::class, 'destroy'])->name('tags.destroy');
 });
 
-Route::middleware(['auth', 'role:wadek'])->group(function () {
+Route::middleware(['auth', 'role:kaur'])->group(function () {
+    Route::get('/dashboard/e-archive/staf/kerja', [FolderController::class, 'getStafDocumentKerjaByDivision'])
+        ->name('folders.kaur-kerja');
+    Route::get('/dashboard/e-archive/staf/pegawai', [FolderController::class, 'getStafDocumentKepegawaianByDivision'])
+        ->name('folders.kaur-pegawai');
+});
+
+Route::middleware(['auth', 'role:wadek1,wadek2'])->group(function () {
     Route::get('/dashboard/work-target/kaur', [WorkTargetController::class, 'indexKaur'])->name('dashboard.work-target.kaur');
 
     Route::get('/dashboard/user-attitude-evaluation/kaur', [UserAttitudeEvaluationController::class, 'indexKaur'])->name('dashboard.user-attitude-evaluation.kaur');
@@ -65,7 +77,14 @@ Route::middleware(['auth', 'role:wadek'])->group(function () {
         '/dashboard/work-report/kaur',
         [WorkTargetController::class, 'indexKaur'] // TODO:
     )->name('dashboard.work-report.kaur');
-
+    Route::get('/dashboard/e-archive/staf/wadek/kerja', [FolderController::class, 'getStafDokumenKinerjaByWadek'])
+        ->name('folders.wadek-kerja');
+    Route::get('/dashboard/e-archive/staf/wadek/pegawai', [FolderController::class, 'getStafDokumenKepegawaianByWadek'])
+        ->name('folders.wadek-pegawai');
+    Route::get('/dashboard/e-archive/kaur/kerja', [FolderController::class, 'getKaurDokumenKinerjaByWadek'])
+        ->name('folders.wadek-kerja-kaur');
+    Route::get('/dashboard/e-archive/kaur/pegawai', [FolderController::class, 'getKaurDokumenKepegawaianByWadek'])
+        ->name('folders.wadek-pegawai-kaur');
     // Route::get('/dashboard/performance/kaur/{id}', [WorkTargetController::class, 'show'])->name('dashboard.performance.kaur.show');
 });
 
