@@ -229,12 +229,12 @@ export const wadekArsipSections: NavSection[] = [
 			{
 				title: "Dokumen Kerja",
 				icon: FolderIcon,
-				href: "/dashboard/e-archive",
+				href: "/dashboard/e-archive/kerja",
 			},
 			{
 				title: "Dokumen Pegawai",
 				icon: FolderIcon,
-				href: "/dashboard/e-archive", // TODO:
+				href: "/dashboard/e-archive/pegawai",
 			},
 		],
 	},
@@ -244,12 +244,12 @@ export const wadekArsipSections: NavSection[] = [
 			{
 				title: "Dokumen Kerja",
 				icon: FolderIcon,
-				href: "/dashboard/e-archive",
+				href: "/dashboard/e-archive/kaur/kerja",
 			},
 			{
 				title: "Dokumen Pegawai",
 				icon: FolderIcon,
-				href: "/dashboard/e-archive", // TODO:
+				href: "/dashboard/e-archive/kaur/pegawai",
 			},
 		],
 	},
@@ -259,12 +259,12 @@ export const wadekArsipSections: NavSection[] = [
 			{
 				title: "Dokumen Kerja",
 				icon: FolderIcon,
-				href: "/dashboard/e-archive",
+				href: "/dashboard/e-archive/staf/kerja",
 			},
 			{
 				title: "Dokumen Pegawai",
 				icon: FolderIcon,
-				href: "/dashboard/e-archive", // TODO:
+				href: "/dashboard/e-archive/staf/pegawai",
 			},
 		],
 	},
@@ -304,12 +304,12 @@ export const kaurArsipSections: NavSection[] = [
 			{
 				title: "Dokumen Kerja",
 				icon: FolderIcon,
-				href: "/dashboard/e-archive",
+				href: "/dashboard/e-archive/kerja",
 			},
 			{
 				title: "Dokumen Pegawai",
 				icon: FolderIcon,
-				href: "/dashboard/e-archive", // TODO:
+				href: "/dashboard/e-archive/pegawai",
 			},
 		],
 	},
@@ -319,12 +319,12 @@ export const kaurArsipSections: NavSection[] = [
 			{
 				title: "Dokumen Kerja",
 				icon: FolderIcon,
-				href: "/dashboard/e-archive",
+				href: "/dashboard/e-archive/staf/kerja",
 			},
 			{
 				title: "Dokumen Pegawai",
 				icon: FolderIcon,
-				href: "/dashboard/e-archive", // TODO:
+				href: "/dashboard/e-archive/staf/pegawai",
 			},
 		],
 	},
