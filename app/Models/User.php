@@ -67,14 +67,14 @@ class User extends Authenticatable
 
             // Create a kepegawaian folder with the user folder as its parent
             $kepegawaianFolder = Folder::create([
-                'name' => 'Kepegawaian',
+                'name' => "Kepegawaian {$user->division}_{$user->username}",
                 'parent_id' => $userFolder->id,
                 'user_id' => $user->id,
                 'type' => 'kepegawaian',
             ]);
 
             $kinerjaFolder = Folder::create([
-                'name' => 'Kinerja',
+                'name' => "Kinerja {$user->division}_{$user->username}",
                 'parent_id' => $userFolder->id,
                 'user_id' => $user->id,
                 'type' => 'kinerja',
@@ -108,13 +108,13 @@ class User extends Authenticatable
         return $this->hasMany(File::class);
     }
 
-    public function workTargets()
-    {
-        return $this->hasMany(WorkTarget::class);
-    }
+    // public function workTargets()
+    // {
+    //     return $this->hasMany(WorkTarget::class);
+    // }
 
-    public function workTargetValues()
-    {
-        return $this->hasMany(WorkTargetValue::class);
-    }
+    // public function workTargetValues()
+    // {
+    //     return $this->hasMany(WorkTargetValue::class);
+    // }
 }
