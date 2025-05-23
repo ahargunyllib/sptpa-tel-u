@@ -14,6 +14,15 @@ import {
 	CardHeader,
 	CardTitle,
 } from "../../components/ui/card";
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "../../components/ui/dialog";
 import { LabelInput } from "../../components/ui/input";
 import {
 	Select,
@@ -61,11 +70,82 @@ export default function MyWorkTargets({
 							<FileTextIcon />
 							Bukti Kinerja
 						</Button>
-						{/* TODO */}
-						<Button variant="outline">
-							<FileTextIcon />
-							Lihat Detail Nilai
-						</Button>
+						<Dialog>
+							<DialogTrigger asChild>
+								<Button variant="outline">
+									<FileTextIcon />
+									Lihat Detail Nilai
+								</Button>
+							</DialogTrigger>
+							<DialogContent className="max-w-2xl">
+								<DialogHeader>
+									<DialogTitle>Detail Penilaian Objektif Kinerja</DialogTitle>
+								</DialogHeader>
+								<div className="overflow-x-auto">
+									<Table>
+										<TableHeader>
+											<TableRow>
+												<TableHead className="py-3 px-4 text-center">
+													No
+												</TableHead>
+												<TableHead className="py-3 px-4 w-full">
+													Target Kinerja Pegawai
+												</TableHead>
+												<TableHead className="py-3 px-4 text-center">
+													Nilai TW1
+												</TableHead>
+												<TableHead className="py-3 px-4 text-center">
+													Nilai TW2
+												</TableHead>
+												<TableHead className="py-3 px-4 text-center">
+													Nilai TW3
+												</TableHead>
+												<TableHead className="py-3 px-4 text-center">
+													Nilai TW4
+												</TableHead>
+												<TableHead className="py-3 px-4 text-center">
+													Nilai Keseluruhan
+												</TableHead>
+											</TableRow>
+										</TableHeader>
+										<TableBody>
+											{workTargets.map((workTarget, idx) => {
+												return (
+													<TableRow key={workTarget.id}>
+														<TableCell className="py-3 px-4">
+															{idx + 1}
+														</TableCell>
+														<TableCell className="py-3 w-full px-4">
+															{workTarget.name}
+														</TableCell>
+														<TableCell className="py-3 px-4 text-center">
+															{workTarget.first_quarter_score}
+														</TableCell>
+														<TableCell className="py-3 px-4 text-center">
+															{workTarget.second_quarter_score}
+														</TableCell>
+														<TableCell className="py-3 px-4 text-center">
+															{workTarget.third_quarter_score}
+														</TableCell>
+														<TableCell className="py-3 px-4 text-center">
+															{workTarget.fourth_quarter_score}
+														</TableCell>
+														<TableCell className="py-3 px-4 text-center">
+															{workTarget.final_score}
+														</TableCell>
+													</TableRow>
+												);
+											})}
+										</TableBody>
+									</Table>
+								</div>
+								<DialogFooter>
+									<DialogClose asChild>
+										<Button variant="ghost">Kembali</Button>
+									</DialogClose>
+								</DialogFooter>
+							</DialogContent>
+						</Dialog>
 					</div>
 				</CardHeader>
 				<CardContent>
