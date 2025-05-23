@@ -69,8 +69,9 @@ Route::middleware(['auth', 'role:wadek'])->group(function () {
     // Route::get('/dashboard/performance/kaur/{id}', [WorkTargetController::class, 'show'])->name('dashboard.performance.kaur.show');
 });
 
-Route::middleware(['auth', 'role:kaur,tpa'])->group(function () {
+Route::middleware(['auth', 'role:kaur,staf'])->group(function () {
     Route::get('/dashboard/work-target/me', [WorkTargetController::class, 'indexMe'])->name('dashboard.work-target.me');
+    Route::post('/dashboard/work-target/{id}/submit', [WorkTargetController::class, 'submit'])->name('dashboard.work-target.submit');
 
     Route::get('/dashboard/user-attitude-evaluation/me', [UserAttitudeEvaluationController::class, 'indexMe'])->name('dashboard.user-attitude-evaluation.me');
 
@@ -86,6 +87,11 @@ Route::middleware(['auth', 'role:kaur,tpa'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:kaur,wadek'])->group(function () {
+    Route::post('/dashboard/work-target', [WorkTargetController::class, 'store'])->name('dashboard.work-target.store');
+    Route::put('/dashboard/work-target/{id}', [WorkTargetController::class, 'update'])->name('dashboard.work-target.update');
+    Route::post('/dashboard/work-target/{id}/assess', [WorkTargetController::class, 'assess'])->name('dashboard.work-target.assess');
+    Route::delete('/dashboard/work-target/{id}', [WorkTargetController::class, 'destroy'])->name('dashboard.work-target.destroy');
+
     Route::get('/dashboard/work-target/staf', [WorkTargetController::class, 'indexStaf'])->name('dashboard.work-target.staf');
 
     Route::get('/dashboard/user-attitude-evaluation/staf', [UserAttitudeEvaluationController::class, 'indexStaf'])->name('dashboard.user-attitude-evaluation.staf');

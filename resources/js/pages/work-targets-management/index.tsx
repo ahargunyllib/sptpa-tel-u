@@ -1,7 +1,7 @@
 import DashboardLayout from "@/layouts/dashboard-layout";
 import { Head } from "@inertiajs/react";
-import PerformanceAssessmentsCard from "../../components/features/work-targets-management/performance-assements-card";
-import type { User, WorkTarget, WorkTargetValue } from "../../types";
+import PerformanceAssessmentsCard from "../../components/features/work-targets-management/performance-assessments-card";
+import type { User, WorkTarget } from "../../types";
 
 type Props = {
 	role: string;
@@ -10,27 +10,17 @@ type Props = {
 		average_second_quarter_score: number;
 		average_third_quarter_score: number;
 		average_fourth_quarter_score: number;
+	} & {
+		work_targets: WorkTarget[];
 	})[];
-	workTargets: WorkTarget[];
-	performances: (WorkTarget & WorkTargetValue)[];
 };
 
-export default function WorkTargetsManagement({
-	role,
-	staffs,
-	performances,
-	workTargets,
-}: Props) {
+export default function WorkTargetsManagement({ role, staffs }: Props) {
 	return (
 		<DashboardLayout>
 			<Head title="Target Kinerja Staf/Kaur" />
 
-			<PerformanceAssessmentsCard
-				role={role}
-				staffs={staffs}
-				performances={performances}
-				workTargets={workTargets}
-			/>
+			<PerformanceAssessmentsCard role={role} staffs={staffs} />
 		</DashboardLayout>
 	);
 }
