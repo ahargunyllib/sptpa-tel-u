@@ -172,6 +172,39 @@ class FolderController extends Controller
         //
     }
 
+    public function getKaurDokumenKepegawaianByWadek()
+    {
+        $user = Auth::user();
+        $role = $user->role;
+
+        if (!in_array($role, ['wadek1', 'wadek2'])) {
+            return response()->json([
+                'error' => 'Access denied'
+            ], 403);
+        }
+
+        $subDivisions = match ($role) {
+            'wadek1' => ['academic_service', 'laboratory'],
+            'wadek2' => ['secretary', 'student_affair', 'finance_logistic_resource'],
+        };
+
+        $subfolders = Folder::where('type', 'kepegawaian')
+            ->whereHas('user', function ($query) use ($subDivisions) {
+                $query->where('role', 'kaur')
+                    ->whereIn('division', $subDivisions);
+            })
+            ->get();
+
+        $folder = Folder::where('user_id', $user->id)
+            ->where('type', 'user')
+            ->first();
+        return Inertia::render('e-archive/staf/pegawai', [
+            'currentFolder' => $folder,
+            'breadcrumbs' => [],
+            'subfolders' => $subfolders,
+            'files' => []
+        ]);
+    }
 
     public function getStafDokumenKepegawaianByWadek()
     {
@@ -206,6 +239,42 @@ class FolderController extends Controller
             'files' => []
         ]);
     }
+
+
+    public function getKaurDokumenKinerjaByWadek()
+    {
+        $user = Auth::user();
+        $role = $user->role;
+
+        if (!in_array($role, ['wadek1', 'wadek2'])) {
+            return response()->json([
+                'error' => 'Access denied'
+            ], 403);
+        }
+
+        $subDivisions = match ($role) {
+            'wadek1' => ['academic_service', 'laboratory'],
+            'wadek2' => ['secretary', 'student_affair', 'finance_logistic_resource'],
+        };
+
+        $subfolders = Folder::where('type', 'kinerja')
+            ->whereHas('user', function ($query) use ($subDivisions) {
+                $query->where('role', 'staf')
+                    ->whereIn('division', $subDivisions);
+            })
+            ->get();
+        $folder = Folder::where('user_id', $user->id)
+            ->where('type', 'user')
+            ->first();
+
+        return Inertia::render('e-archive/staf/kerja', [
+            'currentFolder' => $folder,
+            'breadcrumbs' => [],
+            'subfolders' => $subfolders,
+            'files' => []
+        ]);
+    }
+
 
     public function getStafDokumenKinerjaByWadek()
     {
