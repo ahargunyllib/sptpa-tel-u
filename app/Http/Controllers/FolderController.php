@@ -172,6 +172,70 @@ class FolderController extends Controller
         //
     }
 
+
+    public function getMyDocumentKinerja()
+    {
+        $user = Auth::user();
+
+        $folder = Folder::where('user_id', $user->id)
+            ->where('type', 'kinerja')
+            ->first();
+
+
+        $subfolders = Folder::where('parent_id', $folder->id)
+            ->where('user_id', $user->id)
+            ->get();
+
+        $files = File::where('folder_id', $folder->id)
+            ->where('user_id', $user->id)
+            ->get();
+
+        $breadcrumbs = $this->getBreadcrumbs($folder);
+        return Inertia::render('e-archive/staf/kerja', [
+            'currentFolder' => $folder,
+            'breadcrumbs' => $breadcrumbs,
+            'subfolders' => $subfolders,
+            'files' => $files
+        ]);
+    }
+
+    public function getMyDocumentKepegawaian()
+    {
+        $user = Auth::user();
+
+        $folder = Folder::where('user_id', $user->id)
+            ->where('type', 'kepegawaian')
+            ->first();
+
+        if (!$folder) {
+            return Inertia::render('e-archive/staf/pegawai', [
+                'currentFolder' => null,
+                'breadcrumbs' => [],
+                'subfolders' => [],
+                'files' => [],
+                'message' => 'Dokumen kepegawaian tidak ditemukan'
+            ]);
+        }
+
+        $subfolders = Folder::where('parent_id', $folder->id)
+            ->where('user_id', $user->id)
+            ->get();
+
+        $files = File::where('folder_id', $folder->id)
+            ->where('user_id', $user->id)
+            ->get();
+
+        $breadcrumbs = $this->getBreadcrumbs($folder);
+
+        return Inertia::render('e-archive/staf/pegawai', [
+            'currentFolder' => $folder,
+            'breadcrumbs' => $breadcrumbs,
+            'subfolders' => $subfolders,
+            'files' => $files
+        ]);
+    }
+
+
     public function getKaurDokumenKepegawaianByWadek()
     {
         $user = Auth::user();

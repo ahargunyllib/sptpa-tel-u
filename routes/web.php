@@ -35,12 +35,17 @@ Route::middleware(['auth'])->group(function (): void {
     Route::get('/dashboard/e-archive', [FolderController::class, 'index'])
         ->name('folders.index');
 
-    Route::get('/dashboard/e-archive/{folderId}', [FolderController::class, 'show'])
-        ->name('folders.show');
+
 
     Route::post('/dashboard/e-archive', [FileController::class, 'store'])
         ->name('files.store');
     Route::delete('/dashboard/e-archive/{file}', [FileController::class, 'destroy'])->name('files.destroy');
+    Route::get('/dashboard/e-archive/kerja', [FolderController::class, 'getMyDocumentKinerja'])
+        ->name('folders.earchive.kerja-me');
+    Route::get('/dashboard/e-archive/pegawai', [FolderController::class, 'getMyDocumentKepegawaian'])
+        ->name('folders.earchive.pegawai-me');
+    Route::get('/dashboard/e-archive/{folderId}', [FolderController::class, 'show'])
+        ->name('folders.show');
     // Route::get('/dashboard/weekly-report', [WeeklyReportController::class, 'index'])->name('weekly-report.index');
     // Route::post('/dashboard/weekly-report', [WeeklyReportController::class, 'store'])->name('weekly-report.store');
     // Route::put('/dashboard/weekly-report/{weeklyReport}', [WeeklyReportController::class, 'update'])->name('weekly-report.update');
