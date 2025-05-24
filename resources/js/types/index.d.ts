@@ -3,8 +3,8 @@ export type User = {
 	name: string;
 	email: string;
 	nip: string;
-	location?: string;
-	division?:
+	location: string;
+	division:
 		| "academic_service"
 		| "laboratory"
 		| "secretary"
