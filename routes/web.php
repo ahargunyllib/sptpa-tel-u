@@ -5,6 +5,7 @@ use App\Http\Controllers\FolderController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserAttitudeEvaluationController;
+use App\Http\Controllers\WorkReportController;
 use App\Http\Controllers\WorkTargetController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -75,7 +76,7 @@ Route::middleware(['auth', 'role:wadek1,wadek2'])->group(function () {
 
     Route::get(
         '/dashboard/work-report/kaur',
-        [WorkTargetController::class, 'indexKaur'] // TODO:
+        [WorkReportController::class, 'indexKaur']
     )->name('dashboard.work-report.kaur');
     Route::get('/dashboard/e-archive/staf/wadek/kerja', [FolderController::class, 'getStafDokumenKinerjaByWadek'])
         ->name('folders.wadek-kerja');
@@ -96,7 +97,7 @@ Route::middleware(['auth', 'role:kaur,staf'])->group(function () {
 
     Route::get(
         '/dashboard/work-report/me',
-        [WorkTargetController::class, 'indexMe'] // TODO:
+        [WorkReportController::class, 'indexMe']
     )->name('dashboard.work-report.me');
 
     // Route::get('/dashboard/performance/me', [WorkTargetController::class, 'myWorkTargets'])->name('dashboard.performance.me');
@@ -117,7 +118,7 @@ Route::middleware(['auth', 'role:kaur,wadek'])->group(function () {
 
     Route::get(
         '/dashboard/work-report/staf',
-        [WorkTargetController::class, 'indexStaf'] // TODO:
+        [WorkReportController::class, 'indexStaf']
     )->name('dashboard.work-report.staf');
 
     // Route::get('/dashboard/performance/tpa', [WorkTargetController::class, 'index'])->name('dashboard.performance.tpa');
