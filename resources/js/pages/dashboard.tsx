@@ -1,20 +1,24 @@
+import DataPegawaiCard from "@/components/dashboard/data-pegawai-card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AuthenticatedLayout from "@/layouts/dashboard-layout";
-import { Head } from "@inertiajs/react";
+import { PageProps } from "@/types";
+import { Head, usePage } from "@inertiajs/react";
 
 export default function Dashboard() {
-	return (
-		<AuthenticatedLayout
-			header={
-				<h2 className="text-xl font-semibold leading-tight text-gray-800">
-					Dashboard
-				</h2>
-			}
-		>
-			<Head title="Dashboard" />
+    const user = usePage<PageProps>().props.auth.user;
 
-			<div className="py-12">
-				<div className="p-6 text-gray-900">You're logged in!</div>
-			</div>
-		</AuthenticatedLayout>
-	);
+    return (
+        <AuthenticatedLayout
+            header={
+                <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                    Dashboard
+                </h2>
+            }
+        >
+            <section>
+				<DataPegawaiCard user={user} />
+				
+			</section>
+        </AuthenticatedLayout>
+    );
 }

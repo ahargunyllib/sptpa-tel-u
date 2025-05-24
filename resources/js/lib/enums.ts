@@ -26,3 +26,11 @@ export const WorkTargetCategory = {
 	medium: "Sedang",
 	heavy: "Berat",
 } as const;
+
+export const getRoleLabel = (role: keyof typeof UserRoles) => {
+    return UserRoles[role] || role;
+};
+
+export const getDivisionLabel = (division: keyof typeof UserDivisions) => {
+    return UserDivisions[division] || division;
+};
