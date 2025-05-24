@@ -136,3 +136,13 @@ export type UserFeedback = {
 	kaur_feedback?: string;
 	wadek_feedback?: string;
 };
+
+export type WorkReport = {
+	id: string;
+	work_target_id: string;
+	work_target: WorkTarget;
+	creator_id: string;
+	creator: User;
+	content: string;
+	created_at: string;
+};
