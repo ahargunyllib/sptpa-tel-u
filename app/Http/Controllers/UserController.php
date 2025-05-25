@@ -12,10 +12,10 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    
+
     use Log;
 
-    
+
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 10);
@@ -43,7 +43,7 @@ class UserController extends Controller
             'page' => $users->currentPage(),
             'limit' => $users->perPage(),
         ];
-        
+
 
         return Inertia::render('user/index', [
             'users' => [
@@ -67,23 +67,28 @@ class UserController extends Controller
     // Create a new user
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'nip' => 'required|string|unique:users',
-            'location' => 'nullable|string',
-            'division' => 'nullable',
-            'role' => 'required',
-            'password' => 'required|min:3',
-        ]);
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string',
+                'email' => 'required|email|unique:users',
+                'nip' => 'required|string|unique:users',
+                'location' => 'nullable|string',
+                'division' => 'nullable',
+                'role' => 'required',
+                'password' => 'required|min:3',
+            ]);
 
-        $validated['id'] = Str::uuid();
-        $validated['password'] = bcrypt($validated['password']);
+            $validated['id'] = Str::uuid();
+            $validated['password'] = bcrypt($validated['password']);
 
-        User::create($validated);
-        $this->log("Membuat user dengan nama : {$validated['name']}");
+            User::create($validated);
+            $this->log("Membuat user dengan nama : {$validated['name']}");
 
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
+            return redirect()->route('users.index')->with('success', 'User created successfully.');
+        } catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()->withErrors(['error' => 'Gagal membuat user: ' . $e->getMessage()]);
+        }
     }
 
     public function edit($id)
