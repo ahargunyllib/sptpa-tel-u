@@ -194,68 +194,77 @@ export default function UsersIndex({
 							</TableHeader>
 							<TableBody>
 								{users.data.length > 0 ? (
-									users.data.map((user) => (
-										<TableRow key={user.id}>
-											<TableCell className="py-3 px-4">{user.id}</TableCell>
-											<TableCell className="py-3 px-4">{user.name}</TableCell>
-											<TableCell className="py-3 px-4">{user.nip}</TableCell>
-											<TableCell className="py-3 px-4">{user.email}</TableCell>
-											<TableCell className="py-3 px-4">
-												{user.division ?? ""}
-											</TableCell>
-											<TableCell className="py-3 px-4">
-												{user.role ?? ""}
-											</TableCell>
-											<TableCell className="py-3 px-4">
-												<div className="flex gap-1 items-center">
-													<Link href={`/dashboard/user/${user.id}`}>
-														<PencilLine className="text-warning-80" />
-													</Link>
-													<AlertDialog
-														open={isDialogOpen}
-														onOpenChange={setIsDialogOpen}
-													>
-														<AlertDialogTrigger asChild>
-															<Trash
-																className="text-danger-80"
-																onClick={() => {
-																	setSelectedUserId(user.id);
-																	setIsDialogOpen(true);
-																}}
-															/>
-														</AlertDialogTrigger>
-														<AlertDialogContent>
-															<AlertDialogHeader>
-																<AlertDialogTitle>Hapus User?</AlertDialogTitle>
-																<AlertDialogDescription>
-																	Apakah kamu yakin ingin menghapus user ini?
-																	Tindakan ini tidak dapat dibatalkan.
-																</AlertDialogDescription>
-															</AlertDialogHeader>
-															<AlertDialogFooter>
-																<AlertDialogCancel>Batal</AlertDialogCancel>
-																<AlertDialogAction
+									users.data.map((user, index) => {
+										const { page, limit } = users.meta;
+										const number = (page - 1) * limit + index + 1;
+
+										return (
+											<TableRow key={user.id}>
+												<TableCell className="py-3 px-4">{number}</TableCell>
+												<TableCell className="py-3 px-4">{user.name}</TableCell>
+												<TableCell className="py-3 px-4">{user.nip}</TableCell>
+												<TableCell className="py-3 px-4">
+													{user.email}
+												</TableCell>
+												<TableCell className="py-3 px-4">
+													{user.division ?? ""}
+												</TableCell>
+												<TableCell className="py-3 px-4">
+													{user.role ?? ""}
+												</TableCell>
+												<TableCell className="py-3 px-4">
+													<div className="flex gap-1 items-center">
+														<Link href={`/dashboard/user/${user.id}`}>
+															<PencilLine className="text-warning-80" />
+														</Link>
+														<AlertDialog
+															open={isDialogOpen}
+															onOpenChange={setIsDialogOpen}
+														>
+															<AlertDialogTrigger asChild>
+																<Trash
+																	className="text-danger-80"
 																	onClick={() => {
-																		if (selectedUserId)
-																			handleDeleteUser(selectedUserId);
+																		setSelectedUserId(user.id);
+																		setIsDialogOpen(true);
 																	}}
-																	className="bg-destructive text-white hover:bg-destructive/90"
-																>
-																	Hapus
-																</AlertDialogAction>
-															</AlertDialogFooter>
-														</AlertDialogContent>
-													</AlertDialog>
-												</div>
-											</TableCell>
-											{/* <TableCell className="py-3 px-4">
+																/>
+															</AlertDialogTrigger>
+															<AlertDialogContent>
+																<AlertDialogHeader>
+																	<AlertDialogTitle>
+																		Hapus User?
+																	</AlertDialogTitle>
+																	<AlertDialogDescription>
+																		Apakah kamu yakin ingin menghapus user ini?
+																		Tindakan ini tidak dapat dibatalkan.
+																	</AlertDialogDescription>
+																</AlertDialogHeader>
+																<AlertDialogFooter>
+																	<AlertDialogCancel>Batal</AlertDialogCancel>
+																	<AlertDialogAction
+																		onClick={() => {
+																			if (selectedUserId)
+																				handleDeleteUser(selectedUserId);
+																		}}
+																		className="bg-destructive text-white hover:bg-destructive/90"
+																	>
+																		Hapus
+																	</AlertDialogAction>
+																</AlertDialogFooter>
+															</AlertDialogContent>
+														</AlertDialog>
+													</div>
+												</TableCell>
+												{/* <TableCell className="py-3 px-4">
                                                 {format(
                                                     new Date(user.updated_at),
                                                     "yyyy-MM-dd"
                                                 )}
                                             </TableCell> */}
-										</TableRow>
-									))
+											</TableRow>
+										);
+									})
 								) : (
 									<TableRow>
 										<TableCell colSpan={7} className="h-24 text-center">
