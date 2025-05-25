@@ -16,6 +16,7 @@ class Folder extends Model
         'name',
         'parent_id',
         'user_id',
+        'type',
     ];
 
     public function files(): HasMany
