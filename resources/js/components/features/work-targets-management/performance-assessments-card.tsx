@@ -94,6 +94,8 @@ export default function PerformanceAssessmentsCard({
 										</TableCell>
 										<TableCell className="py-3 w-full px-4">
 											<PerformanceAssessmentsDialog
+												staffId={staff.id}
+												staffName={staff.name}
 												performances={staff.work_targets}
 											/>
 										</TableCell>

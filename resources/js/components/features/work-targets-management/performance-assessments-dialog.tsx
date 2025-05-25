@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { WorkTargetUnit } from "../../../lib/enums";
-import type { WorkTarget } from "../../../types";
+import type { User, WorkTarget } from "../../../types";
 import { Button } from "../../ui/button";
 import {
 	Dialog,
@@ -30,8 +30,12 @@ import {
 } from "../../ui/table";
 
 export default function PerformanceAssessmentsDialog({
+	staffName,
+	staffId,
 	performances,
 }: {
+	staffName: User["name"];
+	staffId: User["id"];
 	performances: WorkTarget[];
 }) {
 	const [selectedWorkTargetId, setSelectedWorkTargetId] = useState<
@@ -52,7 +56,7 @@ export default function PerformanceAssessmentsDialog({
 			</DialogTrigger>
 			<DialogContent className="max-w-4xl">
 				<DialogHeader className="flex flex-row items-center justify-between">
-					<DialogTitle>Penilaian Kinerja: name</DialogTitle>
+					<DialogTitle>Penilaian Kinerja: {staffName}</DialogTitle>
 					<Button variant="outline">
 						<FileTextIcon />
 						Bukti kinerja
