@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Log extends Model
 {
+    protected $fillable = [
+        'user_id',
+        'description',
+        'ip_address',
+    ];
+    
     use HasUlid;
     public function user(): BelongsTo
     {
