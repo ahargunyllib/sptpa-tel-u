@@ -86,7 +86,6 @@ class UserController extends Controller
 
             return redirect()->route('users.index')->with('success', 'User created successfully.');
         } catch (\Exception $e) {
-            dd($e);
             return redirect()->back()->withErrors(['error' => 'Gagal membuat user: ' . $e->getMessage()]);
         }
     }
