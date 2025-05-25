@@ -71,14 +71,14 @@ class User extends Authenticatable
 
             // Create a kepegawaian folder with the user folder as its parent
             $kepegawaianFolder = Folder::create([
-                'name' => "Kepegawaian {$user->division}_{$user->username}",
+                'name' => "Kepegawaian {$user->name}",
                 'parent_id' => $userFolder->id,
                 'user_id' => $user->id,
                 'type' => 'kepegawaian',
             ]);
 
             $kinerjaFolder = Folder::create([
-                'name' => "Kinerja {$user->division}_{$user->username}",
+                'name' => "Kinerja {$user->name}",
                 'parent_id' => $userFolder->id,
                 'user_id' => $user->id,
                 'type' => 'kinerja',

@@ -257,8 +257,7 @@ class FolderController extends Controller
             })
             ->get();
 
-        $currentFolder = Folder::where('user_id', $user->id)
-            ->where('type', 'user')
+        $currentFolder = Folder::where('type', 'user')
             ->first();
 
         return Inertia::render('e-archive/staf/kerja', [
@@ -288,8 +287,7 @@ class FolderController extends Controller
             })
             ->get();
 
-        $currentFolder = Folder::where('user_id', $user->id)
-            ->where('type', 'user')
+        $currentFolder = Folder::where('type', 'user')
             ->first();
 
         return Inertia::render('e-archive/staf/kerja', [
@@ -324,8 +322,7 @@ class FolderController extends Controller
             })
             ->get();
 
-        $folder = Folder::where('user_id', $user->id)
-            ->where('type', 'user')
+        $folder = Folder::where('type', 'user')
             ->first();
         return Inertia::render('e-archive/staf/pegawai', [
             'currentFolder' => $folder,
@@ -358,8 +355,7 @@ class FolderController extends Controller
             })
             ->get();
 
-        $folder = Folder::where('user_id', $user->id)
-            ->where('type', 'user')
+        $folder = Folder::where('type', 'user')
             ->first();
         return Inertia::render('e-archive/staf/pegawai', [
             'currentFolder' => $folder,
@@ -392,8 +388,7 @@ class FolderController extends Controller
                     ->whereIn('division', $subDivisions);
             })
             ->get();
-        $folder = Folder::where('user_id', $user->id)
-            ->where('type', 'user')
+        $folder = Folder::where('type', 'user')
             ->first();
 
         return Inertia::render('e-archive/staf/kerja', [
@@ -427,8 +422,7 @@ class FolderController extends Controller
                     ->whereIn('division', $subDivisions);
             })
             ->get();
-        $folder = Folder::where('user_id', $user->id)
-            ->where('type', 'user')
+        $folder = Folder::where('type', 'user')
             ->first();
 
         return Inertia::render('e-archive/staf/kerja', [
