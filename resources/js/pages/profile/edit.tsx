@@ -142,24 +142,26 @@ export default function Edit({
 
 								<AvatarFallback>{user.name?.charAt(0) || "-"}</AvatarFallback>
 							</Avatar>
-							<div className="w-full space-y-2">
-								<Button
-									variant="ghost"
-									className="w-full justify-start"
-									onClick={handlePhotoUpload}
-								>
-									<ImagePlus className="mr-2 h-4 w-4" />
-									<span>Ubah foto profile</span>
-								</Button>
-								<Button
-									variant="destructive"
-									className="w-full justify-start "
-									onClick={handlePhotoDelete}
-								>
-									<Trash2 className="mr-2 h-4 w-4" />
-									Hapus foto profile
-								</Button>
-							</div>
+							{isEditing && (
+								<div className="w-full space-y-2">
+									<Button
+										variant="ghost"
+										className="w-full justify-start"
+										onClick={handlePhotoUpload}
+									>
+										<ImagePlus className="mr-2 h-4 w-4" />
+										<span>Ubah foto profile</span>
+									</Button>
+									<Button
+										variant="destructive"
+										className="w-full justify-start "
+										onClick={handlePhotoDelete}
+									>
+										<Trash2 className="mr-2 h-4 w-4" />
+										Hapus foto profile
+									</Button>
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
