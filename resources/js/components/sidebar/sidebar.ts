@@ -121,7 +121,7 @@ export const sdmPenilaianSections: NavSection[] = [
 		title: "MANAJEMEN DATA & LAPORAN",
 		items: [
 			{
-				title: "Data Pegawai",
+				title: "Data Pengguna",
 				icon: Users,
 				href: "/dashboard/user",
 			},

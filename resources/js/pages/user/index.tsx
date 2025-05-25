@@ -131,7 +131,7 @@ export default function UsersIndex({
 							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 								<div className="space-y-2">
 									<label htmlFor="username" className="text-sm font-medium">
-										Username
+										Nama
 									</label>
 									<Input
 										id="username"
@@ -144,14 +144,14 @@ export default function UsersIndex({
 												username: e.target.value,
 											});
 										}}
-										placeholder="Search by username"
+										placeholder="Cari berdasarkan nama"
 										className="w-full bg-transparent"
 									/>
 								</div>
 
 								<div className="space-y-2">
 									<label htmlFor="division" className="text-sm font-medium">
-										Division
+										Divisi
 									</label>
 									<Input
 										id="division"
@@ -164,7 +164,7 @@ export default function UsersIndex({
 												division: e.target.value,
 											});
 										}}
-										placeholder="Search by division"
+										placeholder="Cari berdasarkan divisi"
 										className="w-full bg-transparent"
 									/>
 								</div>
