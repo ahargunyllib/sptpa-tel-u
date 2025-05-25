@@ -86,6 +86,7 @@ class UserAttitudeEvaluationController extends Controller
     public function indexKaur(Request $request)
     {
         $userRole = $request->user()->role;
+        $userDivision = $request->user()->division;
 
         $selectFields = [
             'users.*',
@@ -113,6 +114,7 @@ class UserAttitudeEvaluationController extends Controller
 
         $userAttitudeEvaluations = DB::table('users')
             ->where('users.role', 'kaur')
+            ->where('users.division', $userDivision)
             ->leftJoin('user_attitude_evaluations', 'user_attitude_evaluations.user_id', '=', 'users.id')
             ->leftJoin('user_feedbacks', 'user_feedbacks.user_id', '=', 'users.id')
             ->select(...$selectFields)
@@ -127,6 +129,7 @@ class UserAttitudeEvaluationController extends Controller
     public function indexStaf(Request $request)
     {
         $userRole = $request->user()->role;
+        $userDivision = $request->user()->division;
 
         $selectFields = [
             'users.*',
@@ -154,6 +157,7 @@ class UserAttitudeEvaluationController extends Controller
 
         $userAttitudeEvaluations = DB::table('users')
             ->where('users.role', 'staf')
+            ->where('users.division', $userDivision)
             ->leftJoin('user_attitude_evaluations', 'user_attitude_evaluations.user_id', '=', 'users.id')
             ->leftJoin('user_feedbacks', 'user_feedbacks.user_id', '=', 'users.id')
             ->select(...$selectFields)
