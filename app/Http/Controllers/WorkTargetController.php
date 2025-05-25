@@ -359,11 +359,11 @@ class WorkTargetController extends Controller
             // Validate the request data
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
-                'unit' => 'optional|in:at_week,work_day,total,percentage',
-                'first_quarter_target' => 'optional|integer',
-                'second_quarter_target' => 'optional|integer',
-                'third_quarter_target' => 'optional|integer',
-                'fourth_quarter_target' => 'optional|integer',
+                'unit' => 'required|in:at_week,work_day,total,percentage',
+                'first_quarter_target' => 'required|integer',
+                'second_quarter_target' => 'required|integer',
+                'third_quarter_target' => 'required|integer',
+                'fourth_quarter_target' => 'required|integer',
             ]);
 
             // Begin a database transaction
@@ -386,6 +386,8 @@ class WorkTargetController extends Controller
 
             return back();
         } catch (\Exception $e) {
+            dd($e);
+
             // Rollback the transaction if an error occurs
             DB::rollBack();
 
