@@ -73,7 +73,7 @@ class UserController extends Controller
             'nip' => 'required|string|unique:users',
             'division' => 'required',
             'role' => 'required',
-            'password' => 'required|min:8|confirmed',
+            'password' => 'required|min:3',
         ]);
 
         $validated['id'] = Str::uuid();
@@ -103,7 +103,7 @@ class UserController extends Controller
             'nip' => ['required', 'string', Rule::unique('users')->ignore($user->id)],
             'division' => 'required',
             'role' => 'required',
-            'password' => 'nullable|min:8|confirmed',
+            'password' => 'nullable|min:3',
         ]);
 
         if ($validated['password']) {

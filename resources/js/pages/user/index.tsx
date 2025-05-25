@@ -42,7 +42,7 @@ import DashboardLayout from "@/layouts/dashboard-layout";
 import { cn } from "@/lib/utils";
 import type { DataWithPagination, Log, User } from "@/types";
 import { format } from "date-fns";
-import { CalendarIcon, PencilLine, Trash, X } from "lucide-react";
+import { CalendarIcon, PencilLine, SquarePen, Trash, X } from "lucide-react";
 
 type UserFilters = {
 	username?: string;
@@ -119,56 +119,64 @@ export default function UsersIndex({
 
 			<Card className="shadow-sm">
 				<CardHeader>
-					<CardTitle>Log Website</CardTitle>
+					<CardTitle>Manajemen Akun</CardTitle>
 				</CardHeader>
-				<CardContent>
+				<CardContent className="">
 					{/* Search and Filter Form */}
-					<form
-						onSubmit={handleSubmit}
-						className="mb-6 bg-muted/40 p-4 rounded-lg"
-					>
-						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-							<div className="space-y-2">
-								<label htmlFor="username" className="text-sm font-medium">
-									Username
-								</label>
-								<Input
-									id="username"
-									name="username"
-									value={searchForm.username}
-									onChange={(e) => {
-										handleInputChange("username", e.target.value);
-										debouncedSearch({
-											...searchForm,
-											username: e.target.value,
-										});
-									}}
-									placeholder="Search by username"
-									className="w-full bg-transparent"
-								/>
-							</div>
+					<div className="flex justify-between flex-col xl:flex-row gap-4 xl:items-center">
+						<form
+							onSubmit={handleSubmit}
+							className="mb-6 bg-muted/40 p-4 rounded-lg"
+						>
+							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+								<div className="space-y-2">
+									<label htmlFor="username" className="text-sm font-medium">
+										Username
+									</label>
+									<Input
+										id="username"
+										name="username"
+										value={searchForm.username}
+										onChange={(e) => {
+											handleInputChange("username", e.target.value);
+											debouncedSearch({
+												...searchForm,
+												username: e.target.value,
+											});
+										}}
+										placeholder="Search by username"
+										className="w-full bg-transparent"
+									/>
+								</div>
 
-							<div className="space-y-2">
-								<label htmlFor="division" className="text-sm font-medium">
-									Division
-								</label>
-								<Input
-									id="division"
-									name="division"
-									value={searchForm.division}
-									onChange={(e) => {
-										handleInputChange("division", e.target.value);
-										debouncedSearch({
-											...searchForm,
-											division: e.target.value,
-										});
-									}}
-									placeholder="Search by division"
-									className="w-full bg-transparent"
-								/>
+								<div className="space-y-2">
+									<label htmlFor="division" className="text-sm font-medium">
+										Division
+									</label>
+									<Input
+										id="division"
+										name="division"
+										value={searchForm.division}
+										onChange={(e) => {
+											handleInputChange("division", e.target.value);
+											debouncedSearch({
+												...searchForm,
+												division: e.target.value,
+											});
+										}}
+										placeholder="Search by division"
+										className="w-full bg-transparent"
+									/>
+								</div>
 							</div>
-						</div>
-					</form>
+						</form>
+						<Link href={"/dashboard/user/create"}>
+							<Button variant="outline" className="gap-2">
+								<SquarePen className="h-4 w-4" />
+								Buat Akun
+							</Button>
+						</Link>
+					</div>
 
 					{/* Logs table */}
 					<div className="overflow-x-auto">

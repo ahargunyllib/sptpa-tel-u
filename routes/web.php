@@ -57,6 +57,9 @@ Route::middleware(['auth'])->group(function (): void {
 Route::middleware(['auth', 'role:sdm'])->group(function () {
     Route::get('/dashboard/log', [LogController::class, 'index']);
     Route::get('/dashboard/user', [UserController::class, 'index'])->name('users.index');
+    Route::get('/dashboard/user/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/dashboard/user', [UserController::class, 'store'])->name('users.store');
+    Route::put('/dashboard/user/{id}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/dashboard/user/{id}', [UserController::class, 'destroy']);
     // Route::get('/dashboard/tag', [TagController::class, 'index'])->name('tags.index');
     // Route::post('/dashboard/tags', [TagController::class, 'store'])->name('tags.store');
