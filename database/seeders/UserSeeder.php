@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
         $roles = ['staf', 'kaur', 'wadek1', 'wadek2', 'sdm'];
         $divisions = ['academic_service', 'laboratory', 'secretary', 'student_affair', 'finance_logistic_resource'];
 
-        $role = $roles[0];
+        $role = $roles[4];
         $division = $divisions[4];
         $i = 1;
 
