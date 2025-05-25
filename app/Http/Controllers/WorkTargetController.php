@@ -680,9 +680,11 @@ class WorkTargetController extends Controller
                 'thumbnail' => $thumbnail,
             ]);
 
+            $this->log("Mengunggah bukti kinerja untuk target kinerja dengan ID : {$id}");
+
             // Commit the transaction
             DB::commit();
-            $this->log("Mengunggah bukti kinerja untuk target kinerja dengan ID : {$id}");
+
             return back()->with('success', 'Evidence uploaded successfully.');
         } catch (\Exception $e) {
             dd($e);
