@@ -216,9 +216,26 @@ function PerformanceAssessmentRow({
 							return;
 						}
 
+						const val = Number(value);
+						if (val < 0) {
+							setScores((prev) => ({
+								...prev,
+								first_quarter_score: 0,
+							}));
+							return;
+						}
+
+						if (val > 120) {
+							setScores((prev) => ({
+								...prev,
+								first_quarter_score: 120,
+							}));
+							return;
+						}
+
 						setScores((prev) => ({
 							...prev,
-							first_quarter_score: Number(value),
+							first_quarter_score: val,
 						}));
 					}}
 					disabled={selectedWorkTargetId !== workTarget.id}
@@ -241,9 +258,26 @@ function PerformanceAssessmentRow({
 							return;
 						}
 
+						const val = Number(value);
+						if (val < 0) {
+							setScores((prev) => ({
+								...prev,
+								second_quarter_score: 0,
+							}));
+							return;
+						}
+
+						if (val > 120) {
+							setScores((prev) => ({
+								...prev,
+								second_quarter_score: 120,
+							}));
+							return;
+						}
+
 						setScores((prev) => ({
 							...prev,
-							second_quarter_score: Number(value),
+							second_quarter_score: val,
 						}));
 					}}
 					disabled={selectedWorkTargetId !== workTarget.id}
@@ -266,9 +300,26 @@ function PerformanceAssessmentRow({
 							return;
 						}
 
+						const val = Number(value);
+						if (val < 0) {
+							setScores((prev) => ({
+								...prev,
+								third_quarter_score: 0,
+							}));
+							return;
+						}
+
+						if (val > 120) {
+							setScores((prev) => ({
+								...prev,
+								third_quarter_score: 120,
+							}));
+							return;
+						}
+
 						setScores((prev) => ({
 							...prev,
-							third_quarter_score: Number(value),
+							third_quarter_score: val,
 						}));
 					}}
 					disabled={selectedWorkTargetId !== workTarget.id}
@@ -291,9 +342,26 @@ function PerformanceAssessmentRow({
 							return;
 						}
 
+						const val = Number(value);
+						if (val < 0) {
+							setScores((prev) => ({
+								...prev,
+								fourth_quarter_score: 0,
+							}));
+							return;
+						}
+
+						if (val > 120) {
+							setScores((prev) => ({
+								...prev,
+								fourth_quarter_score: 120,
+							}));
+							return;
+						}
+
 						setScores((prev) => ({
 							...prev,
-							fourth_quarter_score: Number(value),
+							fourth_quarter_score: val,
 						}));
 					}}
 					disabled={selectedWorkTargetId !== workTarget.id}
@@ -316,9 +384,26 @@ function PerformanceAssessmentRow({
 							return;
 						}
 
+						const val = Number(value);
+						if (val < 0) {
+							setScores((prev) => ({
+								...prev,
+								all_score: 0,
+							}));
+							return;
+						}
+
+						if (val > 120) {
+							setScores((prev) => ({
+								...prev,
+								all_score: 120,
+							}));
+							return;
+						}
+
 						setScores((prev) => ({
 							...prev,
-							all_score: Number(value),
+							all_score: val,
 						}));
 					}}
 					disabled={selectedWorkTargetId !== workTarget.id}
