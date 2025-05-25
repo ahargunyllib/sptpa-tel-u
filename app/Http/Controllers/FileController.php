@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\File;
 use App\Models\Folder;
+use App\Traits\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -12,6 +13,9 @@ use Inertia\Inertia;
 
 class FileController extends Controller
 {
+
+    use Log;
+
     /**
      * Display a listing of the resource.
      */
@@ -71,7 +75,7 @@ class FileController extends Controller
                 'folder_id' => $request->folder_id,
                 'user_id' => Auth::id(),
             ]);
-
+            $this->log("Mengunggah file dengan nama: {$fileName} ke folder: {$folder->name}");
             return redirect()->back()->with('success', 'File berhasil ditambahkan.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'File gagal ditambahkan.');
@@ -126,7 +130,8 @@ class FileController extends Controller
             }
 
             $file->delete();
-
+            
+            $this->log("Menghapus file dengan nama: {$file->name}");
             return redirect()->back()->with('success', 'File deleted successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'File gagal ditambahkan.');
@@ -234,7 +239,7 @@ class FileController extends Controller
                     'folder_id' => $folder->id,
                     'user_id' => Auth::id(),
                 ]);
-
+                $this->log("Mengunggah file rubrikasi dengan nama: {$fileName}");
                 return redirect()->back()->with('success', 'File rubrikasi berhasil ditambahkan.');
             }
         } catch (\Exception $e) {
@@ -287,7 +292,7 @@ class FileController extends Controller
                     'path' => $path,
                     'thumbnail' => $thumbnail,
                 ]);
-
+                $this->log("Mengunggah file panduan dengan nama: {$fileName}");
                 return redirect()->back()->with('success', 'File panduan berhasil diperbarui.');
             } else {
                 File::create([
@@ -299,7 +304,7 @@ class FileController extends Controller
                     'folder_id' => $folder->id,
                     'user_id' => Auth::id(),
                 ]);
-
+                $this->log("Mengunggah file panduan dengan nama: {$fileName}");
                 return redirect()->back()->with('success', 'File panduan berhasil ditambahkan.');
             }
         } catch (\Exception $e) {

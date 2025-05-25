@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\UserAttitudeEvaluation;
 use App\Models\UserFeedback;
+use App\Traits\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -11,6 +12,8 @@ use Symfony\Component\Uid\Ulid;
 
 class UserAttitudeEvaluationController extends Controller
 {
+    use Log;
+
     /**
      * Display a listing of the resource.
      */
@@ -218,14 +221,14 @@ class UserAttitudeEvaluationController extends Controller
                     'user_id' => $userId,
                     'evidence' => $validatedData['evidence'],
                 ]);
-
+                $this->log("Membuat evaluasi sikap pengguna dengan ID: {$userId}");
                 return back()->with('success', 'User attitude evaluation created successfully.');
             }
 
             $userAttitudeEvaluation->evidance = $validatedData['evidance'];
 
             $userAttitudeEvaluation->save();
-
+            $this->log("Mengupdate evaluasi sikap pengguna dengan ID: {$userId}");
             return back()->with('success', 'User attitude evaluation updated successfully.');
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to update user attitude evaluation: ' . $e->getMessage());
@@ -319,7 +322,7 @@ class UserAttitudeEvaluationController extends Controller
             }
 
             DB::commit();
-
+            $this->log("Mengupdate evaluasi sikap pengguna dengan ID: {$user_id}");
             return back()->with('success', 'User attitude evaluation updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
