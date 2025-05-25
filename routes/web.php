@@ -63,6 +63,11 @@ Route::middleware(['auth', 'role:sdm'])->group(function () {
     Route::get('/dashboard/user/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/dashboard/user/{id}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/dashboard/user/{id}', [UserController::class, 'destroy']);
+    Route::get('/dashboard/upload/rubrikasi',[FileController::class, 'rubrikasiIndex'])->name('files.rubrikasiIndex');
+    Route::post('/dashboard/file/rubrikasi',[FileController::class, 'rubrikasiUpload'])->name('files.rubrikasiUpload');
+    Route::get('/dashboard/upload/panduan',[FileController::class, 'panduanIndex'])->name('files.panduanIndex');
+    Route::post('/dashboard/file/panduan',[FileController::class, 'panduanUpload'])->name('files.panduanUpload');
+
     // Route::get('/dashboard/tag', [TagController::class, 'index'])->name('tags.index');
     // Route::post('/dashboard/tags', [TagController::class, 'store'])->name('tags.store');
     // Route::patch('/dashboard/tags/{tag}', [TagController::class, 'update'])->name('tags.update');

@@ -138,12 +138,12 @@ export const sdmPenilaianSections: NavSection[] = [
 			{
 				title: "Unggah Rubrikasi",
 				icon: Upload,
-				href: "/dashboard/upload", // TODO
+				href: "/dashboard/upload/rubrikasi", // TODO
 			},
 			{
 				title: "Unggah Panduan",
 				icon: Upload,
-				href: "/dashboard/upload", // TODO
+				href: "/dashboard/upload/panduan", // TODO
 			},
 		],
 	},
