@@ -6,6 +6,7 @@ use App\Models\File;
 use App\Models\User;
 use App\Models\WorkTarget;
 use App\Models\WorkTargetValue;
+use App\Traits\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -13,6 +14,9 @@ use Symfony\Component\Uid\Ulid;
 
 class WorkTargetController extends Controller
 {
+
+    use Log;
+
     /**
      * Display a listing of the resource.
      */
@@ -318,7 +322,7 @@ class WorkTargetController extends Controller
             ]);
 
             DB::commit();
-
+            $this->log("Membuat target kinerja dengan nama : {$validatedData['name']}");
             return back();
         } catch (\Exception $e) {
             // Rollback the transaction if an error occurs
@@ -392,7 +396,7 @@ class WorkTargetController extends Controller
 
             // Commit the transaction
             DB::commit();
-
+            $this->log("Mengubah target kinerja dengan ID : {$id}");
             return back();
         } catch (\Exception $e) {
             // Rollback the transaction if an error occurs
@@ -431,7 +435,7 @@ class WorkTargetController extends Controller
 
             // Commit the transaction
             DB::commit();
-
+            $this->log("Menilai target kinerja dengan ID : {$id}");
             return back();
         } catch (\Exception $e) {
             // Rollback the transaction if an error occurs
@@ -466,7 +470,7 @@ class WorkTargetController extends Controller
                     'category' => $validatedData['category'],
                     'updated_at' => now(),
                 ]);
-
+            $this->log("Submit target kinerja dengan ID : {$id}");
             // Commit the transaction
             DB::commit();
 
@@ -495,7 +499,7 @@ class WorkTargetController extends Controller
 
             // Commit the transaction
             DB::commit();
-
+            $this->log("Menghapus target kinerja dengan ID : {$id}");
             return back();
         } catch (\Exception $e) {
             // Rollback the transaction if an error occurs
@@ -675,6 +679,8 @@ class WorkTargetController extends Controller
                 'user_id' => $user->id,
                 'thumbnail' => $thumbnail,
             ]);
+
+            $this->log("Mengunggah bukti kinerja untuk target kinerja dengan ID : {$id}");
 
             // Commit the transaction
             DB::commit();

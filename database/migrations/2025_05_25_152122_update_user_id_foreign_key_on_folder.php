@@ -12,10 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('folders', function (Blueprint $table) {
+
             $table->dropForeign(['user_id']);
 
+            // Ubah kolom user_id menjadi nullable
+            $table->uuid('user_id')->nullable()->change();
+
+            // Tambahkan foreign key baru dengan onDelete set null
             $table->foreign('user_id')
-                ->nullable()
                 ->references('id')->on('users')
                 ->onDelete('set null');
         });

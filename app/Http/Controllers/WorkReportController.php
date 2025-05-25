@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Traits\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -9,6 +10,8 @@ use Symfony\Component\Uid\Ulid;
 
 class WorkReportController extends Controller
 {
+    use Log;
+
     /**
      * Display a listing of the resource.
      */
@@ -401,7 +404,7 @@ class WorkReportController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-
+            $this->log("Membuat laporan kerja untuk target ID: {$validatedData['work_target_id']}");
             return redirect()->back()->with('success', 'Laporan kerja berhasil dibuat.');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Gagal membuat laporan kerja: ' . $e->getMessage()]);
@@ -427,7 +430,7 @@ class WorkReportController extends Controller
                     'content' => $validatedData['content'],
                     'updated_at' => now(),
                 ]);
-
+            $this->log("Mengupdate laporan kerja dengan ID: {$id}");
             return redirect()->back()->with('success', 'Laporan kerja berhasil diperbarui.');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Gagal memperbarui laporan kerja: ' . $e->getMessage()]);
@@ -446,7 +449,7 @@ class WorkReportController extends Controller
                 ->where('id', $id)
                 ->where('creator_id', $user->id)
                 ->delete();
-
+            $this->log("Menghapus laporan kerja dengan ID: {$id}");
             return redirect()->back()->with('success', 'Laporan kerja berhasil dihapus.');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Gagal menghapus laporan kerja: ' . $e->getMessage()]);
