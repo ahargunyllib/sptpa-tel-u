@@ -188,10 +188,42 @@ class WorkTargetController extends Controller
 
     public function indexKaur(Request $request)
     {
+        $user = $request->user();
         $role = "kaur";
+
+        $staffs = DB::table('work_targets')
+            ->rightJoin('users as assigned', 'assigned.id', '=', 'work_targets.assigned_id')
+            ->leftJoin('users as creator', 'creator.id', '=', 'work_targets.creator_id')
+            ->where('assigned.role', $role);
+
+        if ($user->role === 'wadek1') {
+            $staffs = $staffs->whereIn('assigned.division', ['academic_service', 'laboratory']);
+        } else if ($user->role === 'wadek2') {
+            $staffs = $staffs->whereIn('assigned.division', ['secretary', 'student_affair', 'finance_logistic_resource']);
+        }
+
+        $staffs = $staffs->select(
+            'assigned.*',
+            DB::raw('COALESCE(CEIL(AVG(first_quarter_score)), 0) as average_first_quarter_score'),
+            DB::raw('COALESCE(CEIL(AVG(second_quarter_score)), 0) as average_second_quarter_score'),
+            DB::raw('COALESCE(CEIL(AVG(third_quarter_score)), 0) as average_third_quarter_score'),
+            DB::raw('COALESCE(CEIL(AVG(fourth_quarter_score)), 0) as average_fourth_quarter_score'),
+        )
+            ->groupBy('assigned.id')
+            ->get();
+
+        foreach ($staffs as $staff) {
+            $staff->work_targets = DB::table('work_targets')
+                ->where('assigned_id', $staff->id)
+                ->select(
+                    'work_targets.*',
+                )
+                ->get();
+        }
+
         return Inertia::render('work-targets-management/index', [
             'role' => $role,
-            'staffs' => [],
+            'staffs' => $staffs,
         ]);
     }
 
@@ -200,31 +232,26 @@ class WorkTargetController extends Controller
         $user = $request->user();
         $role = "staf";
 
-        // $staffs = DB::table('work_target_values')
-        //     ->rightJoin('users', 'users.id', '=', 'work_target_values.user_id')
-        //     ->where('users.role', $role)
-        //     ->select(
-        //         'users.*',
-        //         DB::raw('CEIL(COALESCE(AVG(first_quarter_score), 0)) as average_first_quarter_score'),
-        //         DB::raw('CEIL(COALESCE(AVG(second_quarter_score), 0)) as average_second_quarter_score'),
-        //         DB::raw('CEIL(COALESCE(AVG(third_quarter_score), 0)) as average_third_quarter_score'),
-        //         DB::raw('CEIL(COALESCE(AVG(fourth_quarter_score), 0)) as average_fourth_quarter_score'),
-        //     )
-        //     ->groupBy('users.id')
-        //     ->get();
-
         $staffs = DB::table('work_targets')
             ->rightJoin('users as assigned', 'assigned.id', '=', 'work_targets.assigned_id')
             ->leftJoin('users as creator', 'creator.id', '=', 'work_targets.creator_id')
-            ->where('assigned.role', $role)
-            ->where('assigned.division', $user->division)
-            ->select(
-                'assigned.*',
-                DB::raw('COALESCE(CEIL(AVG(first_quarter_score)), 0) as average_first_quarter_score'),
-                DB::raw('COALESCE(CEIL(AVG(second_quarter_score)), 0) as average_second_quarter_score'),
-                DB::raw('COALESCE(CEIL(AVG(third_quarter_score)), 0) as average_third_quarter_score'),
-                DB::raw('COALESCE(CEIL(AVG(fourth_quarter_score)), 0) as average_fourth_quarter_score'),
-            )
+            ->where('assigned.role', $role);
+
+        if ($user->role === 'kaur') {
+            $staffs = $staffs->where('assigned.division', $user->division);
+        } else if ($user->role === 'wadek1') {
+            $staffs = $staffs->whereIn('assigned.division', ['academic_service', 'laboratory']);
+        } else if ($user->role === 'wadek2') {
+            $staffs = $staffs->whereIn('assigned.division', ['secretary', 'student_affair', 'finance_logistic_resource']);
+        }
+
+        $staffs = $staffs->select(
+            'assigned.*',
+            DB::raw('COALESCE(CEIL(AVG(first_quarter_score)), 0) as average_first_quarter_score'),
+            DB::raw('COALESCE(CEIL(AVG(second_quarter_score)), 0) as average_second_quarter_score'),
+            DB::raw('COALESCE(CEIL(AVG(third_quarter_score)), 0) as average_third_quarter_score'),
+            DB::raw('COALESCE(CEIL(AVG(fourth_quarter_score)), 0) as average_fourth_quarter_score'),
+        )
             ->groupBy('assigned.id')
             ->get();
 

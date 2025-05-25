@@ -97,9 +97,23 @@ class WorkReportController extends Controller
         $division = $user->division;
         $role = 'staf';
 
-        $staffs = DB::table('users')
-            ->where('users.division', $division)
-            ->where('users.role', $role)
+        $staffs = DB::table('users');
+
+        if ($user->role === 'kaur') {
+            $staffs = $staffs->where('users.division', $division);
+        } else if ($user->role === 'wadek1') {
+            $staffs = $staffs->whereIn(
+                'users.division',
+                ['academic_service', 'laboratory']
+            );
+        } else if ($user->role === 'wadek2') {
+            $staffs = $staffs->whereIn(
+                'users.division',
+                ['secretary', 'student_affair', 'finance_logistic_resource']
+            );
+        }
+
+        $staffs = $staffs->where('users.role', $role)
             ->select(
                 'users.*'
             )
@@ -108,17 +122,33 @@ class WorkReportController extends Controller
         $workTargets = DB::table('work_targets')
             ->leftJoin('users as creator', 'creator.id', '=', 'work_targets.creator_id')
             ->leftJoin('users as assigned', 'assigned.id', '=', 'work_targets.assigned_id')
-            ->where('assigned.role', $role)
-            ->where('creator.division', $division)
-            ->select(
-                'work_targets.*',
-            )
+            ->where('assigned.role', $role);
+
+        if ($user->role === 'kaur') {
+            $workTargets = $workTargets->where('creator.division', $division);
+        } else if ($user->role === 'wadek1') {
+            $workTargets = $workTargets->whereIn('creator.division', ['academic_service', 'laboratory']);
+        } else if ($user->role === 'wadek2') {
+            $workTargets = $workTargets->whereIn('creator.division', ['secretary', 'student_affair', 'finance_logistic_resource']);
+        }
+
+        $workTargets = $workTargets->select(
+            'work_targets.*',
+        )
             ->get();
 
         $workReports = DB::table('work_reports')
-            ->leftJoin('users as creator', 'creator.id', '=', 'work_reports.creator_id')
-            ->where('creator.division', $division)
-            ->where('creator.role', $role)
+            ->leftJoin('users as creator', 'creator.id', '=', 'work_reports.creator_id');
+
+        if ($user->role === 'kaur') {
+            $workReports = $workReports->where('creator.division', $division);
+        } else if ($user->role === 'wadek1') {
+            $workReports = $workReports->whereIn('creator.division', ['academic_service', 'laboratory']);
+        } else if ($user->role === 'wadek2') {
+            $workReports = $workReports->whereIn('creator.division', ['secretary', 'student_affair', 'finance_logistic_resource']);
+        }
+
+        $workReports = $workReports->where('creator.role', $role)
             ->select(
                 'work_reports.*',
             )
@@ -207,9 +237,21 @@ class WorkReportController extends Controller
         $division = $user->division;
         $role = 'kaur';
 
-        $staffs = DB::table('users')
-            ->where('users.division', $division)
-            ->where('users.role', $role)
+        $staffs = DB::table('users');
+
+        if ($user->role === 'wadek1') {
+            $staffs = $staffs->whereIn(
+                'users.division',
+                ['academic_service', 'laboratory']
+            );
+        } else if ($user->role === 'wadek2') {
+            $staffs = $staffs->whereIn(
+                'users.division',
+                ['secretary', 'student_affair', 'finance_logistic_resource']
+            );
+        }
+
+        $staffs = $staffs->where('users.role', $role)
             ->select(
                 'users.*'
             )
@@ -218,17 +260,29 @@ class WorkReportController extends Controller
         $workTargets = DB::table('work_targets')
             ->leftJoin('users as creator', 'creator.id', '=', 'work_targets.creator_id')
             ->leftJoin('users as assigned', 'assigned.id', '=', 'work_targets.assigned_id')
-            ->where('assigned.role', $role)
-            ->where('creator.division', $division)
-            ->select(
-                'work_targets.*',
-            )
+            ->where('assigned.role', $role);
+
+        if ($user->role === 'wadek1') {
+            $workTargets = $workTargets->whereIn('creator.division', ['academic_service', 'laboratory']);
+        } else if ($user->role === 'wadek2') {
+            $workTargets = $workTargets->whereIn('creator.division', ['secretary', 'student_affair', 'finance_logistic_resource']);
+        }
+
+        $workTargets = $workTargets->select(
+            'work_targets.*',
+        )
             ->get();
 
         $workReports = DB::table('work_reports')
-            ->leftJoin('users as creator', 'creator.id', '=', 'work_reports.creator_id')
-            ->where('creator.division', $division)
-            ->where('creator.role', $role)
+            ->leftJoin('users as creator', 'creator.id', '=', 'work_reports.creator_id');
+
+        if ($user->role === 'wadek1') {
+            $workReports = $workReports->whereIn('creator.division', ['academic_service', 'laboratory']);
+        } else if ($user->role === 'wadek2') {
+            $workReports = $workReports->whereIn('creator.division', ['secretary', 'student_affair', 'finance_logistic_resource']);
+        }
+
+        $workReports = $workReports->where('creator.role', $role)
             ->select(
                 'work_reports.*',
             )
