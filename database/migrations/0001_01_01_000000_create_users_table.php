@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('nip')->unique();
             $table->string('location')->nullable();
-            $table->enum('division',['academic_service', 'laboratory', 'secretary', 'student_affair','finance_logistic_resource']); //for staff and kaur
+            $table->enum('division',['academic_service', 'laboratory', 'secretary', 'student_affair','finance_logistic_resource'])->nullable(); //for staff and kaur
             // academic_service [note: 'under wadek1'] 
             // laboratorium [note: 'under wadek1']
             // secretary [note: 'under wadek2']
