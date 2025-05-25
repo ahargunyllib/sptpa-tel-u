@@ -1,3 +1,4 @@
+import { type FileItem, FileUploadModal } from "@/components/e-archive/modal";
 import { Head, router } from "@inertiajs/react";
 import {
 	CheckSquare2Icon,
@@ -60,6 +61,7 @@ export default function MyWorkTargets({
 	const [selectedWorkTargetId, setSelectedWorkTargetId] = useState<
 		string | null
 	>(null);
+	const [isShowParentModal, setIsShowParentModal] = useState(false);
 
 	return (
 		<DashboardLayout>
@@ -75,14 +77,17 @@ export default function MyWorkTargets({
 						</CardDescription>
 					</div>
 					<div className="flex flex-row gap-2">
-						{/* TODO */}
-						<Dialog>
-							<DialogTrigger asChild>
-								<Button variant="outline">
-									<FileTextIcon />
-									Bukti Kinerja
-								</Button>
-							</DialogTrigger>
+						<Button
+							variant="outline"
+							onClick={() => setIsShowParentModal(true)}
+						>
+							<FileTextIcon />
+							Bukti Kinerja
+						</Button>
+						<Dialog
+							open={isShowParentModal}
+							onOpenChange={setIsShowParentModal}
+						>
 							<DialogContent className="max-w-2xl">
 								<DialogHeader>
 									<DialogTitle>Bukti Kinerja</DialogTitle>
@@ -108,6 +113,36 @@ export default function MyWorkTargets({
 									</TabsList>
 									<TabsContent value="first_quarter">
 										{workTargets.map((workTarget) => {
+											const [uploadedFiles, setUploadedFiles] = useState<
+												FileItem[]
+											>([]);
+											const [isModalOpen, setIsModalOpen] = useState(false);
+
+											const handleSaveFiles = (files: FileItem[]) => {
+												setUploadedFiles(files);
+
+												for (const fileItem of files) {
+													const date = Intl.DateTimeFormat("id-ID", {
+														day: "2-digit",
+														month: "short",
+														year: "numeric",
+													}).format(new Date());
+													const workTargetName = workTarget.name;
+													// DDmmYYYY_workTargetName
+													const fileName = `${date.split(" ").join("")}_${workTargetName}_${fileItem.file.name}`;
+
+													const formData = new FormData();
+													formData.append("evidence", fileItem.file);
+													formData.append("file_name", fileName);
+
+													router.post(
+														`/dashboard/work-target/${workTarget.id}/evidence`,
+														formData,
+													);
+												}
+												setUploadedFiles([]);
+											};
+
 											return (
 												<div
 													key={workTarget.id}
@@ -123,11 +158,23 @@ export default function MyWorkTargets({
 															</div>
 														</div>
 
-														<Button variant="ghost">
+														<Button
+															variant="ghost"
+															onClick={() => {
+																setIsModalOpen(true);
+															}}
+														>
 															<PlusSquareIcon />
 															Unggah
 														</Button>
 													</div>
+													<FileUploadModal
+														onOpenChange={setIsModalOpen}
+														maxFiles={5}
+														maxSize={10}
+														onSave={handleSaveFiles}
+														open={isModalOpen}
+													/>
 												</div>
 											);
 										})}
