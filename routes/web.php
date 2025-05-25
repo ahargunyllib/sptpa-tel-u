@@ -106,7 +106,7 @@ Route::middleware(['auth', 'role:kaur,staf'])->group(function () {
     Route::put('/dashboard/user-attitude-evaluation/me', [UserAttitudeEvaluationController::class, 'update'])->name('dashboard.performance.me.user-attitude-evaluation.update');
 });
 
-Route::middleware(['auth', 'role:kaur,wadek'])->group(function () {
+Route::middleware(['auth', 'role:kaur,wadek1,wadek2'])->group(function () {
     Route::post('/dashboard/work-target', [WorkTargetController::class, 'store'])->name('dashboard.work-target.store');
     Route::put('/dashboard/work-target/{id}', [WorkTargetController::class, 'update'])->name('dashboard.work-target.update');
     Route::post('/dashboard/work-target/{id}/assess', [WorkTargetController::class, 'assess'])->name('dashboard.work-target.assess');
