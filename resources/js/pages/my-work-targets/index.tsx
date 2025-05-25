@@ -59,9 +59,10 @@ export default function MyWorkTargets({
 			<Card className="shadow-sm">
 				<CardHeader className="flex flex-row items-center justify-between">
 					<div>
-						<CardTitle>Daftar Objektif Kinerja</CardTitle>
+						<CardTitle>Daftar objektif kinerja</CardTitle>
 						<CardDescription>
-							Membuat dokumentasi pengembangan aplikasi baik project maupun RFC
+							Dibawah ini adalah target kinerja yang harus anda selesaikan per
+							periode
 						</CardDescription>
 					</div>
 					<div className="flex flex-row gap-2">
