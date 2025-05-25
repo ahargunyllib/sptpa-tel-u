@@ -5,6 +5,7 @@ use App\Http\Controllers\FolderController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserAttitudeEvaluationController;
+use App\Http\Controllers\WorkReportController;
 use App\Http\Controllers\WorkTargetController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -75,7 +76,7 @@ Route::middleware(['auth', 'role:wadek1,wadek2'])->group(function () {
 
     Route::get(
         '/dashboard/work-report/kaur',
-        [WorkTargetController::class, 'indexKaur'] // TODO:
+        [WorkReportController::class, 'indexKaur']
     )->name('dashboard.work-report.kaur');
     Route::get('/dashboard/e-archive/staf/wadek/kerja', [FolderController::class, 'getStafDokumenKinerjaByWadek'])
         ->name('folders.wadek-kerja');
@@ -96,8 +97,12 @@ Route::middleware(['auth', 'role:kaur,staf'])->group(function () {
 
     Route::get(
         '/dashboard/work-report/me',
-        [WorkTargetController::class, 'indexMe'] // TODO:
+        [WorkReportController::class, 'indexMe']
     )->name('dashboard.work-report.me');
+
+    Route::post('/dashboard/work-report', [WorkReportController::class, 'store'])->name('dashboard.work-report.store');
+    Route::put('/dashboard/work-report/{id}', [WorkReportController::class, 'update'])->name('dashboard.work-report.update');
+    Route::delete('/dashboard/work-report/{id}', [WorkReportController::class, 'destroy'])->name('dashboard.work-report.destroy');
 
     // Route::get('/dashboard/performance/me', [WorkTargetController::class, 'myWorkTargets'])->name('dashboard.performance.me');
     // Route::get('/dashboard/performance/me/detail', [WorkTargetValueController::class, 'index'])->name('dashboard.performance.me.index');
@@ -105,7 +110,7 @@ Route::middleware(['auth', 'role:kaur,staf'])->group(function () {
     Route::put('/dashboard/user-attitude-evaluation/me', [UserAttitudeEvaluationController::class, 'update'])->name('dashboard.performance.me.user-attitude-evaluation.update');
 });
 
-Route::middleware(['auth', 'role:kaur,wadek'])->group(function () {
+Route::middleware(['auth', 'role:kaur,wadek1,wadek2'])->group(function () {
     Route::post('/dashboard/work-target', [WorkTargetController::class, 'store'])->name('dashboard.work-target.store');
     Route::put('/dashboard/work-target/{id}', [WorkTargetController::class, 'update'])->name('dashboard.work-target.update');
     Route::post('/dashboard/work-target/{id}/assess', [WorkTargetController::class, 'assess'])->name('dashboard.work-target.assess');
@@ -117,7 +122,7 @@ Route::middleware(['auth', 'role:kaur,wadek'])->group(function () {
 
     Route::get(
         '/dashboard/work-report/staf',
-        [WorkTargetController::class, 'indexStaf'] // TODO:
+        [WorkReportController::class, 'indexStaf']
     )->name('dashboard.work-report.staf');
 
     // Route::get('/dashboard/performance/tpa', [WorkTargetController::class, 'index'])->name('dashboard.performance.tpa');
