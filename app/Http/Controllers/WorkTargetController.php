@@ -310,8 +310,6 @@ class WorkTargetController extends Controller
 
             return back();
         } catch (\Exception $e) {
-            dd($e);
-
             // Rollback the transaction if an error occurs
             DB::rollBack();
 
@@ -386,8 +384,6 @@ class WorkTargetController extends Controller
 
             return back();
         } catch (\Exception $e) {
-            dd($e);
-
             // Rollback the transaction if an error occurs
             DB::rollBack();
 
