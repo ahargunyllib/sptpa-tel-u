@@ -52,7 +52,7 @@ export const tpaPenilaianSections: NavSection[] = [
 			{
 				title: "Panduan Pengguna",
 				icon: BookOpenText,
-				href: "/admin/user",
+				href: "/dashboard/panduan",
 			},
 		],
 	},
@@ -110,7 +110,7 @@ export const kaurPenilaianSections: NavSection[] = [
 			{
 				title: "Panduan Pengguna",
 				icon: BookOpenText,
-				href: "/admin/user",
+				href: "/dashboard/panduan",
 			},
 		],
 	},
@@ -158,7 +158,7 @@ export const sdmPenilaianSections: NavSection[] = [
 			{
 				title: "Panduan Pengguna",
 				icon: BookOpenText,
-				href: "/admin/user",
+				href: "/dashboard/panduan",
 			},
 		],
 	},
@@ -216,7 +216,7 @@ export const wadekPenilaianSections: NavSection[] = [
 			{
 				title: "Panduan Pengguna",
 				icon: BookOpenText,
-				href: "/admin/user",
+				href: "/dashboard/panduan",
 			},
 		],
 	},
@@ -274,7 +274,7 @@ export const wadekArsipSections: NavSection[] = [
 			{
 				title: "Panduan Pengguna",
 				icon: BookOpenText,
-				href: "/admin/user",
+				href: "/dashboard/panduan",
 			},
 		],
 	},
@@ -291,7 +291,7 @@ export const sdmArsipSections: NavSection[] = [
 			{
 				title: "Panduan Pengguna",
 				icon: BookOpenText,
-				href: "/admin/user",
+				href: "/dashboard/panduan",
 			},
 		],
 	},
@@ -334,7 +334,7 @@ export const kaurArsipSections: NavSection[] = [
 			{
 				title: "Panduan Pengguna",
 				icon: BookOpenText,
-				href: "/admin/user",
+				href: "/dashboard/panduan",
 			},
 		],
 	},
@@ -362,7 +362,7 @@ export const tpaArsipSections: NavSection[] = [
 			{
 				title: "Panduan Pengguna",
 				icon: BookOpenText,
-				href: "/admin/user",
+				href: "/dashboard/panduan",
 			},
 		],
 	},

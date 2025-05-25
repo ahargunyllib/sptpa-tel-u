@@ -306,4 +306,30 @@ class FileController extends Controller
             return redirect()->back()->with('error', 'Gagal mengunggah file panduan.');
         }
     }
+
+    public function rubrikasiShow()
+    {
+        $file = File::whereHas('folder', function ($query) {
+            $query->where('name', 'Rubrikasi');
+        })->first();
+
+        $rubrikasiUrl = $file ? Storage::url($file->path) : null;
+
+        return Inertia::render('rubrik/show', [
+            'rubrikasi' => $rubrikasiUrl,
+        ]);
+    }
+
+    public function panduanShow()
+    {
+        $file = File::whereHas('folder', function ($query) {
+            $query->where('name', 'Panduan');
+        })->first();
+
+        $panduanUrl = $file ? Storage::url($file->path) : null;
+
+        return Inertia::render('panduan/show', [
+            'panduan' => $panduanUrl,
+        ]);
+    }
 }
