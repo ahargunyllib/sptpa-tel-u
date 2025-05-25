@@ -1,7 +1,15 @@
 import DropDownMenu from "@/components/dropdown-menu";
 import type { File, Folder } from "@/types";
+import { router } from "@inertiajs/react";
 import { format } from "date-fns";
 import { FileIcon, FolderIcon } from "lucide-react";
+import { useState } from "react";
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+} from "../../ui/dialog";
 
 export default function BlockArchiveCard({
 	type,
@@ -14,16 +22,23 @@ export default function BlockArchiveCard({
 	folderType?: string;
 	onDeleteClick?: () => void;
 }) {
+	const [isShowPreview, setIsShowPreview] = useState(false);
 	return (
 		<div className="relative p-4 bg-light-20 rounded-md flex flex-col gap-3 shadow-sm w-full">
-			<a
-				href={
+			<div
+				// href={
+				// 	type === "folder"
+				// 		? `/dashboard/e-archive/${eArchive.id}`
+				// 		: `${(eArchive as unknown as File).path}`
+				// }
+				onClick={() => {
 					type === "folder"
-						? `/dashboard/e-archive/${eArchive.id}`
-						: `${(eArchive as unknown as File).path}`
-				}
-				target={type === "file" ? "_blank" : undefined}
-				rel={type === "file" ? "noopener noreferrer" : undefined}
+						? router.push({
+								url: `/dashboard/e-archive/${eArchive.id}`,
+							})
+						: setIsShowPreview(true);
+				}}
+				onKeyDown={() => {}}
 				className="w-full h-52 flex items-center justify-center bg-gray-100 rounded-md"
 			>
 				{type === "folder" ? (
@@ -31,7 +46,7 @@ export default function BlockArchiveCard({
 				) : (
 					<FileIcon className="w-4 h-4" />
 				)}
-			</a>
+			</div>
 			<div className="flex flex-col gap-1">
 				<div className="flex justify-between items-center">
 					<span className="text-base text-black font-semibold truncate">
@@ -56,6 +71,19 @@ export default function BlockArchiveCard({
 					</span>
 				</div>
 			</div>
+
+			<Dialog open={isShowPreview} onOpenChange={setIsShowPreview}>
+				<DialogContent className="sm:max-w-3xl">
+					<DialogHeader>
+						<DialogTitle>{eArchive.name} - Preview</DialogTitle>
+					</DialogHeader>
+					<img
+						src={(eArchive as File).path}
+						alt={eArchive.name}
+						className="aspect-square object-contain w-full h-full rounded-md shadow-sm"
+					/>
+				</DialogContent>
+			</Dialog>
 		</div>
 	);
 }
