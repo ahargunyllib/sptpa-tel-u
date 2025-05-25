@@ -15,14 +15,8 @@ import {
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
 import {
 	Select,
 	SelectContent,
@@ -39,10 +33,8 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import DashboardLayout from "@/layouts/dashboard-layout";
-import { cn } from "@/lib/utils";
-import type { DataWithPagination, Log, User } from "@/types";
-import { format } from "date-fns";
-import { CalendarIcon, PencilLine, SquarePen, Trash, X } from "lucide-react";
+import type { DataWithPagination, User } from "@/types";
+import { PencilLine, SquarePen, Trash } from "lucide-react";
 
 type UserFilters = {
 	username?: string;
@@ -281,7 +273,7 @@ export default function UsersIndex({
 						<Pagination meta={users.meta} queryKey={["users"]} />
 						<div className="flex items-center space-x-2">
 							<span className="text-sm text-muted-foreground">
-								Items per page
+								Item per halaman
 							</span>
 							<Select
 								value={filters.per_page?.toString() || "10"}
