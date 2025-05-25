@@ -130,7 +130,7 @@ export default function PerformanceAssessmentsCard({
 					/>
 					<div className="flex items-center space-x-2">
 						<span className="text-sm text-muted-foreground">
-							Items per page
+							Item per halaman
 						</span>
 						<Select
 							// value={filters.per_page?.toString() || "10"}

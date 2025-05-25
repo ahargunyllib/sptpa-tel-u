@@ -123,7 +123,7 @@ export default function Edit({
 					<div className="bg-white p-6 rounded-lg shadow-sm">
 						<h2 className="font-semibold text-base mb-4">Foto Profil</h2>
 						<div className="flex flex-col items-center gap-6">
-							<Avatar className="h-44 w-44 rounded-lg object-cover">
+							<Avatar className="h-44 w-44 rounded-lg">
 								<AvatarImage
 									// src={
 									// 	user.photo_profile ||
@@ -137,28 +137,31 @@ export default function Edit({
 											: "https://media-sin2-1.cdn.whatsapp.net/v/t61.24694-24/473401127_1818570005572383_5508634567812061033_n.jpg?ccb=11-4&oh=01_Q5AaIQltFg5tbTKGufIbqFYffpLQLdFSqNQXmAOLR8JC4yqi&oe=6802E54F&_nc_sid=5e03e0&_nc_cat=104"
 									}
 									alt="Profile"
+									className="object-cover"
 								/>
 
 								<AvatarFallback>{user.name?.charAt(0) || "-"}</AvatarFallback>
 							</Avatar>
-							<div className="w-full space-y-2">
-								<Button
-									variant="ghost"
-									className="w-full justify-start"
-									onClick={handlePhotoUpload}
-								>
-									<ImagePlus className="mr-2 h-4 w-4" />
-									<span>Ubah foto profile</span>
-								</Button>
-								<Button
-									variant="destructive"
-									className="w-full justify-start "
-									onClick={handlePhotoDelete}
-								>
-									<Trash2 className="mr-2 h-4 w-4" />
-									Hapus foto profile
-								</Button>
-							</div>
+							{isEditing && (
+								<div className="w-full space-y-2">
+									<Button
+										variant="ghost"
+										className="w-full justify-start"
+										onClick={handlePhotoUpload}
+									>
+										<ImagePlus className="mr-2 h-4 w-4" />
+										<span>Ubah foto profile</span>
+									</Button>
+									<Button
+										variant="destructive"
+										className="w-full justify-start "
+										onClick={handlePhotoDelete}
+									>
+										<Trash2 className="mr-2 h-4 w-4" />
+										Hapus foto profile
+									</Button>
+								</div>
+							)}
 						</div>
 					</div>
 				</div>

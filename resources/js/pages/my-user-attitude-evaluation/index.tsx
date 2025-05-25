@@ -24,7 +24,7 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import DashboardLayout from "@/layouts/dashboard-layout";
-import type { UserAttitudeEvaluation, UserFeedback, WorkTarget } from "@/types";
+import type { UserAttitudeEvaluation, UserFeedback } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Head, router } from "@inertiajs/react";
 import { FileTextIcon } from "lucide-react";
@@ -243,12 +243,11 @@ export default function MyUserAttitudeEvaluation({
 													<FormControl>
 														<Input
 															className="w-full"
-															placeholder="Tuliskan evidence sikap"
+															placeholder="Tuliskan bukti sikap"
 															disabled={!!userAttitudeEvaluation.evidence}
 															{...field}
 														/>
 													</FormControl>
-													{/* <FormMessage/> */}
 												</FormItem>
 											);
 										}}
@@ -272,14 +271,14 @@ export default function MyUserAttitudeEvaluation({
 								<TableBody>
 									<TableRow>
 										<TableCell>
-											Rata - rata penilaian dari {average} (Unknown)
+											Rata - rata penilaian dari <b>{average}</b>
 										</TableCell>
 									</TableRow>
 									<TableRow>
 										<TableCell>
 											Rata - rata Penilaian Sikap Kerja sebelum pembobotan
-											adalah {average} dengan keterangan ditunjukkan dengan
-											(unknown)
+											adalah <b>{average}</b>
+											{/* dengan keterangan ditunjukkan dengan */}
 										</TableCell>
 									</TableRow>
 								</TableBody>
@@ -289,7 +288,7 @@ export default function MyUserAttitudeEvaluation({
 				</Card>
 				<Card className="shadow-sm">
 					<CardHeader>
-						<CardTitle>Feedback Atasan</CardTitle>
+						<CardTitle>Umpan Balik Atasan</CardTitle>
 						<CardDescription>
 							Dibawah merupakan saran & masukan dari atasan secara langsung
 							maupun tidak

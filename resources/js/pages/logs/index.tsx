@@ -139,7 +139,7 @@ export default function LogsIndex({
 
 			<Card className="shadow-sm">
 				<CardHeader>
-					<CardTitle>Log Website</CardTitle>
+					<CardTitle>Aktivitas Website</CardTitle>
 				</CardHeader>
 				<CardContent>
 					{/* Search and Filter Form */}
@@ -163,14 +163,14 @@ export default function LogsIndex({
 											username: e.target.value,
 										});
 									}}
-									placeholder="Search by username"
+									placeholder="Cari berdasarkan username"
 									className="w-full bg-transparent"
 								/>
 							</div>
 
 							<div className="space-y-2">
 								<label htmlFor="description" className="text-sm font-medium">
-									Description
+									Deskripsi
 								</label>
 								<Input
 									id="description"
@@ -183,14 +183,14 @@ export default function LogsIndex({
 											description: e.target.value,
 										});
 									}}
-									placeholder="Search by description"
+									placeholder="Cari berdasarkan deskripsi"
 									className="w-full bg-transparent"
 								/>
 							</div>
 
 							<div className="space-y-2">
 								<label htmlFor="start_date" className="text-sm font-medium">
-									Start Date
+									Tanggal Mulai
 								</label>
 								<Popover>
 									<PopoverTrigger asChild>
@@ -205,7 +205,7 @@ export default function LogsIndex({
 											{searchForm.start_date ? (
 												formatDate(searchForm.start_date)
 											) : (
-												<span>Pick a date</span>
+												<span>Pilih tanggal</span>
 											)}
 										</Button>
 									</PopoverTrigger>
@@ -231,7 +231,7 @@ export default function LogsIndex({
 
 							<div className="space-y-2">
 								<label htmlFor="end_date" className="text-sm font-medium">
-									End Date
+									Tanggal Selesai
 								</label>
 								<Popover>
 									<PopoverTrigger asChild>
@@ -246,7 +246,7 @@ export default function LogsIndex({
 											{searchForm.end_date ? (
 												formatDate(searchForm.end_date)
 											) : (
-												<span>Pick a date</span>
+												<span>Pilih tanggal</span>
 											)}
 										</Button>
 									</PopoverTrigger>
@@ -278,11 +278,11 @@ export default function LogsIndex({
 										onClick={clearFilters}
 										className="flex-1"
 									>
-										Clear Filters
+										Bersihkan Filter
 									</Button>
 								)}
 								<Button type="submit" className="flex-1">
-									Apply Filters
+									Terapkan Filter
 								</Button>
 							</div>
 						</div>
@@ -322,7 +322,7 @@ export default function LogsIndex({
 								) : (
 									<TableRow>
 										<TableCell colSpan={4} className="h-24 text-center">
-											No logs found.
+											Tidak ada log yang ditemukan.
 										</TableCell>
 									</TableRow>
 								)}
@@ -335,7 +335,7 @@ export default function LogsIndex({
 						<Pagination meta={logs.meta} />
 						<div className="flex items-center space-x-2">
 							<span className="text-sm text-muted-foreground">
-								Items per page
+								Item per halaman
 							</span>
 							<Select
 								value={filters.per_page?.toString() || "10"}

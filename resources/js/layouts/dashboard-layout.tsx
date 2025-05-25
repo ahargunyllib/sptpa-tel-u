@@ -8,13 +8,22 @@ import {
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { useUser } from "@/hooks/use-user";
 import { Link } from "@inertiajs/react";
-import { LogOut, MenuIcon, User, UserSquareIcon } from "lucide-react";
+import {
+	ChevronDownSquareIcon,
+	LogOut,
+	MenuIcon,
+	User,
+	UserSquareIcon,
+} from "lucide-react";
 import type { PropsWithChildren, ReactNode } from "react";
+import { Button } from "../components/ui/button";
+import { usePeriod } from "../hooks/use-period";
 
 export default function DashboardLayout({
 	children,
 }: PropsWithChildren<{ header?: string | ReactNode }>) {
 	const user = useUser();
+	const { period, setPeriod, getCurrentYear, getAvailableYears } = usePeriod();
 
 	return (
 		<SidebarProvider>
@@ -31,6 +40,24 @@ export default function DashboardLayout({
 								</span>
 							</div>
 							<div className="flex flex-row gap-4 items-center justify-end">
+								<DropdownMenu>
+									<DropdownMenuTrigger asChild>
+										<Button variant="ghost" className="text-xs h-min">
+											Periode: {getCurrentYear()}
+											<ChevronDownSquareIcon />
+										</Button>
+									</DropdownMenuTrigger>
+									<DropdownMenuContent>
+										{getAvailableYears().map((year) => (
+											<DropdownMenuItem
+												key={year}
+												onClick={() => setPeriod(new Date(year, 0, 1))}
+											>
+												{year}
+											</DropdownMenuItem>
+										))}
+									</DropdownMenuContent>
+								</DropdownMenu>
 								<span className="text-xs text-[#98A2B3]">{user.name}</span>
 								<DropdownMenu>
 									<DropdownMenuTrigger asChild>
