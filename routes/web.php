@@ -100,6 +100,10 @@ Route::middleware(['auth', 'role:kaur,staf'])->group(function () {
         [WorkReportController::class, 'indexMe']
     )->name('dashboard.work-report.me');
 
+    Route::post('/dashboard/work-report', [WorkReportController::class, 'store'])->name('dashboard.work-report.store');
+    Route::put('/dashboard/work-report/{id}', [WorkReportController::class, 'update'])->name('dashboard.work-report.update');
+    Route::delete('/dashboard/work-report/{id}', [WorkReportController::class, 'destroy'])->name('dashboard.work-report.destroy');
+
     // Route::get('/dashboard/performance/me', [WorkTargetController::class, 'myWorkTargets'])->name('dashboard.performance.me');
     // Route::get('/dashboard/performance/me/detail', [WorkTargetValueController::class, 'index'])->name('dashboard.performance.me.index');
     // Route::put('/dashboard/performance/me/detail/{id}', [WorkTargetValueController::class, 'update'])->name('dashboard.performance.me.update');
