@@ -214,7 +214,7 @@ export default function UsersIndex({
 												</TableCell>
 												<TableCell className="py-3 px-4">
 													<div className="flex gap-1 items-center">
-														<Link href={`/dashboard/user/${user.id}`}>
+														<Link href={route("users.edit", user.id)}>
 															<PencilLine className="text-warning-80" />
 														</Link>
 														<AlertDialog
@@ -223,7 +223,7 @@ export default function UsersIndex({
 														>
 															<AlertDialogTrigger asChild>
 																<Trash
-																	className="text-danger-80"
+																	className="text-danger-80 cursor:pointer"
 																	onClick={() => {
 																		setSelectedUserId(user.id);
 																		setIsDialogOpen(true);

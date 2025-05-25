@@ -55,16 +55,6 @@ export default function UserForm({ user }: { user?: User }) {
 		defaultValues,
 		mode: "onChange",
 	});
-	useEffect(() => {
-		const subscription = form.watch((value, { name, type }) => {
-			const errors = form.formState.errors;
-			console.log("Changed field:", name);
-			console.log("Current form values:", value);
-			console.log("Validation errors:", errors);
-		});
-
-		return () => subscription.unsubscribe();
-	}, [form]);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
@@ -117,10 +107,10 @@ export default function UserForm({ user }: { user?: User }) {
 		<AuthenticatedLayout header="Akun">
 			<Head title="Manajemen Akun" />
 
-			<div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+			<div className="">
 				{/* Left Column - Profile Photo */}
-				<div className="col-span-1 xl:col-span-1 ">
-					<div className="bg-white p-6 rounded-lg shadow-sm">
+				{/* <div className="col-span-1 xl:col-span-1 "> */}
+				{/* <div className="bg-white p-6 rounded-lg shadow-sm">
 						<h2 className="font-semibold text-base mb-4">Foto Profil</h2>
 						<div className="flex flex-col items-center gap-6">
 							<Avatar className="h-44 w-44 rounded-lg object-cover">
@@ -161,7 +151,7 @@ export default function UserForm({ user }: { user?: User }) {
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> */}
 
 				{/* Right Column - Profile Data */}
 				<div className="col-span-1 xl:col-span-3 bg-white p-6 rounded-lg shadow-sm">

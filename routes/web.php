@@ -59,6 +59,7 @@ Route::middleware(['auth', 'role:sdm'])->group(function () {
     Route::get('/dashboard/user', [UserController::class, 'index'])->name('users.index');
     Route::get('/dashboard/user/create', [UserController::class, 'create'])->name('users.create');
     Route::post('/dashboard/user', [UserController::class, 'store'])->name('users.store');
+    Route::get('/dashboard/user/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/dashboard/user/{id}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/dashboard/user/{id}', [UserController::class, 'destroy']);
     // Route::get('/dashboard/tag', [TagController::class, 'index'])->name('tags.index');
