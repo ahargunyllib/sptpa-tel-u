@@ -33,9 +33,7 @@ export default function BlockArchiveCard({
 				// }
 				onClick={() => {
 					type === "folder"
-						? router.push({
-								url: `/dashboard/e-archive/${eArchive.id}`,
-							})
+						? router.visit(`/dashboard/e-archive/${eArchive.id}`)
 						: setIsShowPreview(true);
 				}}
 				onKeyDown={() => {}}
