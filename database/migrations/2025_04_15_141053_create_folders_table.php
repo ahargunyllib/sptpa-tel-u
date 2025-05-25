@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->ulid('parent_id')->nullable();
             $table->foreignUlid('work_target_id')->nullable()->constrained('work_targets')->onDelete('cascade');
-            $table->foreignUuid('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignUuid('user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->enum('type', ['user', 'kepegawaian', 'kinerja', 'kinerja_year', 'target_kinerja']);
             $table->timestamps();
         });
