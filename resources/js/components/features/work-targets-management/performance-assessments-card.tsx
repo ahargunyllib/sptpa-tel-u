@@ -38,6 +38,8 @@ export default function PerformanceAssessmentsCard({
 		average_fourth_quarter_score: number;
 	} & {
 		work_targets: WorkTarget[];
+	} & {
+		bukti_kinerja_folder_id: string | null;
 	})[];
 }) {
 	return (
@@ -96,6 +98,7 @@ export default function PerformanceAssessmentsCard({
 											<PerformanceAssessmentsDialog
 												staffId={staff.id}
 												staffName={staff.name}
+												buktiKinerjaFolderId={staff.bukti_kinerja_folder_id}
 												performances={staff.work_targets}
 											/>
 										</TableCell>

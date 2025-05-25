@@ -12,6 +12,8 @@ type Props = {
 		average_fourth_quarter_score: number;
 	} & {
 		work_targets: WorkTarget[];
+	} & {
+		bukti_kinerja_folder_id: string | null;
 	})[];
 };
 
