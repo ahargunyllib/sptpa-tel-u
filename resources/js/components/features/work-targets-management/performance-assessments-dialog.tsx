@@ -32,10 +32,12 @@ import {
 export default function PerformanceAssessmentsDialog({
 	staffName,
 	staffId,
+	buktiKinerjaFolderId,
 	performances,
 }: {
 	staffName: User["name"];
 	staffId: User["id"];
+	buktiKinerjaFolderId: string | null;
 	performances: WorkTarget[];
 }) {
 	const [selectedWorkTargetId, setSelectedWorkTargetId] = useState<
@@ -57,10 +59,17 @@ export default function PerformanceAssessmentsDialog({
 			<DialogContent className="max-w-4xl">
 				<DialogHeader className="flex flex-row items-center justify-between">
 					<DialogTitle>Penilaian Kinerja: {staffName}</DialogTitle>
-					<Button variant="outline">
-						<FileTextIcon />
-						Bukti kinerja
-					</Button>
+					{buktiKinerjaFolderId && (
+						<Button
+							variant="outline"
+							onClick={() => {
+								router.visit(`/dashboard/e-archive/${buktiKinerjaFolderId}`);
+							}}
+						>
+							<FileTextIcon />
+							Bukti kinerja
+						</Button>
+					)}
 				</DialogHeader>
 				<div className="overflow-x-auto">
 					<Table>

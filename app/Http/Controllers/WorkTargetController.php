@@ -220,6 +220,11 @@ class WorkTargetController extends Controller
                     'work_targets.*',
                 )
                 ->get();
+
+            $staff->bukti_kinerja_folder_id = DB::table('folders')
+                ->where('type', 'kinerja')
+                ->where('user_id', $staff->id)
+                ->value('id');
         }
 
         return Inertia::render('work-targets-management/index', [
@@ -263,6 +268,11 @@ class WorkTargetController extends Controller
                     'work_targets.*',
                 )
                 ->get();
+
+            $staff->bukti_kinerja_folder_id = DB::table('folders')
+                ->where('type', 'kinerja')
+                ->where('user_id', $staff->id)
+                ->value('id');
         }
 
         return Inertia::render('work-targets-management/index', [
