@@ -26,19 +26,33 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-const formSchema = z.object({
-	name: z.string().min(2, { message: "Nama harus diisi" }),
-	nip: z.string().min(1, { message: "NIP harus diisi" }),
-	email: z.string().email({ message: "Email tidak valid" }),
-	location: z.string().min(1, { message: "Lokasi kerja harus diisi" }),
-	division: z.string().min(1, { message: "Divisi harus diisi" }),
-	role: z.string().min(1, { message: "Jabatan harus diisi" }),
-	password: z.string().min(6, { message: "Password minimal 6 karakter" }),
-});
-type FormValues = z.infer<typeof formSchema>;
-
 export default function UserForm({ user }: { user?: User }) {
 	const [processing, setProcessing] = useState(false);
+	const isEditing = !!user?.id;
+
+	const formSchema = z
+		.object({
+			name: z.string().min(2, { message: "Nama harus diisi" }),
+			nip: z.string().min(1, { message: "NIP harus diisi" }),
+			email: z.string().email({ message: "Email tidak valid" }),
+			location: z.string().optional(),
+			division: z.string().optional(),
+			role: z.string().min(1, { message: "Jabatan harus diisi" }),
+			password: isEditing
+				? z.string().optional()
+				: z.string().min(6, { message: "Password minimal 6 karakter" }),
+		})
+		.refine(
+			(data) =>
+				["wadek1", "wadek2", "sdm"].includes(data.role) ||
+				(data.division && data.division.length > 0),
+
+			{
+				message: "Divisi harus diisi",
+				path: ["division"],
+			},
+		);
+	type FormValues = z.infer<typeof formSchema>;
 
 	const defaultValues: FormValues = {
 		name: user?.name ?? "",
@@ -66,13 +80,27 @@ export default function UserForm({ user }: { user?: User }) {
 		};
 	}, [router]);
 
+	const role = form.watch("role");
+
+	useEffect(() => {
+		if (["wadek1", "wadek2", "sdm"].includes(role)) {
+			form.setValue("division", "");
+		}
+	}, [role, form]);
+
 	const onSubmit = (data: FormValues) => {
+		console.log(data);
 		const isEditing = !!user?.id;
 		const url = isEditing
 			? route("users.update", user.id)
 			: route("users.store");
 
-		router[isEditing ? "put" : "post"](url, data, {
+		const sanitizedData = {
+			...data,
+			division: data.division?.trim() === "" ? null : data.division,
+		};
+		console.log(sanitizedData);
+		router[isEditing ? "put" : "post"](url, sanitizedData, {
 			onSuccess: () => {
 				window.location.assign("/dashboard/user");
 			},
@@ -108,52 +136,6 @@ export default function UserForm({ user }: { user?: User }) {
 			<Head title="Manajemen Akun" />
 
 			<div className="">
-				{/* Left Column - Profile Photo */}
-				{/* <div className="col-span-1 xl:col-span-1 "> */}
-				{/* <div className="bg-white p-6 rounded-lg shadow-sm">
-						<h2 className="font-semibold text-base mb-4">Foto Profil</h2>
-						<div className="flex flex-col items-center gap-6">
-							<Avatar className="h-44 w-44 rounded-lg object-cover">
-								<AvatarImage
-									// src={
-									// 	user?.photo_profile ||
-									// 	"https://media-sin2-1.cdn.whatsapp.net/v/t61.24694-24/473401127_1818570005572383_5508634567812061033_n.jpg?ccb=11-4&oh=01_Q5AaIQltFg5tbTKGufIbqFYffpLQLdFSqNQXmAOLR8JC4yqi&oe=6802E54F&_nc_sid=5e03e0&_nc_cat=104"
-									// }
-									src={
-										user?.photo_profile
-											? user?.photo_profile.startsWith("profile-photos")
-												? `/storage/${user?.photo_profile}`
-												: user?.photo_profile
-											: "https://media-sin2-1.cdn.whatsapp.net/v/t61.24694-24/473401127_1818570005572383_5508634567812061033_n.jpg?ccb=11-4&oh=01_Q5AaIQltFg5tbTKGufIbqFYffpLQLdFSqNQXmAOLR8JC4yqi&oe=6802E54F&_nc_sid=5e03e0&_nc_cat=104"
-									}
-									alt="Profile"
-								/>
-
-								<AvatarFallback>{user?.name?.charAt(0) || "-"}</AvatarFallback>
-							</Avatar>
-							<div className="w-full space-y-2">
-								<Button
-									variant="ghost"
-									className="w-full justify-start"
-									onClick={handlePhotoUpload}
-								>
-									<ImagePlus className="mr-2 h-4 w-4" />
-									<span>Ubah foto profile</span>
-								</Button>
-								<Button
-									variant="destructive"
-									className="w-full justify-start "
-									onClick={handlePhotoDelete}
-								>
-									<Trash2 className="mr-2 h-4 w-4" />
-									Hapus foto profile
-								</Button>
-							</div>
-						</div>
-					</div>
-				</div> */}
-
-				{/* Right Column - Profile Data */}
 				<div className="col-span-1 xl:col-span-3 bg-white p-6 rounded-lg shadow-sm">
 					<div className="flex justify-between items-center mb-2">
 						<div>
@@ -176,7 +158,9 @@ export default function UserForm({ user }: { user?: User }) {
 
 					<Form {...form}>
 						<form
-							onSubmit={form.handleSubmit(onSubmit)}
+							onSubmit={form.handleSubmit(onSubmit, (errors) => {
+								console.log("Form validation errors:", errors);
+							})}
 							className="space-y-4 mt-6"
 						>
 							<FormField
@@ -221,48 +205,53 @@ export default function UserForm({ user }: { user?: User }) {
 								)}
 							/>
 
-							<FormField
-								control={form.control}
-								name="location"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Lokasi kerja</FormLabel>
-										<FormControl>
-											<Input {...field} className="bg-gray-50" />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
+							{/* <FormField
+                                control={form.control}
+                                name="location"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Lokasi kerja</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                className="bg-gray-50"
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            /> */}
 
-							<FormField
-								control={form.control}
-								name="division"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Divisi</FormLabel>
-										<Select
-											onValueChange={field.onChange}
-											defaultValue={field.value}
-										>
-											<FormControl>
-												<SelectTrigger className="bg-gray-50">
-													<SelectValue placeholder="Pilih divisi" />
-												</SelectTrigger>
-											</FormControl>
-											<SelectContent>
-												{Object.entries(UserDivisions).map(([key, label]) => (
-													<SelectItem key={key} value={key}>
-														{label}
-													</SelectItem>
-												))}
-											</SelectContent>
-										</Select>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-
+							{!["wadek1", "wadek2", "sdm"].includes(role) && (
+								<FormField
+									control={form.control}
+									name="division"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Divisi</FormLabel>
+											<Select
+												onValueChange={field.onChange}
+												value={field.value}
+												disabled={["wadek1", "wadek2", "sdm"].includes(role)}
+											>
+												<FormControl>
+													<SelectTrigger className="bg-gray-50">
+														<SelectValue placeholder="Pilih divisi" />
+													</SelectTrigger>
+												</FormControl>
+												<SelectContent>
+													{Object.entries(UserDivisions).map(([key, label]) => (
+														<SelectItem key={key} value={key}>
+															{label}
+														</SelectItem>
+													))}
+												</SelectContent>
+											</Select>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							)}
 							<FormField
 								control={form.control}
 								name="role"

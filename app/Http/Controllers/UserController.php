@@ -72,7 +72,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users',
             'nip' => 'required|string|unique:users',
             'location' => 'nullable|string',
-            'division' => 'required',
+            'division' => 'nullable',
             'role' => 'required',
             'password' => 'required|min:3',
         ]);
@@ -103,7 +103,7 @@ class UserController extends Controller
             'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
             'nip' => ['required', 'string', Rule::unique('users')->ignore($user->id)],
             'location' => 'nullable|string',
-            'division' => 'required',
+            'division' => 'nullable',
             'role' => 'required',
             'password' => 'nullable|min:3',
         ]);
