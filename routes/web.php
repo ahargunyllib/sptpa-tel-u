@@ -37,7 +37,8 @@ Route::middleware(['auth'])->group(function (): void {
     Route::get('/dashboard/e-archive', [FolderController::class, 'index'])
         ->name('folders.index');
 
-
+    Route::get('/dashboard/rubric', [FileController::class, 'rubrikasiShow'])->name('files.rubrikasiShow');
+    Route::get('/dashboard/panduan', [FileController::class, 'panduanShow'])->name('files.panduanShow');
 
     Route::post('/dashboard/e-archive', [FileController::class, 'store'])
         ->name('files.store');
