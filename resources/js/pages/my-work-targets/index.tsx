@@ -2,7 +2,9 @@ import { Head, router } from "@inertiajs/react";
 import {
 	CheckSquare2Icon,
 	Edit3Icon,
+	File,
 	FileTextIcon,
+	PlusSquareIcon,
 	Trash2Icon,
 } from "lucide-react";
 import { useState } from "react";
@@ -18,6 +20,7 @@ import {
 	Dialog,
 	DialogClose,
 	DialogContent,
+	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
@@ -39,6 +42,12 @@ import {
 	TableHeader,
 	TableRow,
 } from "../../components/ui/table";
+import {
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from "../../components/ui/tabs";
 import DashboardLayout from "../../layouts/dashboard-layout";
 import { WorkTargetCategory, WorkTargetUnit } from "../../lib/enums";
 import type { WorkTarget } from "../../types";
@@ -67,10 +76,151 @@ export default function MyWorkTargets({
 					</div>
 					<div className="flex flex-row gap-2">
 						{/* TODO */}
-						<Button variant="outline">
-							<FileTextIcon />
-							Bukti Kinerja
-						</Button>
+						<Dialog>
+							<DialogTrigger asChild>
+								<Button variant="outline">
+									<FileTextIcon />
+									Bukti Kinerja
+								</Button>
+							</DialogTrigger>
+							<DialogContent className="max-w-2xl">
+								<DialogHeader>
+									<DialogTitle>Bukti Kinerja</DialogTitle>
+									<DialogDescription>
+										Tambahkan bukti dokumen dan hanya bisa mengunggah maksimal 1
+										dokumen
+									</DialogDescription>
+								</DialogHeader>
+								<Tabs defaultValue="first_quarter" className="w-full">
+									<TabsList className="w-full">
+										<TabsTrigger className="flex-grow" value="first_quarter">
+											TW1
+										</TabsTrigger>
+										<TabsTrigger className="flex-grow" value="second_quarter">
+											TW2
+										</TabsTrigger>
+										<TabsTrigger className="flex-grow" value="third_quarter">
+											TW3
+										</TabsTrigger>
+										<TabsTrigger className="flex-grow" value="fourth_quarter">
+											TW4
+										</TabsTrigger>
+									</TabsList>
+									<TabsContent value="first_quarter">
+										{workTargets.map((workTarget) => {
+											return (
+												<div
+													key={workTarget.id}
+													className="border rounded-md p-3"
+												>
+													<div className="flex items-center justify-between">
+														<div className="flex items-center gap-2">
+															<File className="h-5 w-5 text-muted-foreground" />
+															<div>
+																<p className="text-sm font-medium">
+																	Bukti Kinerja TW1_{workTarget.name}
+																</p>
+															</div>
+														</div>
+
+														<Button variant="ghost">
+															<PlusSquareIcon />
+															Unggah
+														</Button>
+													</div>
+												</div>
+											);
+										})}
+									</TabsContent>
+									<TabsContent value="second_quarter">
+										{workTargets.map((workTarget) => {
+											return (
+												<div
+													key={workTarget.id}
+													className="border rounded-md p-3"
+												>
+													<div className="flex items-center justify-between">
+														<div className="flex items-center gap-2">
+															<File className="h-5 w-5 text-muted-foreground" />
+															<div>
+																<p className="text-sm font-medium">
+																	Bukti Kinerja TW2_{workTarget.name}
+																</p>
+															</div>
+														</div>
+
+														<Button variant="ghost">
+															<PlusSquareIcon />
+															Unggah
+														</Button>
+													</div>
+												</div>
+											);
+										})}
+									</TabsContent>
+									<TabsContent value="third_quarter">
+										{workTargets.map((workTarget) => {
+											return (
+												<div
+													key={workTarget.id}
+													className="border rounded-md p-3"
+												>
+													<div className="flex items-center justify-between">
+														<div className="flex items-center gap-2">
+															<File className="h-5 w-5 text-muted-foreground" />
+															<div>
+																<p className="text-sm font-medium">
+																	Bukti Kinerja TW3_{workTarget.name}
+																</p>
+															</div>
+														</div>
+
+														<Button variant="ghost">
+															<PlusSquareIcon />
+															Unggah
+														</Button>
+													</div>
+												</div>
+											);
+										})}
+									</TabsContent>
+									<TabsContent value="fourth_quarter">
+										{workTargets.map((workTarget) => {
+											return (
+												<div
+													key={workTarget.id}
+													className="border rounded-md p-3"
+												>
+													<div className="flex items-center justify-between">
+														<div className="flex items-center gap-2">
+															<File className="h-5 w-5 text-muted-foreground" />
+															<div>
+																<p className="text-sm font-medium">
+																	Bukti Kinerja TW4_{workTarget.name}
+																</p>
+															</div>
+														</div>
+
+														<Button variant="ghost">
+															<PlusSquareIcon />
+															Unggah
+														</Button>
+													</div>
+												</div>
+											);
+										})}
+									</TabsContent>
+								</Tabs>
+								<DialogFooter>
+									<DialogClose asChild>
+										<Button variant="ghost">Kembali</Button>
+									</DialogClose>
+									<DialogClose asChild>
+										<Button onClick={() => {}}>Simpan</Button>
+									</DialogClose>
+								</DialogFooter>
+							</DialogContent>
+						</Dialog>
 						<Dialog>
 							<DialogTrigger asChild>
 								<Button variant="outline">
