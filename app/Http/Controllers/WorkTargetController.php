@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\File;
 use App\Models\User;
 use App\Models\WorkTarget;
 use App\Models\WorkTargetValue;
@@ -568,5 +569,113 @@ class WorkTargetController extends Controller
             'userAttitudeEvaluation' => $userAttitudeEvaluation,
             'userFeedback' => $userFeedback,
         ]);
+    }
+
+    public function storeEvidence(Request $request, string $id)
+    {
+        try {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'evidence' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+                'file_name' => 'nullable|string|max:255',
+            ]);
+
+            // Begin a database transaction
+            DB::beginTransaction();
+
+            $currentYear = date('Y');
+            $user = $request->user();
+
+            // get kinerja year folder
+            $kinerjaYearFolder = DB::table('folders')
+                ->where('type', 'kinerja_year')
+                ->where('name', $currentYear)
+                ->where('user_id', $user->id)
+                ->first();
+
+            if (!$kinerjaYearFolder) {
+                $userFolder = DB::table('folders')
+                    ->where('type', 'user')
+                    ->where('user_id', $user->id)
+                    ->first();
+
+                if (!$userFolder) {
+                    return back()->withErrors(['error' => 'User folder not found.']);
+                }
+
+                // Create the kinerja year folder if it doesn't exist
+                $kinerjaYearFolderId = DB::table('folders')->insertGetId([
+                    'id' => Ulid::generate(),
+                    'name' => $currentYear,
+                    'parent_id' => $userFolder->id,
+                    'user_id' => $user->id,
+                    'type' => 'kinerja_year',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            } else {
+                $kinerjaYearFolderId = $kinerjaYearFolder->id;
+            }
+
+            // get work target folder
+            $workTargetFolder = DB::table('folders')
+                ->where('type', 'target_kinerja')
+                ->where('parent_id', $kinerjaYearFolderId)
+                ->where('user_id', $user->id)
+                ->first();
+
+            if (!$workTargetFolder) {
+                $workTarget = DB::table('work_targets')
+                    ->where('id', $id)
+                    ->where('assigned_id', $user->id)
+                    ->first();
+
+                // Create the work target folder if it doesn't exist
+                $workTargetFolderId = DB::table('folders')->insertGetId([
+                    'id' => Ulid::generate(),
+                    'name' => "Target Kinerja {$workTarget->name}",
+                    'parent_id' => $kinerjaYearFolderId,
+                    'user_id' => $user->id,
+                    'type' => 'target_kinerja',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            } else {
+                $workTargetFolderId = $workTargetFolder->id;
+            }
+
+            // Store the uploaded file
+            $file = $request->file('evidence');
+            $fileName = $validatedData['file_name'] ?? $file->getClientOriginalName();
+            $fileType = $file->getClientMimeType();
+            $fileSize = $file->getSize();
+            $path = $file->store('files/' . $user->id, 'public');
+
+            $thumbnail = null;
+            if (str_starts_with($fileType, 'image/')) {
+            }
+
+            File::create([
+                'name' => $fileName,
+                'type' => $fileType,
+                'size' => $fileSize,
+                'path' => $path,
+                'folder_id' => $workTargetFolderId,
+                'work_target_id' => $id,
+                'user_id' => $user->id,
+                'thumbnail' => $thumbnail,
+            ]);
+
+            // Commit the transaction
+            DB::commit();
+
+            return back()->with('success', 'Evidence uploaded successfully.');
+        } catch (\Exception $e) {
+            dd($e);
+            // Rollback the transaction if an error occurs
+            DB::rollBack();
+
+            return back()->withErrors(['error' => 'Failed to upload evidence: ' . $e->getMessage()]);
+        }
     }
 }
