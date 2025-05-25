@@ -106,16 +106,29 @@ class UserAttitudeEvaluationController extends Controller
             DB::raw('user_attitude_evaluations.evidence as evidence'),
         ];
 
-        if ($userRole === 'wadek') {
+        if ($userRole === 'wadek1' || $userRole === 'wadek2') {
             $selectFields[] = DB::raw("COALESCE(user_feedbacks.wadek_feedback, '-') as note");
         } else if ($userRole === 'kaur') {
             $selectFields[] = DB::raw("COALESCE(user_feedbacks.kaur_feedback, '-') as note");
         }
 
         $userAttitudeEvaluations = DB::table('users')
-            ->where('users.role', 'kaur')
-            ->where('users.division', $userDivision)
-            ->leftJoin('user_attitude_evaluations', 'user_attitude_evaluations.user_id', '=', 'users.id')
+            ->where('users.role', 'kaur');
+        // ->where('users.division', $userDivision)
+
+        if ($userRole === 'wadek1') {
+            $userAttitudeEvaluations = $userAttitudeEvaluations->whereIn(
+                'users.division',
+                ['academic_service', 'laboratory']
+            );
+        } else if ($userRole === 'wadek2') {
+            $userAttitudeEvaluations = $userAttitudeEvaluations->whereIn(
+                'users.division',
+                ['secretary', 'student_affair', 'finance_logistic_resource']
+            );
+        }
+
+        $userAttitudeEvaluations = $userAttitudeEvaluations->leftJoin('user_attitude_evaluations', 'user_attitude_evaluations.user_id', '=', 'users.id')
             ->leftJoin('user_feedbacks', 'user_feedbacks.user_id', '=', 'users.id')
             ->select(...$selectFields)
             ->get();
@@ -156,9 +169,23 @@ class UserAttitudeEvaluationController extends Controller
         }
 
         $userAttitudeEvaluations = DB::table('users')
-            ->where('users.role', 'staf')
-            ->where('users.division', $userDivision)
-            ->leftJoin('user_attitude_evaluations', 'user_attitude_evaluations.user_id', '=', 'users.id')
+            ->where('users.role', 'staf');
+
+        if ($userRole === 'kaur') {
+            $userAttitudeEvaluations = $userAttitudeEvaluations->where('users.division', $userDivision);
+        } else if ($userRole === 'wadek1') {
+            $userAttitudeEvaluations = $userAttitudeEvaluations->whereIn(
+                'users.division',
+                ['academic_service', 'laboratory']
+            );
+        } else if ($userRole === 'wadek2') {
+            $userAttitudeEvaluations = $userAttitudeEvaluations->whereIn(
+                'users.division',
+                ['secretary', 'student_affair', 'finance_logistic_resource']
+            );
+        }
+
+        $userAttitudeEvaluations = $userAttitudeEvaluations->leftJoin('user_attitude_evaluations', 'user_attitude_evaluations.user_id', '=', 'users.id')
             ->leftJoin('user_feedbacks', 'user_feedbacks.user_id', '=', 'users.id')
             ->select(...$selectFields)
             ->get();
