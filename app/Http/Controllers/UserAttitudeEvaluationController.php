@@ -153,14 +153,14 @@ class UserAttitudeEvaluationController extends Controller
         }
 
         $userAttitudeEvaluations = DB::table('users')
-            ->where('users.role', 'tpa')
+            ->where('users.role', 'staf')
             ->leftJoin('user_attitude_evaluations', 'user_attitude_evaluations.user_id', '=', 'users.id')
             ->leftJoin('user_feedbacks', 'user_feedbacks.user_id', '=', 'users.id')
             ->select(...$selectFields)
             ->get();
 
         return Inertia::render('user-attitude-evaluation-management/index', [
-            'role' => 'kaur',
+            'role' => 'staf',
             'userAttitudeEvaluations' => $userAttitudeEvaluations,
         ]);
     }
