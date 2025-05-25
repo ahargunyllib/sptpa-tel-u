@@ -24,6 +24,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'nip',
+        'role',
+        'division',
+        'location'
     ];
 
     protected $keyType = 'string';

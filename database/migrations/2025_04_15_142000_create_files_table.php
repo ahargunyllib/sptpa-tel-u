@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('path');
             $table->string('thumbnail')->nullable();
             $table->foreignUlid('folder_id')->constrained('folders')->onDelete('cascade');
-            $table->foreignUuid('user_id')->constrained('users');
+            $table->foreignUuid('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
 }

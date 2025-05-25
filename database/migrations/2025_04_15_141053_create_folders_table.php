@@ -16,8 +16,8 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->string('name');
             $table->ulid('parent_id')->nullable();
-            $table->foreignUlid('work_target_id')->nullable()->constrained('work_targets');
-            $table->foreignUuid('user_id')->constrained('users');
+            $table->foreignUlid('work_target_id')->nullable()->constrained('work_targets')->onDelete('cascade');
+            $table->foreignUuid('user_id')->constrained('users')->onDelete('cascade');
             $table->enum('type', ['user', 'kepegawaian', 'kinerja', 'kinerja_year', 'target_kinerja']);
             $table->timestamps();
         });

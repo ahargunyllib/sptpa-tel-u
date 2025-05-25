@@ -13,6 +13,7 @@ export type User = {
 	role: "staf" | "kaur" | "wadek1" | "wadek2" | "sdm";
 	email_verified_at?: string;
 	photo_profile?: string;
+	updated_at?: string | Date;
 };
 
 export type PageProps<

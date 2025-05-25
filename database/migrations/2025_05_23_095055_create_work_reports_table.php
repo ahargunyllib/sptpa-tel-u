@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('work_reports', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->foreignUlid('work_target_id')->constrained('work_targets')->nullable(false)->onDelete('cascade');
-            $table->foreignUuid('creator_id')->constrained('users')->nullable(false);
+            $table->foreignUuid('creator_id')->constrained('users')->nullable(false)->onDelete('cascade');
             $table->text('content')->nullable(false);;
             $table->timestamps();
         });

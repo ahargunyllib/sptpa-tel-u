@@ -301,20 +301,24 @@ export default function LogsIndex({
 							</TableHeader>
 							<TableBody>
 								{logs.data.length > 0 ? (
-									logs.data.map((log) => (
-										<TableRow key={log.id}>
-											<TableCell className="py-3 px-4">{log.id}</TableCell>
-											<TableCell className="py-3 px-4">
-												{log.description}
-											</TableCell>
-											<TableCell className="py-3 px-4">
-												{log.user?.role ?? ""} - {log.user?.name ?? ""}
-											</TableCell>
-											<TableCell className="py-3 px-4">
-												{format(new Date(log.created_at), "yyyy-MM-dd")}
-											</TableCell>
-										</TableRow>
-									))
+									logs.data.map((log, index) => {
+										const { page, limit } = logs.meta;
+										const number = (page - 1) * limit + index + 1;
+										return (
+											<TableRow key={log.id}>
+												<TableCell className="py-3 px-4">{number}</TableCell>
+												<TableCell className="py-3 px-4">
+													{log.description}
+												</TableCell>
+												<TableCell className="py-3 px-4">
+													{log.user?.role ?? ""} - {log.user?.name ?? ""}
+												</TableCell>
+												<TableCell className="py-3 px-4">
+													{format(new Date(log.created_at), "yyyy-MM-dd")}
+												</TableCell>
+											</TableRow>
+										);
+									})
 								) : (
 									<TableRow>
 										<TableCell colSpan={4} className="h-24 text-center">
