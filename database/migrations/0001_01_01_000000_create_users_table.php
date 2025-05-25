@@ -12,11 +12,26 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('nip')->unique();
+            $table->string('location')->nullable();
+            $table->enum('division',['academic_service', 'laboratory', 'secretary', 'student_affair','finance_logistic_resource']); //for staff and kaur
+            // academic_service [note: 'under wadek1'] 
+            // laboratorium [note: 'under wadek1']
+            // secretary [note: 'under wadek2']
+            // student_affair [note: 'under wadek2']
+            // finance_logistic_resource [note: 'under wadek2']
+            $table->enum('role', ['staf', 'kaur', 'wadek1', 'wadek2','sdm'])->default('staf');
+            // staf
+            // kaur
+            // wadek1
+            // wadek2
+            // sdm
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('photo_profile')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -29,7 +44,7 @@ return new class extends Migration
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
+            $table->foreignUuid('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
