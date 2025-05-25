@@ -6,6 +6,7 @@ use App\Models\File;
 use App\Models\Folder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class FolderController extends Controller
@@ -138,6 +139,9 @@ class FolderController extends Controller
 
         $subfolders = Folder::where('parent_id', $folder->id)->get();
         $files = File::where('folder_id', $folder->id)->get();
+        foreach ($files as $file) {
+            $file->path = Storage::url($file->path);
+        }
         $breadcrumbs = $this->getBreadcrumbs($folder);
 
         return Inertia::render('e-archive/show', [
