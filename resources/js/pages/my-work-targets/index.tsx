@@ -386,7 +386,7 @@ export default function MyWorkTargets({
 										Kategori
 									</TableHead>
 									<TableHead className="py-3 px-4 text-center">
-										Nilai Akhir
+										Nilai Keseluruhan
 									</TableHead>
 									<TableHead className="py-3 px-4 text-center">Aksi</TableHead>
 								</TableRow>
@@ -578,7 +578,7 @@ function WorkTargetRow({
 				</Select>
 			</TableCell>
 			<TableCell className="py-3 px-4 text-center">
-				{workTarget.first_quarter_score}
+				{workTarget.final_score}
 			</TableCell>
 			<TableCell className="py-3 px-4">
 				{selectedWorkTargetId === workTarget.id ? (
