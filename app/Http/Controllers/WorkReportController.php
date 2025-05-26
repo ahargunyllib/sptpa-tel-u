@@ -133,11 +133,11 @@ class WorkReportController extends Controller
             ->where('assigned.role', $role);
 
         if ($user->role === 'kaur') {
-            $workTargets = $workTargets->where('creator.division', $division);
+            $workTargets = $workTargets->where('assigned.division', $division);
         } else if ($user->role === 'wadek1') {
-            $workTargets = $workTargets->whereIn('creator.division', ['academic_service', 'laboratory']);
+            $workTargets = $workTargets->whereIn('assigned.division', ['academic_service', 'laboratory']);
         } else if ($user->role === 'wadek2') {
-            $workTargets = $workTargets->whereIn('creator.division', ['secretary', 'student_affair', 'finance_logistic_resource']);
+            $workTargets = $workTargets->whereIn('assigned.division', ['secretary', 'student_affair', 'finance_logistic_resource']);
         }
 
         $workTargets = $workTargets->select(
@@ -276,9 +276,9 @@ class WorkReportController extends Controller
             ->where('assigned.role', $role);
 
         if ($user->role === 'wadek1') {
-            $workTargets = $workTargets->whereIn('creator.division', ['academic_service', 'laboratory']);
+            $workTargets = $workTargets->whereIn('assigned.division', ['academic_service', 'laboratory']);
         } else if ($user->role === 'wadek2') {
-            $workTargets = $workTargets->whereIn('creator.division', ['secretary', 'student_affair', 'finance_logistic_resource']);
+            $workTargets = $workTargets->whereIn('assigned.division', ['secretary', 'student_affair', 'finance_logistic_resource']);
         }
 
         $workTargets = $workTargets->select(
