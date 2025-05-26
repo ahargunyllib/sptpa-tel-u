@@ -184,6 +184,7 @@ class WorkTargetController extends Controller
             ->select(
                 'work_targets.*',
             )
+            ->orderBy('work_targets.name')
             ->get();
 
         return Inertia::render('my-work-targets/index', [
@@ -215,6 +216,7 @@ class WorkTargetController extends Controller
             DB::raw('COALESCE(CEIL(AVG(fourth_quarter_score)), 0) as average_fourth_quarter_score'),
         )
             ->groupBy('assigned.id')
+            ->orderBy('assigned.name')
             ->get();
 
         foreach ($staffs as $staff) {
@@ -223,6 +225,7 @@ class WorkTargetController extends Controller
                 ->select(
                     'work_targets.*',
                 )
+                ->orderBy('work_targets.name')
                 ->get();
 
             $staff->bukti_kinerja_folder_id = DB::table('folders')
@@ -263,6 +266,7 @@ class WorkTargetController extends Controller
             DB::raw('COALESCE(CEIL(AVG(fourth_quarter_score)), 0) as average_fourth_quarter_score'),
         )
             ->groupBy('assigned.id')
+            ->orderBy('assigned.name')
             ->get();
 
         foreach ($staffs as $staff) {
@@ -271,6 +275,7 @@ class WorkTargetController extends Controller
                 ->select(
                     'work_targets.*',
                 )
+                ->orderBy('work_targets.name')
                 ->get();
 
             $staff->bukti_kinerja_folder_id = DB::table('folders')
