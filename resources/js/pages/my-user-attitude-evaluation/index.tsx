@@ -205,7 +205,7 @@ export default function MyUserAttitudeEvaluation({
 										<TableRow>
 											<TableCell className="py-3 px-4">Etika Profesi</TableCell>
 											<TableCell className="py-3 px-4 text-center">
-												{userAttitudeEvaluation.work_ethic}
+												{userAttitudeEvaluation.professional_ethic}
 											</TableCell>
 										</TableRow>
 										<TableRow>
