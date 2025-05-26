@@ -126,7 +126,7 @@ export const sdmPenilaianSections: NavSection[] = [
 				href: "/dashboard/user",
 			},
 			{
-				title: "Aktifitas Website",
+				title: "Aktivitas Website",
 				icon: History,
 				href: "/dashboard/log",
 			},
