@@ -420,6 +420,17 @@ function HarmonyPerformanceAssessmentDialog({
 											return;
 										}
 
+										const val = Number(value);
+										if (val < 0) {
+											onChange("communication", 0);
+											return;
+										}
+
+										if (val > 120) {
+											onChange("communication", 120);
+											return;
+										}
+
 										onChange("communication", Number(value));
 									}}
 								/>
@@ -440,6 +451,17 @@ function HarmonyPerformanceAssessmentDialog({
 										}
 
 										if (Number.isNaN(Number(value))) {
+											return;
+										}
+
+										const val = Number(value);
+										if (val < 0) {
+											onChange("teamwork", 0);
+											return;
+										}
+
+										if (val > 120) {
+											onChange("teamwork", 120);
 											return;
 										}
 
@@ -466,6 +488,17 @@ function HarmonyPerformanceAssessmentDialog({
 											return;
 										}
 
+										const val = Number(value);
+										if (val < 0) {
+											onChange("collaboration", 0);
+											return;
+										}
+
+										if (val > 120) {
+											onChange("collaboration", 120);
+											return;
+										}
+
 										onChange("collaboration", Number(value));
 									}}
 								/>
@@ -486,6 +519,17 @@ function HarmonyPerformanceAssessmentDialog({
 										}
 
 										if (Number.isNaN(Number(value))) {
+											return;
+										}
+
+										const val = Number(value);
+										if (val < 0) {
+											onChange("solidarity", 0);
+											return;
+										}
+
+										if (val > 120) {
+											onChange("solidarity", 120);
 											return;
 										}
 
@@ -568,6 +612,17 @@ function ExcellencePerformanceAssessmentDialog({
 											return;
 										}
 
+										const val = Number(value);
+										if (val < 0) {
+											onChange("work_ethic", 0);
+											return;
+										}
+
+										if (val > 120) {
+											onChange("work_ethic", 120);
+											return;
+										}
+
 										onChange("work_ethic", Number(value));
 									}}
 								/>
@@ -590,6 +645,17 @@ function ExcellencePerformanceAssessmentDialog({
 										}
 
 										if (Number.isNaN(Number(value))) {
+											return;
+										}
+
+										const val = Number(value);
+										if (val < 0) {
+											onChange("technology_usage", 0);
+											return;
+										}
+
+										if (val > 120) {
+											onChange("technology_usage", 120);
 											return;
 										}
 
@@ -616,6 +682,17 @@ function ExcellencePerformanceAssessmentDialog({
 											return;
 										}
 
+										const val = Number(value);
+										if (val < 0) {
+											onChange("work_smart", 0);
+											return;
+										}
+
+										if (val > 120) {
+											onChange("work_smart", 120);
+											return;
+										}
+
 										onChange("work_smart", Number(value));
 									}}
 								/>
@@ -636,6 +713,17 @@ function ExcellencePerformanceAssessmentDialog({
 										}
 
 										if (Number.isNaN(Number(value))) {
+											return;
+										}
+
+										const val = Number(value);
+										if (val < 0) {
+											onChange("initiative", 0);
+											return;
+										}
+
+										if (val > 120) {
+											onChange("initiative", 120);
 											return;
 										}
 
@@ -724,6 +812,17 @@ function IntegrityPerformanceAssessmentDialog({
 											return;
 										}
 
+										const val = Number(value);
+										if (val < 0) {
+											onChange("role_model", 0);
+											return;
+										}
+
+										if (val > 120) {
+											onChange("role_model", 120);
+											return;
+										}
+
 										onChange("role_model", Number(value));
 									}}
 								/>
@@ -747,6 +846,17 @@ function IntegrityPerformanceAssessmentDialog({
 											return;
 										}
 
+										const val = Number(value);
+										if (val < 0) {
+											onChange("role_model", 0);
+											return;
+										}
+
+										if (val > 120) {
+											onChange("role_model", 120);
+											return;
+										}
+
 										onChange("responsibility", Number(value));
 									}}
 								/>
@@ -767,6 +877,17 @@ function IntegrityPerformanceAssessmentDialog({
 										}
 
 										if (Number.isNaN(Number(value))) {
+											return;
+										}
+
+										const val = Number(value);
+										if (val < 0) {
+											onChange("professional_ethic", 0);
+											return;
+										}
+
+										if (val > 120) {
+											onChange("professional_ethic", 120);
 											return;
 										}
 
@@ -795,6 +916,17 @@ function IntegrityPerformanceAssessmentDialog({
 											return;
 										}
 
+										const val = Number(value);
+										if (val < 0) {
+											onChange("image_maintenance", 0);
+											return;
+										}
+
+										if (val > 120) {
+											onChange("image_maintenance", 120);
+											return;
+										}
+
 										onChange("image_maintenance", Number(value));
 									}}
 								/>
@@ -815,6 +947,17 @@ function IntegrityPerformanceAssessmentDialog({
 										}
 
 										if (Number.isNaN(Number(value))) {
+											return;
+										}
+
+										const val = Number(value);
+										if (val < 0) {
+											onChange("discipline", 0);
+											return;
+										}
+
+										if (val > 120) {
+											onChange("discipline", 120);
 											return;
 										}
 
