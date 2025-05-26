@@ -279,7 +279,9 @@ function StaffRow({
 					) : null}
 				</div>
 			</TableCell>
-			<TableCell className="py-3 px-4 text-center">{averageScore}</TableCell>
+			<TableCell className="py-3 px-4 text-center">
+				{averageScore.toPrecision(2)}
+			</TableCell>
 			<TableCell className="py-3 px-4 text-center w-full">
 				<LabelInput
 					className="w-full text-wrap"
