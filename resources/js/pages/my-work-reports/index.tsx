@@ -81,10 +81,10 @@ export default function MyWorkReports({ work_targets }: Props) {
 							{/* Row */}
 							{work_targets.map((workTarget) => {
 								return (
-									<div className="flex flex-col" key={workTarget.id}>
-										<span className="px-10 py-3 text-black font-semibold bg-muted text-wrap">
+									<details className="flex flex-col" key={workTarget.id}>
+										<summary className="px-10 py-3 text-black font-semibold bg-muted text-wrap">
 											{workTarget.name}
-										</span>
+										</summary>
 
 										{workTarget.quarters.map((quarter) => {
 											const schema = z.object({
@@ -145,7 +145,7 @@ export default function MyWorkReports({ work_targets }: Props) {
 													</summary>
 													<div className="flex flex-col">
 														{quarter.work_reports.length === 0 && (
-															<div className="py-3 flex flex-row items-center justify-center text-xs gap-2 cursor-pointer">
+															<div className="py-3 flex flex-row items-center justify-center text-xs gap-2">
 																Tidak ada Komentar Laporan Kinerja.
 															</div>
 														)}
@@ -308,7 +308,7 @@ export default function MyWorkReports({ work_targets }: Props) {
 												</details>
 											);
 										})}
-									</div>
+									</details>
 								);
 							})}
 						</div>
