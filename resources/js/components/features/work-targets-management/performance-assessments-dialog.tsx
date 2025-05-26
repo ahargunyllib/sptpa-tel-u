@@ -385,7 +385,7 @@ function PerformanceAssessmentRow({
 						if (value === "") {
 							setScores((prev) => ({
 								...prev,
-								all_score: 0,
+								final_score: 0,
 							}));
 						}
 
@@ -397,7 +397,7 @@ function PerformanceAssessmentRow({
 						if (val < 0) {
 							setScores((prev) => ({
 								...prev,
-								all_score: 0,
+								final_score: 0,
 							}));
 							return;
 						}
@@ -405,14 +405,14 @@ function PerformanceAssessmentRow({
 						if (val > 120) {
 							setScores((prev) => ({
 								...prev,
-								all_score: 120,
+								final_score: 120,
 							}));
 							return;
 						}
 
 						setScores((prev) => ({
 							...prev,
-							all_score: val,
+							final_score: val,
 						}));
 					}}
 					disabled={selectedWorkTargetId !== workTarget.id}
