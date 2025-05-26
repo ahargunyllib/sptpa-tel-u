@@ -91,6 +91,12 @@ export default function WorkReportsManagement({ staffs }: Props) {
 												Sembunyikan
 											</div>
 										</summary>
+										{staff.work_targets.length === 0 && (
+											<div className="py-3 flex flex-row items-center justify-center text-xs gap-2 cursor-pointer">
+												Tidak ada Target Kinerja.
+											</div>
+										)}
+
 										{staff.work_targets.map((workTarget) => {
 											return (
 												<div className="flex flex-col" key={workTarget.id}>
@@ -130,6 +136,12 @@ export default function WorkReportsManagement({ staffs }: Props) {
 																	</div>
 																</summary>
 																<div className="flex flex-col">
+																	{quarter.work_reports.length === 0 && (
+																		<div className="py-3 flex flex-row items-center justify-center text-xs gap-2 cursor-pointer">
+																			Tidak ada Komentar Laporan Kinerja.
+																		</div>
+																	)}
+
 																	{quarter.work_reports.map((workReport) => {
 																		return (
 																			<div

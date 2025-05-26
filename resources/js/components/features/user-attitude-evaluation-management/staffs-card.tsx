@@ -59,9 +59,9 @@ export default function StaffsCard({
 	return (
 		<Card className="shadow-sm">
 			<CardHeader>
-				<CardTitle>Daftar Pegawai</CardTitle>
+				<CardTitle>Daftar {capitalize(role)}</CardTitle>
 				<CardDescription>
-					Membuat dokumentasi pengembangan aplikasi baik project maupun RFC
+					Dibawah ini merupakan {role} yang Anda kelola
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
