@@ -39,6 +39,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "../../ui/table";
+import { TextareaInput } from "../../ui/textarea";
 
 export default function WorkTargetsDialog({
 	staffName,
@@ -198,7 +199,7 @@ function WorkTargetRow({
 		<TableRow>
 			<TableCell className="py-3 px-4">{idx + 1}</TableCell>
 			<TableCell className="py-3 w-full px-4">
-				<LabelInput
+				<TextareaInput
 					className={cn(
 						"w-full text-left",
 						selectedWorkTargetId === workTarget.id ? "pl-2" : "pl-0",
