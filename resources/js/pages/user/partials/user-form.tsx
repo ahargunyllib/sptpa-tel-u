@@ -221,7 +221,33 @@ export default function UserForm({ user }: { user?: User }) {
                                     </FormItem>
                                 )}
                             /> */}
-
+							<FormField
+								control={form.control}
+								name="role"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Jabatan</FormLabel>
+										<Select
+											onValueChange={field.onChange}
+											defaultValue={field.value}
+										>
+											<FormControl>
+												<SelectTrigger className="bg-gray-50">
+													<SelectValue placeholder="Pilih jabatan" />
+												</SelectTrigger>
+											</FormControl>
+											<SelectContent>
+												{Object.entries(UserRoles).map(([key, label]) => (
+													<SelectItem key={key} value={key}>
+														{label}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
 							{!["wadek1", "wadek2", "sdm"].includes(role) && (
 								<FormField
 									control={form.control}
@@ -252,33 +278,7 @@ export default function UserForm({ user }: { user?: User }) {
 									)}
 								/>
 							)}
-							<FormField
-								control={form.control}
-								name="role"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Jabatan</FormLabel>
-										<Select
-											onValueChange={field.onChange}
-											defaultValue={field.value}
-										>
-											<FormControl>
-												<SelectTrigger className="bg-gray-50">
-													<SelectValue placeholder="Pilih jabatan" />
-												</SelectTrigger>
-											</FormControl>
-											<SelectContent>
-												{Object.entries(UserRoles).map(([key, label]) => (
-													<SelectItem key={key} value={key}>
-														{label}
-													</SelectItem>
-												))}
-											</SelectContent>
-										</Select>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
+
 							<FormField
 								control={form.control}
 								name="password"
