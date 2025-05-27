@@ -23,8 +23,8 @@ const formSchema = z.object({
 	name: z.string().min(2, { message: "Nama harus diisi" }),
 	nip: z.string().min(1, { message: "NIP harus diisi" }),
 	email: z.string().email({ message: "Email tidak valid" }),
-	location: z.string().min(1, { message: "Lokasi kerja harus diisi" }),
-	division: z.string().min(1, { message: "Divisi harus diisi" }),
+	location: z.string().optional().nullable(),
+	division: z.string().optional().nullable(),
 	role: z.string().min(1, { message: "Jabatan harus diisi" }),
 });
 type FormValues = z.infer<typeof formSchema>;
@@ -61,6 +61,10 @@ export default function Edit({
 			unsubscribe();
 		};
 	}, [router]);
+
+	useEffect(() => {
+		console.log("Form errors:", form.formState.errors); // 🔍 Log error jika ada
+	}, [form]);
 
 	const handleEditToggle = () => {
 		setIsEditing(!isEditing);
@@ -247,41 +251,26 @@ export default function Edit({
 								)}
 							/>
 
-							<FormField
-								control={form.control}
-								name="location"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Lokasi kerja</FormLabel>
-										<FormControl>
-											<Input
-												{...field}
-												disabled={!isEditing}
-												className="bg-gray-50"
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-
-							<FormField
-								control={form.control}
-								name="division"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Divisi</FormLabel>
-										<FormControl>
-											<Input
-												{...field}
-												disabled={!isEditing}
-												className="bg-gray-50"
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
+							{user.division && (
+								<FormField
+									control={form.control}
+									name="division"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Divisi</FormLabel>
+											<FormControl>
+												<Input
+													{...field}
+													value={field.value ?? ""}
+													disabled={true}
+													className="bg-gray-50"
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							)}
 
 							<FormField
 								control={form.control}
