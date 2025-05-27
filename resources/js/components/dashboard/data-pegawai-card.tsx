@@ -27,8 +27,20 @@ export default function DataPegawaiCard({ user }: { user: User }) {
 				<div className="flex flex-col gap-2.5 text-xs text-[#090E17]">
 					<span>{`Nama Pegawai: ${user.name}`}</span>
 					<span>{`NIP: ${user.nip}`}</span>
-					<span>{`Deskripsi kerja sebagai: ${getRoleLabel(user.role)}`}</span>
-					<span>{`Bagian Urusan: ${getDivisionLabel(user.division)}`}</span>
+					{user.role && (
+						<span>
+							{`Deskripsi kerja sebagai: ${
+								getRoleLabel(user.role).toLowerCase().includes("wadek")
+									? "Wakil Dekan"
+									: getRoleLabel(user.role).toLowerCase().includes("kaur")
+										? "Kepala Urusan"
+										: getRoleLabel(user.role)
+							}`}
+						</span>
+					)}
+					{user.division && (
+						<span>{`Bagian Urusan: ${getDivisionLabel(user.division)}`}</span>
+					)}
 					<span>Periode Penilaian: 2025</span>
 				</div>
 			</div>
