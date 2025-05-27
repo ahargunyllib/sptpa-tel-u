@@ -25,7 +25,13 @@ export function AppSidebar() {
 
 	const [isOpen, setIsOpen] = useState(true);
 	const [activeMenu, setActiveMenu] = useState<"penilaian" | "e-archive">(
-		"penilaian",
+		() => {
+			const saved = localStorage.getItem("activeMenu");
+			if (saved === "penilaian" || saved === "e-archive") {
+				return saved;
+			}
+			return "penilaian";
+		},
 	);
 	const isMobile = useIsMobile();
 	const pathName = window.location.pathname;
@@ -38,6 +44,10 @@ export function AppSidebar() {
 			setIsOpen(true);
 		}
 	}, [isMobile]);
+
+	useEffect(() => {
+		localStorage.setItem("activeMenu", activeMenu);
+	}, [activeMenu]);
 
 	useEffect(() => {
 		const role = user.role;
