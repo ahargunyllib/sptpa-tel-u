@@ -68,7 +68,7 @@ export function AppSidebar() {
 		if (role === "sdm") {
 			const menu =
 				activeMenu === "e-archive" ? sdmArsipSections : sdmPenilaianSections;
-			setMenus(menu);
+			setMenus(sdmPenilaianSections);
 			return;
 		}
 
