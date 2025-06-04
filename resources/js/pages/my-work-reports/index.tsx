@@ -1,3 +1,4 @@
+import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DashboardLayout from "@/layouts/dashboard-layout";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,7 +11,7 @@ import {
 	PlusSquareIcon,
 	Trash2Icon,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../../components/ui/button";
@@ -21,6 +22,12 @@ import {
 	FormItem,
 } from "../../components/ui/form";
 import { Input, LabelInput } from "../../components/ui/input";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "../../components/ui/popover";
+import useDebounce from "../../hooks/use-debounce";
 import type { WorkReport, WorkTarget } from "../../types";
 
 type Props = {
@@ -35,6 +42,37 @@ type Props = {
 };
 
 export default function MyWorkReports({ work_targets }: Props) {
+	const [filter, setFilter] = useState<{
+		search: string;
+		date: Date | undefined;
+	}>({
+		search: "",
+		date: undefined,
+	});
+
+	const debouncedFilter = useDebounce<{
+		search: string;
+		date: Date | undefined;
+	}>(filter, 500);
+
+	useEffect(() => {
+		router.get(
+			window.location.pathname,
+			{
+				search: debouncedFilter.search,
+				date: debouncedFilter.date
+					? debouncedFilter.date.toISOString().split("T")[0] // Format date to YYYY-MM-DD
+					: undefined,
+			},
+			{
+				replace: true,
+				preserveState: true,
+				preserveScroll: true,
+				only: ["work_targets"],
+			},
+		);
+	}, [debouncedFilter]);
+
 	return (
 		<DashboardLayout>
 			<Head title="Laporan Kinerja" />
@@ -46,12 +84,48 @@ export default function MyWorkReports({ work_targets }: Props) {
 				<CardContent>
 					<div className="space-y-4">
 						<div className="flex flex-row gap-2">
-							<Input placeholder="Cari Laporan Kinerja" />
-							<Button>Cari</Button>
-							<Button variant="outline">
-								<CalendarIcon />
-								Filter
-							</Button>
+							<Input
+								placeholder="Cari Laporan Kinerja"
+								value={filter.search}
+								onChange={(e) =>
+									setFilter((prev) => ({ ...prev, search: e.target.value }))
+								}
+							/>
+							{/* <Button>Cari</Button> */}
+							<Popover>
+								<PopoverTrigger asChild>
+									<Button variant="outline">
+										<CalendarIcon />
+										Filter
+									</Button>
+								</PopoverTrigger>
+								<PopoverContent className="w-auto p-0" align="end">
+									<Calendar
+										mode="single"
+										selected={filter.date}
+										onSelect={(date) =>
+											setFilter((prev) => ({
+												...prev,
+												date,
+											}))
+										}
+										initialFocus
+									/>
+								</PopoverContent>
+							</Popover>
+							{filter.date && (
+								<Button
+									variant="destructive"
+									onClick={() =>
+										setFilter((prev) => ({
+											...prev,
+											date: undefined,
+										}))
+									}
+								>
+									<Trash2Icon />
+								</Button>
+							)}
 						</div>
 						<div className="overflow-x-auto relative w-full text-sm">
 							{/* Header */}

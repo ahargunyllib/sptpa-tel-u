@@ -17,21 +17,34 @@ class WorkReportController extends Controller
      */
     public function indexMe(Request $request)
     {
+        $search = $request->query('search');
+        $date = $request->query('date');
+
         $user = $request->user();
 
         $workTargets = DB::table('work_targets')
             ->where('work_targets.assigned_id', $user->id)
             ->select(
                 'work_targets.*',
-            )
-            ->get();
+            );
+
+        if ($search) {
+            $workTargets = $workTargets->where('work_targets.name', 'like', '%' . $search . '%');
+        }
+
+        $workTargets = $workTargets->get();
 
         $workReports = DB::table('work_reports')
             ->where('work_reports.creator_id', $user->id)
             ->select(
                 'work_reports.*',
-            )
-            ->get();
+            );
+
+        if ($date) {
+            $workReports = $workReports->whereDate('work_reports.created_at', $date);
+        }
+
+        $workReports = $workReports->get();
 
         $workTargetMap = [];
         foreach ($workTargets as $target) {
