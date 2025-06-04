@@ -186,6 +186,29 @@ class WorkTargetController extends Controller
             )
             ->orderBy('work_targets.name')
             ->get();
+        $workTargetIds = $workTargets->pluck('id')->toArray();
+
+        $folders = DB::table('folders')
+            ->whereIn('work_target_id', $workTargetIds)
+            ->where('user_id', $user->id)
+            ->where('type', 'target_kinerja')
+            ->get();
+        $folderIds = $folders->pluck('id')->toArray();
+
+        $files = DB::table('files')
+            ->whereIn('folder_id', $folderIds)
+            ->where('user_id', $user->id)
+            ->get();
+
+        foreach ($files as $file) {
+            $month = date('n', strtotime($file->created_at));
+            $file->quarter = $month % 4;
+        }
+
+        foreach ($workTargets as $workTarget) {
+            $folder = $folders->firstWhere('work_target_id', $workTarget->id);
+            $workTarget->files = $files->where('folder_id', $folder->id)->values();
+        }
 
         return Inertia::render('my-work-targets/index', [
             'workTargets' => $workTargets,
@@ -653,6 +676,7 @@ class WorkTargetController extends Controller
                 $workTargetFolderId = DB::table('folders')->insertGetId([
                     'id' => Ulid::generate(),
                     'name' => "Target Kinerja {$workTarget->name}",
+                    'work_target_id' => $workTarget->id,
                     'parent_id' => $kinerjaYearFolderId,
                     'user_id' => $user->id,
                     'type' => 'target_kinerja',
@@ -692,11 +716,40 @@ class WorkTargetController extends Controller
 
             return back()->with('success', 'Evidence uploaded successfully.');
         } catch (\Exception $e) {
-            dd($e);
             // Rollback the transaction if an error occurs
             DB::rollBack();
 
             return back()->withErrors(['error' => 'Failed to upload evidence: ' . $e->getMessage()]);
+        }
+    }
+
+    public function destroyEvidence(Request $request, string $id, string $fileId)
+    {
+        try {
+            // Begin a database transaction
+            DB::beginTransaction();
+
+            $file = File::findOrFail($fileId);
+
+            // Delete the file from storage
+            if (file_exists(storage_path('app/public/' . $file->path))) {
+                unlink(storage_path('app/public/' . $file->path));
+            }
+
+            // Delete the file record from the database
+            $file->delete();
+
+            $this->log("Menghapus bukti kinerja dengan ID : {$fileId} untuk target kinerja dengan ID : {$id}");
+
+            // Commit the transaction
+            DB::commit();
+
+            return back()->with('success', 'Evidence deleted successfully.');
+        } catch (\Exception $e) {
+            // Rollback the transaction if an error occurs
+            DB::rollBack();
+
+            return back()->withErrors(['error' => 'Failed to delete evidence: ' . $e->getMessage()]);
         }
     }
 }

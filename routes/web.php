@@ -118,6 +118,7 @@ Route::middleware(['auth', 'role:kaur,staf'])->group(function () {
     Route::delete('/dashboard/work-report/{id}', [WorkReportController::class, 'destroy'])->name('dashboard.work-report.destroy');
 
     Route::post('/dashboard/work-target/{id}/evidence', [WorkTargetController::class, 'storeEvidence'])->name('dashboard.work-target.evidence.store');
+    Route::delete('/dashboard/work-target/{id}/evidence/{fileId}', [WorkTargetController::class, 'destroyEvidence'])->name('dashboard.work-target.evidence.destroy');
 
     // Route::get('/dashboard/performance/me', [WorkTargetController::class, 'myWorkTargets'])->name('dashboard.performance.me');
     // Route::get('/dashboard/performance/me/detail', [WorkTargetValueController::class, 'index'])->name('dashboard.performance.me.index');
