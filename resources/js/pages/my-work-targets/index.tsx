@@ -207,309 +207,233 @@ export default function MyWorkTargets({
 																</div>
 															</div>
 
-                                                        <Button
-                                                            variant="ghost"
-                                                            onClick={() => {
-                                                                setIsModalOpen(
-                                                                    true
-                                                                );
-                                                            }}
-                                                        >
-                                                            <PlusSquareIcon />
-                                                            Unggah
-                                                        </Button>
-                                                    </div>
-                                                    <FileUploadModal
-                                                        acceptedFileTypes={[
-                                                            ".jpg",
-                                                            ".png",
-                                                            ".pdf",
-                                                            ".zip",
-                                                            ".xlsx",
-                                                        ]}
-                                                        onOpenChange={
-                                                            setIsModalOpen
-                                                        }
-                                                        maxFiles={5}
-                                                        maxSize={10}
-                                                        onSave={handleSaveFiles}
-                                                        open={isModalOpen}
-                                                    />
-                                                </div>
-                                            );
-                                        })}
-                                    </TabsContent>
-                                    <TabsContent value="second_quarter">
-                                        {workTargets.map((workTarget) => {
-                                            return (
-                                                <div
-                                                    key={workTarget.id}
-                                                    className="border rounded-md p-3"
-                                                >
-                                                    <div className="flex items-center justify-between">
-                                                        <div className="flex items-center gap-2">
-                                                            <File className="h-5 w-5 text-muted-foreground" />
-                                                            <div>
-                                                                <p className="text-sm font-medium">
-                                                                    Bukti
-                                                                    Kinerja TW2_
-                                                                    {
-                                                                        workTarget.name
-                                                                    }
-                                                                </p>
-                                                            </div>
-                                                        </div>
-
-                                                        <Button variant="ghost">
-                                                            <PlusSquareIcon />
-                                                            Unggah
-                                                        </Button>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
-                                    </TabsContent>
-                                    <TabsContent value="third_quarter">
-                                        {workTargets.map((workTarget) => {
-                                            return (
-                                                <div
-                                                    key={workTarget.id}
-                                                    className="border rounded-md p-3"
-                                                >
-                                                    <div className="flex items-center justify-between">
-                                                        <div className="flex items-center gap-2">
-                                                            <File className="h-5 w-5 text-muted-foreground" />
-                                                            <div>
-                                                                <p className="text-sm font-medium">
-                                                                    Bukti
-                                                                    Kinerja TW3_
-                                                                    {
-                                                                        workTarget.name
-                                                                    }
-                                                                </p>
-                                                            </div>
-                                                        </div>
-
-                                                        <Button variant="ghost">
-                                                            <PlusSquareIcon />
-                                                            Unggah
-                                                        </Button>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
-                                    </TabsContent>
-                                    <TabsContent value="fourth_quarter">
-                                        {workTargets.map((workTarget) => {
-                                            return (
-                                                <div
-                                                    key={workTarget.id}
-                                                    className="border rounded-md p-3"
-                                                >
-                                                    <div className="flex items-center justify-between">
-                                                        <div className="flex items-center gap-2">
-                                                            <File className="h-5 w-5 text-muted-foreground" />
-                                                            <div>
-                                                                <p className="text-sm font-medium">
-                                                                    Bukti
-                                                                    Kinerja TW4_
-                                                                    {
-                                                                        workTarget.name
-                                                                    }
-                                                                </p>
-                                                            </div>
-                                                        </div>
-
-                                                        <Button variant="ghost">
-                                                            <PlusSquareIcon />
-                                                            Unggah
-                                                        </Button>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
-                                    </TabsContent>
-                                </Tabs>
-                                <DialogFooter>
-                                    <DialogClose asChild>
-                                        <Button variant="ghost">Kembali</Button>
-                                    </DialogClose>
-                                    <DialogClose asChild>
-                                        <Button onClick={() => {}}>
-                                            Simpan
-                                        </Button>
-                                    </DialogClose>
-                                </DialogFooter>
-                            </DialogContent>
-                        </Dialog>
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button variant="outline">
-                                    <FileTextIcon />
-                                    Lihat Detail Nilai
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent className="max-w-2xl">
-                                <DialogHeader>
-                                    <DialogTitle>
-                                        Detail Penilaian Objektif Kinerja
-                                    </DialogTitle>
-                                </DialogHeader>
-                                <div className="overflow-x-auto">
-                                    <Table>
-                                        <TableHeader>
-                                            <TableRow>
-                                                <TableHead className="py-3 px-4 text-center">
-                                                    No
-                                                </TableHead>
-                                                <TableHead className="py-3 px-4 w-full">
-                                                    Target Kinerja Pegawai
-                                                </TableHead>
-                                                <TableHead className="py-3 px-4 text-center">
-                                                    Nilai TW1
-                                                </TableHead>
-                                                <TableHead className="py-3 px-4 text-center">
-                                                    Nilai TW2
-                                                </TableHead>
-                                                <TableHead className="py-3 px-4 text-center">
-                                                    Nilai TW3
-                                                </TableHead>
-                                                <TableHead className="py-3 px-4 text-center">
-                                                    Nilai TW4
-                                                </TableHead>
-                                                <TableHead className="py-3 px-4 text-center">
-                                                    Nilai Keseluruhan
-                                                </TableHead>
-                                            </TableRow>
-                                        </TableHeader>
-                                        <TableBody>
-                                            {workTargets.map(
-                                                (workTarget, idx) => {
-                                                    return (
-                                                        <TableRow
-                                                            key={workTarget.id}
-                                                        >
-                                                            <TableCell className="py-3 px-4">
-                                                                {idx + 1}
-                                                            </TableCell>
-                                                            <TableCell className="py-3 w-full px-4">
-                                                                {
-                                                                    workTarget.name
-                                                                }
-                                                            </TableCell>
-                                                            <TableCell className="py-3 px-4 text-center">
-                                                                {
-                                                                    workTarget.first_quarter_score
-                                                                }
-                                                            </TableCell>
-                                                            <TableCell className="py-3 px-4 text-center">
-                                                                {
-                                                                    workTarget.second_quarter_score
-                                                                }
-                                                            </TableCell>
-                                                            <TableCell className="py-3 px-4 text-center">
-                                                                {
-                                                                    workTarget.third_quarter_score
-                                                                }
-                                                            </TableCell>
-                                                            <TableCell className="py-3 px-4 text-center">
-                                                                {
-                                                                    workTarget.fourth_quarter_score
-                                                                }
-                                                            </TableCell>
-                                                            <TableCell className="py-3 px-4 text-center">
-                                                                {
-                                                                    workTarget.final_score
-                                                                }
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    );
-                                                }
-                                            )}
-                                        </TableBody>
-                                    </Table>
-                                </div>
-                                <DialogFooter>
-                                    <DialogClose asChild>
-                                        <Button variant="ghost">Kembali</Button>
-                                    </DialogClose>
-                                </DialogFooter>
-                            </DialogContent>
-                        </Dialog>
-                    </div>
-                </CardHeader>
-                <CardContent>
-                    <div className="overflow-x-auto">
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead className="py-3 px-4 text-center">
-                                        No
-                                    </TableHead>
-                                    <TableHead className="py-3 px-4 w-full">
-                                        Target Kinerja Pegawai
-                                    </TableHead>
-                                    <TableHead className="py-3 px-4 text-center">
-                                        Satuan
-                                    </TableHead>
-                                    <TableHead className="py-3 px-4 text-center">
-                                        Target TW1
-                                    </TableHead>
-                                    <TableHead className="py-3 px-4 text-center">
-                                        Target TW2
-                                    </TableHead>
-                                    <TableHead className="py-3 px-4 text-center">
-                                        Target TW3
-                                    </TableHead>
-                                    <TableHead className="py-3 px-4 text-center">
-                                        Target TW4
-                                    </TableHead>
-                                    <TableHead className="py-3 px-4 text-center">
-                                        Realisasi TW1
-                                    </TableHead>
-                                    <TableHead className="py-3 px-4 text-center">
-                                        Realisasi TW2
-                                    </TableHead>
-                                    <TableHead className="py-3 px-4 text-center">
-                                        Realisasi TW3
-                                    </TableHead>
-                                    <TableHead className="py-3 px-4 text-center">
-                                        Realisasi TW4
-                                    </TableHead>
-                                    <TableHead className="py-3 px-4 text-center">
-                                        Kategori
-                                    </TableHead>
-                                    <TableHead className="py-3 px-4 text-center">
-                                        Nilai Keseluruhan
-                                    </TableHead>
-                                    <TableHead className="py-3 px-4 text-center">
-                                        Aksi
-                                    </TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {workTargets.map((workTarget, idx) => {
-                                    return (
-                                        <WorkTargetRow
-                                            key={workTarget.id}
-                                            workTarget={workTarget}
-                                            idx={idx}
-                                            selectedWorkTargetId={
-                                                selectedWorkTargetId
-                                            }
-                                            setSelectedWorkTargetId={
-                                                setSelectedWorkTargetId
-                                            }
-                                        />
-                                    );
-                                })}
-                            </TableBody>
-                        </Table>
-                    </div>
-                </CardContent>
-            </Card>
-        </DashboardLayout>
-    );
+															<div className="flex flex-row items-center gap-2">
+																{workTargetFiles.length === 0 ? (
+																	<Button
+																		variant="ghost"
+																		onClick={() => {
+																			setIsModalOpen(true);
+																		}}
+																	>
+																		<PlusSquareIcon />
+																		Unggah
+																	</Button>
+																) : (
+																	<>
+																		<Button
+																			variant="ghost"
+																			className="bg-info-20 hover:bg-info-40 text-info-80"
+																			onClick={() => {
+																				router.visit(
+																					`/dashboard/e-archive/${workTargetFiles[0].folder_id}`,
+																				);
+																			}}
+																		>
+																			<FileIcon />
+																			Lihat
+																		</Button>
+																		<Button
+																			variant="ghost"
+																			onClick={() => {
+																				setIsModalOpen(true);
+																			}}
+																			className="bg-warning-20 hover:bg-warning-40 text-warning-80"
+																		>
+																			<PencilLineIcon />
+																			Ubah
+																		</Button>
+																	</>
+																)}
+															</div>
+														</div>
+														<FileUploadModal
+															acceptedFileTypes={[
+																".jpg",
+																".png",
+																".pdf",
+																".zip",
+                                                                ".xlsx",
+															]}
+															onOpenChange={setIsModalOpen}
+															maxFiles={5}
+															maxSize={10}
+															onSave={handleSaveFiles}
+															open={isModalOpen}
+															initialFiles={workTargetFiles.map((file) => ({
+																name: file.name,
+																id: file.id,
+																size: file.size,
+																progress: 100,
+																status: undefined,
+																file: new File([], file.name),
+															}))}
+															onDeleteFile={(fileId) => {
+																router.delete(
+																	`/dashboard/work-target/${workTarget.id}/evidence/${fileId}`,
+																	{
+																		preserveState: true,
+																	},
+																);
+															}}
+														/>
+													</div>
+												);
+											})}
+										</TabsContent>
+									))}
+								</Tabs>
+								<DialogFooter>
+									<DialogClose asChild>
+										<Button variant="ghost">Kembali</Button>
+									</DialogClose>
+									<DialogClose asChild>
+										<Button onClick={() => {}}>Simpan</Button>
+									</DialogClose>
+								</DialogFooter>
+							</DialogContent>
+						</Dialog>
+						<Dialog>
+							<DialogTrigger asChild>
+								<Button variant="outline">
+									<FileTextIcon />
+									Lihat Detail Nilai
+								</Button>
+							</DialogTrigger>
+							<DialogContent className="max-w-2xl">
+								<DialogHeader>
+									<DialogTitle>Detail Penilaian Objektif Kinerja</DialogTitle>
+								</DialogHeader>
+								<div className="overflow-x-auto">
+									<Table>
+										<TableHeader>
+											<TableRow>
+												<TableHead className="py-3 px-4 text-center">
+													No
+												</TableHead>
+												<TableHead className="py-3 px-4 w-full">
+													Target Kinerja Pegawai
+												</TableHead>
+												<TableHead className="py-3 px-4 text-center">
+													Nilai TW1
+												</TableHead>
+												<TableHead className="py-3 px-4 text-center">
+													Nilai TW2
+												</TableHead>
+												<TableHead className="py-3 px-4 text-center">
+													Nilai TW3
+												</TableHead>
+												<TableHead className="py-3 px-4 text-center">
+													Nilai TW4
+												</TableHead>
+												<TableHead className="py-3 px-4 text-center">
+													Nilai Keseluruhan
+												</TableHead>
+											</TableRow>
+										</TableHeader>
+										<TableBody>
+											{workTargets.map((workTarget, idx) => {
+												return (
+													<TableRow key={workTarget.id}>
+														<TableCell className="py-3 px-4">
+															{idx + 1}
+														</TableCell>
+														<TableCell className="py-3 w-full px-4">
+															{workTarget.name}
+														</TableCell>
+														<TableCell className="py-3 px-4 text-center">
+															{workTarget.first_quarter_score}
+														</TableCell>
+														<TableCell className="py-3 px-4 text-center">
+															{workTarget.second_quarter_score}
+														</TableCell>
+														<TableCell className="py-3 px-4 text-center">
+															{workTarget.third_quarter_score}
+														</TableCell>
+														<TableCell className="py-3 px-4 text-center">
+															{workTarget.fourth_quarter_score}
+														</TableCell>
+														<TableCell className="py-3 px-4 text-center">
+															{workTarget.final_score}
+														</TableCell>
+													</TableRow>
+												);
+											})}
+										</TableBody>
+									</Table>
+								</div>
+								<DialogFooter>
+									<DialogClose asChild>
+										<Button variant="ghost">Kembali</Button>
+									</DialogClose>
+								</DialogFooter>
+							</DialogContent>
+						</Dialog>
+					</div>
+				</CardHeader>
+				<CardContent>
+					<div className="overflow-x-auto">
+						<Table>
+							<TableHeader>
+								<TableRow>
+									<TableHead className="py-3 px-4 text-center">No</TableHead>
+									<TableHead className="py-3 px-4 w-full">
+										Target Kinerja Pegawai
+									</TableHead>
+									<TableHead className="py-3 px-4 text-center">
+										Satuan
+									</TableHead>
+									<TableHead className="py-3 px-4 text-center">
+										Target TW1
+									</TableHead>
+									<TableHead className="py-3 px-4 text-center">
+										Target TW2
+									</TableHead>
+									<TableHead className="py-3 px-4 text-center">
+										Target TW3
+									</TableHead>
+									<TableHead className="py-3 px-4 text-center">
+										Target TW4
+									</TableHead>
+									<TableHead className="py-3 px-4 text-center">
+										Realisasi TW1
+									</TableHead>
+									<TableHead className="py-3 px-4 text-center">
+										Realisasi TW2
+									</TableHead>
+									<TableHead className="py-3 px-4 text-center">
+										Realisasi TW3
+									</TableHead>
+									<TableHead className="py-3 px-4 text-center">
+										Realisasi TW4
+									</TableHead>
+									<TableHead className="py-3 px-4 text-center">
+										Kategori
+									</TableHead>
+									<TableHead className="py-3 px-4 text-center">
+										Nilai Keseluruhan
+									</TableHead>
+									<TableHead className="py-3 px-4 text-center">Aksi</TableHead>
+								</TableRow>
+							</TableHeader>
+							<TableBody>
+								{workTargets.map((workTarget, idx) => {
+									return (
+										<WorkTargetRow
+											key={workTarget.id}
+											workTarget={workTarget}
+											idx={idx}
+											selectedWorkTargetId={selectedWorkTargetId}
+											setSelectedWorkTargetId={setSelectedWorkTargetId}
+										/>
+									);
+								})}
+							</TableBody>
+						</Table>
+					</div>
+				</CardContent>
+			</Card>
+		</DashboardLayout>
+	);
 }
 
 function WorkTargetRow({
