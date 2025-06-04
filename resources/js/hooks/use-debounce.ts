@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export default function useDebounce(value: any, delay: number) {
-	const [debouncedValue, setDebouncedValue] = useState(value);
+export default function useDebounce<T>(value: T, delay: number) {
+	const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
 	useEffect(() => {
 		const handler = setTimeout(() => {
