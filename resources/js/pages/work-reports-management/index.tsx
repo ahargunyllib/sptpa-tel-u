@@ -100,7 +100,7 @@ export default function WorkReportsManagement({ staffs }: Props) {
 										{staff.work_targets.map((workTarget) => {
 											return (
 												<details className="flex flex-col" key={workTarget.id}>
-													<summary className="px-10 py-3 text-black font-semibold bg-muted text-wrap list-none">
+													<summary className="px-10 py-3 text-black font-semibold bg-muted text-wrap">
 														{workTarget.name}
 													</summary>
 
