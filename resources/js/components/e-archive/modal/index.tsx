@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { File, RotateCw, Trash2, X } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 
-export type FileStatus = "uploading" | "failed" | "success";
+export type FileStatus = "uploading" | "failed" | "success" | undefined;
 
 export interface FileItem {
 	id: string;
@@ -34,6 +34,8 @@ interface FileUploadModalProps {
 	description?: string;
 	saveButtonText?: string;
 	cancelButtonText?: string;
+	initialFiles?: FileItem[];
+	onDeleteFile?: (id: string) => void;
 }
 
 export function FileUploadModal({
@@ -47,8 +49,10 @@ export function FileUploadModal({
 	description = "Tambahkan dokumen disini dan hanya bisa mengunggah maksimal 5 file",
 	saveButtonText = "Simpan",
 	cancelButtonText = "Batalkan",
+	initialFiles = [],
+	onDeleteFile,
 }: FileUploadModalProps) {
-	const [files, setFiles] = useState<FileItem[]>([]);
+	const [files, setFiles] = useState<FileItem[]>(initialFiles);
 	const [isDragging, setIsDragging] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -377,6 +381,20 @@ export function FileUploadModal({
 											type="button"
 											onClick={() => handleRemoveFile(file.id)}
 											className="text-muted-foreground hover:text-foreground"
+										>
+											<Trash2 className="h-4 w-4" />
+											<span className="sr-only">Delete</span>
+										</button>
+									)}
+
+									{!file.status && (
+										<button
+											type="button"
+											onClick={() => {
+												onDeleteFile?.(file.id);
+												handleRemoveFile(file.id);
+											}}
+											className="text-destructive hover:text-destructive/80"
 										>
 											<Trash2 className="h-4 w-4" />
 											<span className="sr-only">Delete</span>
