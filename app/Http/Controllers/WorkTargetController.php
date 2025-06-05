@@ -207,7 +207,10 @@ class WorkTargetController extends Controller
 
         foreach ($workTargets as $workTarget) {
             $folder = $folders->firstWhere('work_target_id', $workTarget->id);
-            $workTarget->files = $files->where('folder_id', $folder->id)->values();
+
+            if ($folder){
+                $workTarget->files = $files->where('folder_id', $folder->id)->values();
+            }
         }
 
         return Inertia::render('my-work-targets/index', [
