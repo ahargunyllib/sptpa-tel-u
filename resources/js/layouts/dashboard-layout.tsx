@@ -48,6 +48,7 @@ export default function DashboardLayout({
 
                                     <img
                                         src="/logo-fri.webp"
+                                        alt="logo"
                                         className="max-w-96 h-16"
                                     />
                                 </div>
