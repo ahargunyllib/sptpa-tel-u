@@ -35,7 +35,7 @@ export default function DashboardLayout({
 							<div className="flex flex-row gap-4 items-center justify-start">
 								<MenuIcon />
 								<h1 className="font-bold text-xl text-primary-60 ">SITPA</h1>
-								<span className="text-xs text-[#98A2B3] text-center text-wrap w-40">
+								<span className="text-xs text-black text-center text-wrap w-40">
 									Sistem Informasi Tenaga Penunjang Akademik
 								</span>
 							</div>
