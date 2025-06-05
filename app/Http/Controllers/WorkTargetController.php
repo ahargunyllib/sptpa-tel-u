@@ -210,6 +210,8 @@ class WorkTargetController extends Controller
 
             if ($folder){
                 $workTarget->files = $files->where('folder_id', $folder->id)->values();
+            } else {
+                $workTarget->files = [];
             }
         }
 
