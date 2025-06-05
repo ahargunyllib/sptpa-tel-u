@@ -245,7 +245,7 @@ function StaffRow({
 			</TableCell>
 			<TableCell className="py-3 px-4 text-center">
 				<div className="flex flex-row items-center justify-center">
-					{harmonyScore}
+					{harmonyScore.toFixed(2)}
 					{selectedStaffId === staff.id ? (
 						<HarmonyPerformanceAssessmentDialog
 							staffName={staff.name}
@@ -257,7 +257,7 @@ function StaffRow({
 			</TableCell>
 			<TableCell className="py-3 px-4 text-center">
 				<div className="flex flex-row items-center justify-center">
-					{excellenceScore}
+					{excellenceScore.toFixed(2)}
 					{selectedStaffId === staff.id ? (
 						<ExcellencePerformanceAssessmentDialog
 							staffName={staff.name}
@@ -269,7 +269,7 @@ function StaffRow({
 			</TableCell>
 			<TableCell className="py-3 px-4 text-center">
 				<div className="flex flex-row items-center justify-center">
-					{integrityScore}
+					{integrityScore.toFixed(2)}
 					{selectedStaffId === staff.id ? (
 						<IntegrityPerformanceAssessmentDialog
 							staffName={staff.name}
@@ -280,7 +280,7 @@ function StaffRow({
 				</div>
 			</TableCell>
 			<TableCell className="py-3 px-4 text-center">
-				{averageScore.toPrecision(2)}
+				{averageScore.toFixed(2)}
 			</TableCell>
 			<TableCell className="py-3 px-4 text-center w-full">
 				<LabelInput
