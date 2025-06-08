@@ -68,6 +68,9 @@ Route::middleware(['auth', 'role:sdm'])->group(function () {
     Route::post('/dashboard/file/rubrikasi',[FileController::class, 'rubrikasiUpload'])->name('files.rubrikasiUpload');
     Route::get('/dashboard/upload/panduan',[FileController::class, 'panduanIndex'])->name('files.panduanIndex');
     Route::post('/dashboard/file/panduan',[FileController::class, 'panduanUpload'])->name('files.panduanUpload');
+    Route::post('/api/file/panduan',[FileController::class, 'panduanApi'])->name('files.panduanApi');
+    Route::post('/api/file/rubrikasi',[FileController::class, 'rubrikasiApi'])->name('files.rubrikasiApi');
+
 
     // Route::get('/dashboard/tag', [TagController::class, 'index'])->name('tags.index');
     // Route::post('/dashboard/tags', [TagController::class, 'store'])->name('tags.store');

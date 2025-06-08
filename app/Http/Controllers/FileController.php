@@ -130,7 +130,7 @@ class FileController extends Controller
             }
 
             $file->delete();
-            
+
             $this->log("Menghapus file dengan nama: {$file->name}");
             return redirect()->back()->with('success', 'File deleted successfully.');
         } catch (\Exception $e) {
@@ -247,6 +247,93 @@ class FileController extends Controller
         }
     }
 
+    public function rubrikasiApi(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'file' => 'required|file|max:10240',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Format file tidak sesuai.',
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
+
+            $folder = Folder::firstOrCreate(
+                ['name' => 'Rubrikasi', 'user_id' => Auth::id()],
+                ['parent_id' => null]
+            );
+
+            $uploadedFile = $request->file('file');
+            $fileName = $uploadedFile->getClientOriginalName();
+            $fileType = $uploadedFile->getMimeType();
+            $fileSize = $uploadedFile->getSize();
+            $path = $uploadedFile->store('files/' . Auth::id(), 'public');
+
+            $thumbnail = null;
+            if (str_starts_with($fileType, 'image/')) {
+                // Tambahkan logika pembuatan thumbnail di sini jika diperlukan
+            }
+
+            $existingFile = File::where('folder_id', $folder->id)
+                ->where('user_id', Auth::id())
+                ->first();
+
+            if ($existingFile) {
+                if (Storage::disk('public')->exists($existingFile->path)) {
+                    Storage::disk('public')->delete($existingFile->path);
+                }
+                if ($existingFile->thumbnail && Storage::disk('public')->exists($existingFile->thumbnail)) {
+                    Storage::disk('public')->delete($existingFile->thumbnail);
+                }
+
+                $existingFile->update([
+                    'name' => $fileName,
+                    'type' => $fileType,
+                    'size' => $fileSize,
+                    'path' => $path,
+                    'thumbnail' => $thumbnail,
+                ]);
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'File rubrikasi berhasil diperbarui.',
+                    'file' => $existingFile,
+                ]);
+            } else {
+                $newFile = File::create([
+                    'name' => $fileName,
+                    'type' => $fileType,
+                    'size' => $fileSize,
+                    'path' => $path,
+                    'thumbnail' => $thumbnail,
+                    'folder_id' => $folder->id,
+                    'user_id' => Auth::id(),
+                ]);
+
+                $this->log("Mengunggah file rubrikasi dengan nama: {$fileName}");
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'File rubrikasi berhasil ditambahkan.',
+                    'file' => $newFile,
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal mengunggah file rubrikasi.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+
+
     public function panduanUpload(Request $request)
     {
         try {
@@ -311,6 +398,93 @@ class FileController extends Controller
             return redirect()->back()->with('error', 'Gagal mengunggah file panduan.');
         }
     }
+
+    public function panduanApi(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'file' => 'required|file|max:10240',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Format file tidak sesuai.',
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
+
+            $folder = Folder::firstOrCreate(
+                ['name' => 'Panduan', 'user_id' => Auth::id()],
+                ['parent_id' => null]
+            );
+
+            $uploadedFile = $request->file('file');
+            $fileName = $uploadedFile->getClientOriginalName();
+            $fileType = $uploadedFile->getMimeType();
+            $fileSize = $uploadedFile->getSize();
+            $path = $uploadedFile->store('files/' . Auth::id(), 'public');
+
+            $thumbnail = null;
+            if (str_starts_with($fileType, 'image/')) {
+                // Logic thumbnail kalau perlu
+            }
+
+            $existingFile = File::where('folder_id', $folder->id)
+                ->where('user_id', Auth::id())
+                ->first();
+
+            if ($existingFile) {
+                if (Storage::disk('public')->exists($existingFile->path)) {
+                    Storage::disk('public')->delete($existingFile->path);
+                }
+                if ($existingFile->thumbnail && Storage::disk('public')->exists($existingFile->thumbnail)) {
+                    Storage::disk('public')->delete($existingFile->thumbnail);
+                }
+
+                $existingFile->update([
+                    'name' => $fileName,
+                    'type' => $fileType,
+                    'size' => $fileSize,
+                    'path' => $path,
+                    'thumbnail' => $thumbnail,
+                ]);
+
+                $this->log("Mengunggah file panduan dengan nama: {$fileName}");
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'File panduan berhasil diperbarui.',
+                    'file' => $existingFile,
+                ]);
+            } else {
+                $newFile = File::create([
+                    'name' => $fileName,
+                    'type' => $fileType,
+                    'size' => $fileSize,
+                    'path' => $path,
+                    'thumbnail' => $thumbnail,
+                    'folder_id' => $folder->id,
+                    'user_id' => Auth::id(),
+                ]);
+
+                $this->log("Mengunggah file panduan dengan nama: {$fileName}");
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'File panduan berhasil ditambahkan.',
+                    'file' => $newFile,
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal mengunggah file panduan.',
+                'error' => $e->getMessage(), // opsional, bisa dihapus di production
+            ], 500);
+        }
+    }
+
 
     public function rubrikasiShow()
     {
