@@ -264,7 +264,10 @@ class FileController extends Controller
 
             $folder = Folder::firstOrCreate(
                 ['name' => 'Rubrikasi', 'user_id' => Auth::id()],
-                ['parent_id' => null]
+                [
+                    'parent_id' => null,
+                    'type' => 'rubrik',
+                ]
             );
 
             $uploadedFile = $request->file('file');
@@ -347,8 +350,12 @@ class FileController extends Controller
 
             $folder = Folder::firstOrCreate(
                 ['name' => 'Panduan', 'user_id' => Auth::id()],
-                ['parent_id' => null]
+                [
+                    'parent_id' => null,
+                    'type' => 'panduan',
+                ]
             );
+
 
             $uploadedFile = $request->file('file');
             $fileName = $uploadedFile->getClientOriginalName();
@@ -416,7 +423,10 @@ class FileController extends Controller
 
             $folder = Folder::firstOrCreate(
                 ['name' => 'Panduan', 'user_id' => Auth::id()],
-                ['parent_id' => null]
+                [
+                    'parent_id' => null,
+                    'type' => 'panduan',
+                ]
             );
 
             $uploadedFile = $request->file('file');
