@@ -32,6 +32,7 @@ export default function RubrikasiUploadPage({
                 },
             });
             alert("File berhasil diupload.");
+			window.location.reload()
         } catch (error: any) {
             console.error(error);
             alert(error.response?.data?.message || "Upload gagal.");
