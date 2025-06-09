@@ -103,7 +103,7 @@ export const kaurPenilaianSections: NavSection[] = [
 		title: "BANTUAN",
 		items: [
 			{
-				title: "Rubrikasi Penilaian",
+				title: "Rubrik Penilaian",
 				icon: Inbox,
 				href: "/dashboard/rubric",
 			},
@@ -136,7 +136,7 @@ export const sdmPenilaianSections: NavSection[] = [
 		title: "UNGGAH DOKUMEN BANTUAN",
 		items: [
 			{
-				title: "Unggah Rubrikasi",
+				title: "Unggah Rubrik",
 				icon: Upload,
 				href: "/dashboard/upload/rubrikasi", // TODO
 			},
@@ -151,7 +151,7 @@ export const sdmPenilaianSections: NavSection[] = [
 		title: "BANTUAN",
 		items: [
 			{
-				title: "Rubrikasi Penilaian",
+				title: "Rubrik Penilaian",
 				icon: Inbox,
 				href: "/dashboard/rubric",
 			},
@@ -209,7 +209,7 @@ export const wadekPenilaianSections: NavSection[] = [
 		title: "BANTUAN",
 		items: [
 			{
-				title: "Rubrikasi Penilaian",
+				title: "Rubrik Penilaian",
 				icon: Inbox,
 				href: "/dashboard/rubric",
 			},

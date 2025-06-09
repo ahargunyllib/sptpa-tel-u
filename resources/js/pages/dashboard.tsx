@@ -20,9 +20,9 @@ export default function Dashboard() {
                     "Dapat melihat aktivitas yang dilakukan oleh masing masing role di website.",
             },
             {
-                title: "Unggah Rubrikasi",
+                title: "Unggah Rubrik",
                 description:
-                    "Melakukan pengunggahan rubrikasi penilaian yang nantinya akan digunakan oleh Kepala Urusan dan Wakil Dekan dalam menilai Staf.",
+                    "Melakukan pengunggahan rubrik penilaian yang nantinya akan digunakan oleh Kepala Urusan dan Wakil Dekan dalam menilai Staf.",
             },
             {
                 title: "Unggah Panduan",
