@@ -35,7 +35,7 @@ export default function Login({
 			{status && (
 				<div className="mb-4 text-sm font-medium text-green-600">{status}</div>
 			)}
-
+			<img src="/logo-fri.webp" />
 			<form onSubmit={submit}>
 				<div>
 					<InputLabel htmlFor="email" value="Email" />
