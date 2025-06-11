@@ -35,23 +35,14 @@ export default function DashboardLayout({
                         <div className="flex flex-row items-center justify-between bg-white py-4 px-6 pt-16 md:pt-4 w-full">
                             <div className="flex flex-row gap-4 items-center justify-start">
                                 <MenuIcon />
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex gap-4 items-center">
-                                        <h1 className="font-bold text-xl text-primary-60 ">
-                                            SITPA
-                                        </h1>
-                                        <span className="text-xs text-[#98A2B3] text-center text-wrap w-40">
-                                            Sistem Informasi Tenaga Penunjang
-                                            Akademik
-                                        </span>
-                                    </div>
-
-                                    <img
-                                        src="/logo-fri.webp"
-                                        className="max-w-96 h-16"
-                                    />
-                                </div>
+                                <h1 className="font-bold text-xl text-primary-60 ">
+                                    SITPA
+                                </h1>
+                                <span className="text-xs text-[#98A2B3] text-center text-wrap w-40">
+                                    Sistem Informasi Tenaga Penunjang Akademik
+                                </span>
                             </div>
+
                             <div className="flex flex-row gap-4 items-center justify-end">
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
