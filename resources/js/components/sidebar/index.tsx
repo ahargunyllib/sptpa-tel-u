@@ -19,6 +19,7 @@ import { useUser } from "@/hooks/use-user";
 import { Link } from "@inertiajs/react";
 import { ClipboardList, Folder, LayoutDashboard, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useIsBelow2XL } from "@/hooks/use-below-2xl";
 
 export function AppSidebar() {
 	const user = useUser();
@@ -33,7 +34,7 @@ export function AppSidebar() {
 			return "penilaian";
 		},
 	);
-	const isMobile = useIsMobile();
+	const isMobile = useIsBelow2XL();
 	const pathName = window.location.pathname;
 	const [menus, setMenus] = useState<NavSection[]>(tpaPenilaianSections);
 

@@ -30,7 +30,7 @@ export default function DashboardLayout({
         <SidebarProvider>
             <div className="min-h-screen bg-[#F2F2F2] max-w-screen overflow-hidden">
                 <AppSidebar />
-                <main className="text-black pl-0 md:pl-[40vh] xl:pl-[30vh] 2xl:pl-[35vh] min-h-screen flex-1 w-screen">
+                <main className="text-black pl-0 2xl:pl-[35vh] min-h-screen flex-1 w-screen">
                     <div className="flex flex-col h-full gap-6 ">
                         <div className="flex flex-row items-center justify-between bg-white py-4 px-6 pt-16 md:pt-4 w-full">
                             <div className="flex flex-row gap-4 items-center justify-start">
