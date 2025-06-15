@@ -139,7 +139,7 @@ export default function EArchiveLayout({
                 />
             )}
             <FileUploadModal
-                acceptedFileTypes={[".jpg", ".png",".pdf",".zip"]}
+                acceptedFileTypes={[".jpg", ".png",".pdf",".zip",".xlsx"]}
                 onOpenChange={setIsModalOpen}
                 maxFiles={5}
                 maxSize={10}

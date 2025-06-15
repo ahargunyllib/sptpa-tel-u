@@ -219,6 +219,7 @@ export default function MyWorkTargets({
                                                             ".png",
                                                             ".pdf",
                                                             ".zip",
+                                                            ".xlsx",
                                                         ]}
                                                         onOpenChange={
                                                             setIsModalOpen
