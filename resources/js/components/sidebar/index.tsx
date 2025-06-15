@@ -15,11 +15,11 @@ import {
 	wadekArsipSections,
 	wadekPenilaianSections,
 } from "@/components/sidebar/sidebar";
+import { useIsBelow2XL } from "@/hooks/use-below-2xl";
 import { useUser } from "@/hooks/use-user";
 import { Link } from "@inertiajs/react";
 import { ClipboardList, Folder, LayoutDashboard, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useIsBelow2XL } from "@/hooks/use-below-2xl";
 
 export function AppSidebar() {
 	const user = useUser();
@@ -110,7 +110,7 @@ export function AppSidebar() {
 			{/* Sidebar */}
 			<aside
 				className={cn(
-					"py-6 fixed inset-y-0 left-0 z-50 flex xl:w-[30vh] 2xl:w-[35vh] flex-col bg-white text-[#475467] transition-transform duration-300 px-4 w-full md:w-auto ",
+					"py-6 fixed inset-y-0 left-0 z-50 flex xl:min-w-[30vh] 2xl:min-w-[35vh] flex-col bg-white text-[#475467] transition-transform duration-300 px-4 w-full md:w-auto ",
 					isMobile && !isOpen && "-translate-x-full",
 				)}
 			>
