@@ -38,7 +38,7 @@ export default function Login({
                 </div>
             )}
             <img src="/logo-fri.webp" />
-            <h1 className="font-bold text-xl text-primary-60 text-center">SITPA</h1>
+            <h1 className="font-bold text-5xl text-primary-60 text-center">SITPA</h1>
             <h4 className="text-xs text-[#98A2B3] text-center w-full self-stretch mt-2">
                 Sistem Informasi Tenaga Penunjang Akademik
             </h4>
