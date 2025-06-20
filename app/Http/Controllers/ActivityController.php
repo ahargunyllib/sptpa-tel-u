@@ -128,7 +128,7 @@ class ActivityController extends Controller
 
         $users = $this->getScopedUsers($auth);
 
-        return Inertia::render('Activities/Edit', [
+        return Inertia::render('activities/edit', [
             'activity' => $activity,
             'users' => $users,
         ]);

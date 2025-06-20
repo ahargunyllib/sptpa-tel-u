@@ -26,13 +26,13 @@ export default function Index({ activities }: Props) {
 
 	return (
 		<DashboardLayout>
-			<Head title="Daftar Aktivitas" />
+			<Head title="Daftar Pelatihan" />
 			<div className="container px-6 py-10">
 				<div className="flex justify-between items-center mb-6">
-					<h1 className="text-xl font-bold">Daftar Aktivitas</h1>
+					<h1 className="text-xl font-bold">Daftar Pelatihan</h1>
 					<Link href={route("activities.pelatihan-pegawai.create")}>
 						<Button>
-							<Plus className="w-4 h-4 mr-2" /> Tambah Aktivitas
+							<Plus className="w-4 h-4 mr-2" /> Tambah Pelatihan
 						</Button>
 					</Link>
 				</div>
@@ -52,45 +52,55 @@ export default function Index({ activities }: Props) {
 								</TableRow>
 							</TableHeader>
 							<TableBody>
-								{activities.map((item) => (
-									<TableRow key={item.id}>
-										<TableCell>{item.title}</TableCell>
-										<TableCell>{item.type}</TableCell>
-										<TableCell>{item.method}</TableCell>
-										<TableCell>{item.implementation_date}</TableCell>
-										<TableCell>{item.user?.name ?? "-"}</TableCell>
-										<TableCell>
-											{item.file ? (
-												<a
-													href={`/storage/${item.file}`}
-													target="_blank"
-													rel="noopener noreferrer"
-													className="text-blue-500 underline"
-												>
-													Lihat File
-												</a>
-											) : (
-												"-"
-											)}
-										</TableCell>
-										<TableCell className="text-right space-x-2">
-											<Link
-												href={`/dashboard/e-archive/pelatihan-pegawai/${item.id}/edit`}
-											>
-												<Button variant="outline" size="icon">
-													<Edit className="w-4 h-4" />
-												</Button>
-											</Link>
-											<Button
-												variant="destructive"
-												size="icon"
-												onClick={() => handleDelete(item.id)}
-											>
-												<Trash2 className="w-4 h-4" />
-											</Button>
+								{activities.length === 0 ? (
+									<TableRow>
+										<TableCell colSpan={7}>
+											<p className="flex justify-center items-center py-10">
+												Tidak ada data pelatihan
+											</p>{" "}
 										</TableCell>
 									</TableRow>
-								))}
+								) : (
+									activities.map((item) => (
+										<TableRow key={item.id}>
+											<TableCell>{item.title}</TableCell>
+											<TableCell>{item.type}</TableCell>
+											<TableCell>{item.method}</TableCell>
+											<TableCell>{item.implementation_date}</TableCell>
+											<TableCell>{item.user?.name ?? "-"}</TableCell>
+											<TableCell>
+												{item.file ? (
+													<a
+														href={`/storage/${item.file}`}
+														target="_blank"
+														rel="noopener noreferrer"
+														className="text-blue-500 underline"
+													>
+														Lihat File
+													</a>
+												) : (
+													"-"
+												)}
+											</TableCell>
+											<TableCell className="text-right space-x-2">
+												<Link
+													href={`/dashboard/e-archive/pelatihan-pegawai/${item.id}/edit`}
+												>
+													<Button variant="outline" size="icon">
+														<Edit className="w-4 h-4" />
+													</Button>
+												</Link>
+												<Button
+													variant="destructive"
+													size="icon"
+													onClick={() => handleDelete(item.id)}
+												>
+													<Trash2 className="w-4 h-4" />
+												</Button>
+											</TableCell>
+										</TableRow>
+									))
+								)}
 							</TableBody>
 						</Table>
 					</CardContent>

@@ -156,4 +156,5 @@ interface Activity {
 	implementation_date: string;
 	user: User;
 	file: string | null;
+	user_id: string;
 }
