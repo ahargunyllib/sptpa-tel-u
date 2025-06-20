@@ -112,6 +112,12 @@ class User extends Authenticatable
         return $this->hasMany(File::class);
     }
 
+    public function activities()
+    {
+        return $this->hasMany(Activity::class);
+    }
+
+
     // public function workTargets()
     // {
     //     return $this->hasMany(WorkTarget::class);
