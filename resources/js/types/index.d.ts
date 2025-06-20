@@ -147,3 +147,14 @@ export type WorkReport = {
 	content: string;
 	created_at: string;
 };
+
+interface Activity {
+	id: string;
+	title: string;
+	type: string;
+	method: string;
+	implementation_date: string;
+	user: User;
+	file: string | null;
+	user_id: string;
+}

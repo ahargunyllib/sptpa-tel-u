@@ -207,37 +207,35 @@ export function AppSidebar() {
 									{section.title}
 								</h2>
 								<ul className="space-y-2">
-									{section.items.map((item) => (
-										<li key={item.title}>
-											<Link
-												href={item.href}
-												method={item.href === "/logout" ? "post" : undefined}
-												className={cn(
-													"flex items-center gap-6 px-6 py-4 rounded-lg text-body-lg xl:text-h6 transition-colors",
-													pathName.startsWith(item.href)
-														? "bg-primary-60"
-														: "bg",
-												)}
-											>
-												<item.icon
-													className={`${
-														pathName.startsWith(item.href)
-															? "text-white"
-															: "text-dark-60"
-													} w-5 h-5`}
-												/>
-												<span
-													className={`${
-														pathName.startsWith(item.href)
-															? "text-white"
-															: "text-dark-60"
-													}`}
+									{section.items.map((item) => {
+										const isActive = pathName === item.href;
+
+										return (
+											<li key={item.title}>
+												<Link
+													href={item.href}
+													method={item.href === "/logout" ? "post" : undefined}
+													className={cn(
+														"flex items-center gap-6 px-6 py-4 rounded-lg text-body-lg xl:text-h6 transition-colors",
+														isActive ? "bg-primary-60" : "bg",
+													)}
 												>
-													{item.title}
-												</span>
-											</Link>
-										</li>
-									))}
+													<item.icon
+														className={`${
+															isActive ? "text-white" : "text-dark-60"
+														} w-5 h-5`}
+													/>
+													<span
+														className={`${
+															isActive ? "text-white" : "text-dark-60"
+														}`}
+													>
+														{item.title}
+													</span>
+												</Link>
+											</li>
+										);
+									})}
 								</ul>
 							</div>
 						))}
