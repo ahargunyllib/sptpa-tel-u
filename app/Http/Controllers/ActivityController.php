@@ -41,7 +41,7 @@ class ActivityController extends Controller
     {
         $activities = Activity::with('user')->latest()->get();
 
-        return Inertia::render('Activities/Index', [
+        return Inertia::render('activities/index', [
             'activities' => $activities,
         ]);
     }

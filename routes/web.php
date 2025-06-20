@@ -35,6 +35,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth'])->group(function (): void {
+    Route::get('/dashboard/e-archive/pelatihan-pegawai', [ActivityController::class, 'index'])
+        ->name('activities.index');
     Route::get('/dashboard/e-archive', [FolderController::class, 'index'])
         ->name('folders.index');
 
@@ -51,8 +53,7 @@ Route::middleware(['auth'])->group(function (): void {
     Route::get('/dashboard/e-archive/{folderId}', [FolderController::class, 'show'])
         ->name('folders.show');
 
-    Route::get('/dashboard/e-archive/pelatihan-pegawai', [FolderController::class, 'index'])
-        ->name('activities.index');
+    
 
     
     // Route::get('/dashboard/weekly-report', [WeeklyReportController::class, 'index'])->name('weekly-report.index');
