@@ -69,6 +69,7 @@ export default function Edit({ activity, users, errors }: Props) {
 			route("activities.pelatihan-pegawai.update", activity.id),
 			formData,
 		);
+		window.history.back();
 	};
 	return (
 		<DashboardLayout header="Pelatihan Pegawai">

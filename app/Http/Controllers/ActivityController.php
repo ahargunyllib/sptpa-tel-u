@@ -148,9 +148,9 @@ class ActivityController extends Controller
         Activity::create($data);
         $user = Auth::user();
         if ($user->role === 'wadek1' || $user->role === 'wadek2') {
-            return redirect()->route('activities.index.wadek')->with('success', 'Activity updated.');
+            return redirect()->back()->with('success', 'Activity updated.');
         } else {
-            return redirect()->route('activities.index.kaur')->with('success', 'Activity updated.');
+            return redirect()->back()('activities.index.kaur')->with('success', 'Activity updated.');
         }
     }
 
@@ -187,9 +187,9 @@ class ActivityController extends Controller
         $activity->update($data);
         $user = Auth::user();
         if ($user->role === 'wadek1' || $user->role === 'wadek2') {
-            return redirect()->route('activities.index.wadek')->with('success', 'Activity updated.');
+            return redirect()->back()->with('success', 'Activity updated.');
         } else {
-            return redirect()->route('activities.index.kaur')->with('success', 'Activity updated.');
+            return redirect()->back()->with('success', 'Activity updated.');
         }
     }
 
