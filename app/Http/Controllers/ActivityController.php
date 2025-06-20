@@ -98,7 +98,7 @@ class ActivityController extends Controller
 
         $users = $this->getScopedUsers($auth);
 
-        return Inertia::render('Activities/Create', [
+        return Inertia::render('activities/create', [
             'users' => $users,
         ]);
     }
@@ -108,18 +108,17 @@ class ActivityController extends Controller
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|string|max:255',
-            'metode' => 'required|in:Online,Offline',
+            'method' => 'required|in:Online,Offline',
             'implementation_date' => 'required|date',
-            'file_pendukung' => 'nullable|file',
+            'file' => 'nullable|file',
             'user_id' => 'required|exists:users,id',
         ]);
 
         if ($request->hasFile('file_pendukung')) {
             $data['file_pendukung'] = $request->file('file_pendukung')->store('activities');
         }
-
+        
         Activity::create($data);
-
         return redirect()->route('activities.index')->with('success', 'Activity created.');
     }
 

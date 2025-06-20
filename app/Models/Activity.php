@@ -11,6 +11,15 @@ class Activity extends Model
 {
     use HasFactory, HasUlid;
 
+    protected $fillable = [
+        'title',
+        'type',
+        'implementation_date',
+        'file',
+        'method',
+        'user_id',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

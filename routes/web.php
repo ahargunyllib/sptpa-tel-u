@@ -52,7 +52,7 @@ Route::middleware(['auth'])->group(function (): void {
         ->name('folders.show');
 
     Route::get('/dashboard/e-archive/pelatihan-pegawai', [FolderController::class, 'index'])
-        ->name('folders.pelatihan-pegawai');
+        ->name('activities.index');
 
     
     // Route::get('/dashboard/weekly-report', [WeeklyReportController::class, 'index'])->name('weekly-report.index');
