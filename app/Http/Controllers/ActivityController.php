@@ -114,8 +114,8 @@ class ActivityController extends Controller
             'user_id' => 'required|exists:users,id',
         ]);
 
-        if ($request->hasFile('file_pendukung')) {
-            $data['file_pendukung'] = $request->file('file_pendukung')->store('activities');
+        if ($request->hasFile('file')) {
+            $data['file'] = $request->file('file')->store('activities','public');
         }
         
         Activity::create($data);
@@ -139,17 +139,17 @@ class ActivityController extends Controller
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|string|max:255',
-            'metode' => 'required|in:Online,Offline',
+            'method' => 'required|in:Online,Offline',
             'implementation_date' => 'required|date',
-            'file_pendukung' => 'nullable|file',
+            'file' => 'nullable|file',
             'user_id' => 'required|exists:users,id',
         ]);
 
-        if ($request->hasFile('file_pendukung')) {
-            if ($activity->file_pendukung) {
-                Storage::delete($activity->file_pendukung);
+        if ($request->hasFile('file')) {
+            if ($activity->file) {
+                Storage::delete($activity->file);
             }
-            $data['file_pendukung'] = $request->file('file_pendukung')->store('activities');
+            $data['file'] = $request->file('file')->store('activities','public');
         }
 
         $activity->update($data);

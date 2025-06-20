@@ -62,7 +62,7 @@ export default function Index({ activities }: Props) {
 										<TableCell>
 											{item.file ? (
 												<a
-													href={item.file}
+													href={`/storage/${item.file}`}
 													target="_blank"
 													rel="noopener noreferrer"
 													className="text-blue-500 underline"
