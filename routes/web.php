@@ -53,9 +53,9 @@ Route::middleware(['auth'])->group(function (): void {
     Route::get('/dashboard/e-archive/{folderId}', [FolderController::class, 'show'])
         ->name('folders.show');
 
-    
 
-    
+
+
     // Route::get('/dashboard/weekly-report', [WeeklyReportController::class, 'index'])->name('weekly-report.index');
     // Route::post('/dashboard/weekly-report', [WeeklyReportController::class, 'store'])->name('weekly-report.store');
     // Route::put('/dashboard/weekly-report/{weeklyReport}', [WeeklyReportController::class, 'update'])->name('weekly-report.update');
@@ -71,12 +71,12 @@ Route::middleware(['auth', 'role:sdm'])->group(function () {
     Route::get('/dashboard/user/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/dashboard/user/{id}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/dashboard/user/{id}', [UserController::class, 'destroy']);
-    Route::get('/dashboard/upload/rubrikasi',[FileController::class, 'rubrikasiIndex'])->name('files.rubrikasiIndex');
-    Route::post('/dashboard/file/rubrikasi',[FileController::class, 'rubrikasiUpload'])->name('files.rubrikasiUpload');
-    Route::get('/dashboard/upload/panduan',[FileController::class, 'panduanIndex'])->name('files.panduanIndex');
-    Route::post('/dashboard/file/panduan',[FileController::class, 'panduanUpload'])->name('files.panduanUpload');
-    Route::post('/api/file/panduan',[FileController::class, 'panduanApi'])->name('files.panduanApi');
-    Route::post('/api/file/rubrikasi',[FileController::class, 'rubrikasiApi'])->name('files.rubrikasiApi');
+    Route::get('/dashboard/upload/rubrikasi', [FileController::class, 'rubrikasiIndex'])->name('files.rubrikasiIndex');
+    Route::post('/dashboard/file/rubrikasi', [FileController::class, 'rubrikasiUpload'])->name('files.rubrikasiUpload');
+    Route::get('/dashboard/upload/panduan', [FileController::class, 'panduanIndex'])->name('files.panduanIndex');
+    Route::post('/dashboard/file/panduan', [FileController::class, 'panduanUpload'])->name('files.panduanUpload');
+    Route::post('/api/file/panduan', [FileController::class, 'panduanApi'])->name('files.panduanApi');
+    Route::post('/api/file/rubrikasi', [FileController::class, 'rubrikasiApi'])->name('files.rubrikasiApi');
 
 
     // Route::get('/dashboard/tag', [TagController::class, 'index'])->name('tags.index');
@@ -89,14 +89,13 @@ Route::middleware(['auth', 'role:wadek1,wadek2,kaur'])->group(function () {
     Route::get('/dashboard/e-archive/pelatihan-pegawai/create', [ActivityController::class, 'create'])
         ->name('activities.pelatihan-pegawai.create');
     Route::post('/dashboard/e-archive/pelatihan-pegawai', [ActivityController::class, 'store'])
-    ->name('activities.pelatihan-pegawai.store');
+        ->name('activities.pelatihan-pegawai.store');
     Route::get('/dashboard/e-archive/pelatihan-pegawai/{activity}/edit', [ActivityController::class, 'edit'])
         ->name('activities.pelatihan-pegawai.edit');
     Route::post('/dashboard/e-archive/pelatihan-pegawai/{activity}', [ActivityController::class, 'update'])
         ->name('activities.pelatihan-pegawai.update');
     Route::delete('/dashboard/e-archive/pelatihan-pegawai/{activity}', [ActivityController::class, 'destroy'])
         ->name('activities.pelatihan-pegawai.destroy');
-    
 });
 
 
@@ -105,6 +104,8 @@ Route::middleware(['auth', 'role:kaur'])->group(function () {
         ->name('folders.kaur-kerja');
     Route::get('/dashboard/e-archive/staf/pegawai', [FolderController::class, 'getStafDocumentKepegawaianByDivision'])
         ->name('folders.kaur-pegawai');
+    Route::get('/dashboard/e-archive/pelatihan-pegawai/kaur', [ActivityController::class, 'kaurIndex'])
+        ->name('activities.index.kaur');
 });
 
 Route::middleware(['auth', 'role:wadek1,wadek2'])->group(function () {
@@ -124,6 +125,10 @@ Route::middleware(['auth', 'role:wadek1,wadek2'])->group(function () {
         ->name('folders.wadek-kerja-kaur');
     Route::get('/dashboard/e-archive/kaur/pegawai', [FolderController::class, 'getKaurDokumenKepegawaianByWadek'])
         ->name('folders.wadek-pegawai-kaur');
+    Route::get('/dashboard/e-archive/pelatihan-pegawai/wadek', [ActivityController::class, 'wadekIndex'])
+        ->name('activities.index.wadek');
+        Route::get('/dashboard/e-archive/pelatihan-pegawai-kaur/wadek', [ActivityController::class, 'kaurByWadekIndex'])
+        ->name('activities.index.kaurByWadek');
     // Route::get('/dashboard/performance/kaur/{id}', [WorkTargetController::class, 'show'])->name('dashboard.performance.kaur.show');
 });
 

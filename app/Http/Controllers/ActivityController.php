@@ -39,20 +39,23 @@ class ActivityController extends Controller
 
     public function index()
     {
-        $activities = Activity::with('user')->latest()->get();
+        $user = Auth::user();
+
+        $activities = Activity::with('user')
+            ->where('user_id', $user->id)
+            ->latest()
+            ->get();
 
         return Inertia::render('activities/index', [
             'activities' => $activities,
         ]);
     }
 
+
     public function wadekIndex()
     {
         $user = Auth::user();
 
-        if (!in_array($user->role, ['wadek1', 'wadek2'])) {
-            abort(403, 'Unauthorized');
-        }
 
         $divisions = $user->role === 'wadek1'
             ? ['academic_service', 'laboratory']
@@ -66,7 +69,7 @@ class ActivityController extends Controller
             ->latest()
             ->get();
 
-        return Inertia::render('Activities/WadekIndex', [
+        return Inertia::render('activities/index', [
             'activities' => $activities,
         ]);
     }
@@ -75,9 +78,6 @@ class ActivityController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role !== 'kaur') {
-            abort(403, 'Unauthorized');
-        }
 
         $activities = Activity::with('user')
             ->whereHas('user', function ($query) use ($user) {
@@ -87,10 +87,37 @@ class ActivityController extends Controller
             ->latest()
             ->get();
 
-        return Inertia::render('Activities/KaurIndex', [
+        return Inertia::render('activities/index', [
             'activities' => $activities,
         ]);
     }
+
+    public function kaurByWadekIndex()
+    {
+        $auth = Auth::user();
+
+        if (!in_array($auth->role, ['wadek1', 'wadek2'])) {
+            abort(403, 'Unauthorized');
+        }
+
+        $divisions = $auth->role === 'wadek1'
+            ? ['academic_service', 'laboratory']
+            : ['secretary', 'student_affair', 'finance_logistic_resource'];
+
+        $kaurUsers = User::where('role', 'kaur')
+            ->whereIn('division', $divisions)
+            ->pluck('id');
+
+        $activities = Activity::with('user')
+            ->whereIn('user_id', $kaurUsers)
+            ->latest()
+            ->get();
+
+        return Inertia::render('activities/index', [
+            'activities' => $activities,
+        ]);
+    }
+
 
     public function create()
     {
@@ -115,11 +142,16 @@ class ActivityController extends Controller
         ]);
 
         if ($request->hasFile('file')) {
-            $data['file'] = $request->file('file')->store('activities','public');
+            $data['file'] = $request->file('file')->store('activities', 'public');
         }
-        
+
         Activity::create($data);
-        return redirect()->route('activities.index')->with('success', 'Activity created.');
+        $user = Auth::user();
+        if ($user->role === 'wadek1' || $user->role === 'wadek2') {
+            return redirect()->route('activities.index.wadek')->with('success', 'Activity updated.');
+        } else {
+            return redirect()->route('activities.index.kaur')->with('success', 'Activity updated.');
+        }
     }
 
     public function edit(Activity $activity)
@@ -149,12 +181,16 @@ class ActivityController extends Controller
             if ($activity->file) {
                 Storage::delete($activity->file);
             }
-            $data['file'] = $request->file('file')->store('activities','public');
+            $data['file'] = $request->file('file')->store('activities', 'public');
         }
 
         $activity->update($data);
-
-        return redirect()->route('activities.index')->with('success', 'Activity updated.');
+        $user = Auth::user();
+        if ($user->role === 'wadek1' || $user->role === 'wadek2') {
+            return redirect()->route('activities.index.wadek')->with('success', 'Activity updated.');
+        } else {
+            return redirect()->route('activities.index.kaur')->with('success', 'Activity updated.');
+        }
     }
 
     public function destroy(Activity $activity)
