@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\LogController;
@@ -49,6 +50,11 @@ Route::middleware(['auth'])->group(function (): void {
         ->name('folders.earchive.pegawai-me');
     Route::get('/dashboard/e-archive/{folderId}', [FolderController::class, 'show'])
         ->name('folders.show');
+
+    Route::get('/dashboard/e-archive/pelatihan-pegawai', [FolderController::class, 'index'])
+        ->name('folders.pelatihan-pegawai');
+
+    
     // Route::get('/dashboard/weekly-report', [WeeklyReportController::class, 'index'])->name('weekly-report.index');
     // Route::post('/dashboard/weekly-report', [WeeklyReportController::class, 'store'])->name('weekly-report.store');
     // Route::put('/dashboard/weekly-report/{weeklyReport}', [WeeklyReportController::class, 'update'])->name('weekly-report.update');
@@ -77,6 +83,21 @@ Route::middleware(['auth', 'role:sdm'])->group(function () {
     // Route::patch('/dashboard/tags/{tag}', [TagController::class, 'update'])->name('tags.update');
     // Route::delete('/dashboard/tags/{tag}', [TagController::class, 'destroy'])->name('tags.destroy');
 });
+
+Route::middleware(['auth', 'role:wadek1,wadek2,kaur'])->group(function () {
+    Route::get('/dashboard/e-archive/pelatihan-pegawai/create', [ActivityController::class, 'create'])
+        ->name('activities.pelatihan-pegawai.create');
+    Route::post('/dashboard/e-archive/pelatihan-pegawai', [ActivityController::class, 'store'])
+    ->name('activities.pelatihan-pegawai.store');
+    Route::get('/dashboard/e-archive/pelatihan-pegawai/{activity}/edit', [ActivityController::class, 'edit'])
+        ->name('activities.pelatihan-pegawai.edit');
+    Route::post('/dashboard/e-archive/pelatihan-pegawai/{activity}', [ActivityController::class, 'update'])
+        ->name('activities.pelatihan-pegawai.update');
+    Route::delete('/dashboard/e-archive/pelatihan-pegawai/{activity}', [ActivityController::class, 'destroy'])
+        ->name('activities.pelatihan-pegawai.destroy');
+    
+});
+
 
 Route::middleware(['auth', 'role:kaur'])->group(function () {
     Route::get('/dashboard/e-archive/staf/kerja', [FolderController::class, 'getStafDocumentKerjaByDivision'])
@@ -158,5 +179,7 @@ Route::middleware(['auth', 'role:kaur,wadek1,wadek2'])->group(function () {
 
     Route::put('/dashboard/user-attitude-evaluation/{user_id}', [UserAttitudeEvaluationController::class, 'updateUserAttitudeEvaluation'])->name('dashboard.performance.user-attitude-evaluation.updateUserAttitudeEvaluation');
 });
+
+
 
 require __DIR__ . '/auth.php';
