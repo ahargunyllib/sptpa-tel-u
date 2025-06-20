@@ -9,8 +9,8 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import DashboardLayout from "@/layouts/dashboard-layout";
-import type { Activity } from "@/types";
-import { Head, Link, router } from "@inertiajs/react";
+import type { Activity, PageProps } from "@/types";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import { Edit, Plus, Trash2 } from "lucide-react";
 
 interface Props {
@@ -18,6 +18,8 @@ interface Props {
 }
 
 export default function Index({ activities }: Props) {
+	const user = usePage<PageProps>().props.auth.user;
+
 	const handleDelete = (id: string) => {
 		if (confirm("Yakin ingin menghapus data ini?")) {
 			router.delete(`/dashboard/e-archive/pelatihan-pegawai/${id}`);
@@ -30,11 +32,13 @@ export default function Index({ activities }: Props) {
 			<div className="container px-6 py-10">
 				<div className="flex justify-between items-center mb-6">
 					<h1 className="text-xl font-bold">Daftar Pelatihan</h1>
-					<Link href={route("activities.pelatihan-pegawai.create")}>
-						<Button>
-							<Plus className="w-4 h-4 mr-2" /> Tambah Pelatihan
-						</Button>
-					</Link>
+					{user && user.role !== "staf" && (
+						<Link href={route("activities.pelatihan-pegawai.create")}>
+							<Button>
+								<Plus className="w-4 h-4 mr-2" /> Tambah Pelatihan
+							</Button>
+						</Link>
+					)}
 				</div>
 
 				<Card>
