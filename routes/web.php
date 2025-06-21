@@ -33,7 +33,7 @@ Route::get('/dashboard', function (Request $request) {
 
     $workTarget = DB::table('work_targets')
         ->where('assigned_id', $user->id)
-        ->select([
+        ->select(
             DB::raw('
                 COALESCE(
                     ROUND(
@@ -46,13 +46,13 @@ Route::get('/dashboard', function (Request $request) {
                             ) / 4.0
                         ), 2
                     ),
-                 0)
+                 0) AS work_target
             '),
-        ])
+        )
         ->groupBy('assigned_id')
         ->first();
 
-    $workTarget = $workTarget ?? 0;
+    $workTarget = (float) ($workTarget->work_target ?? 0);
 
     $userAttitudeEvaluation = DB::table('user_attitude_evaluations')
         ->where('user_id', $user->id)
@@ -73,12 +73,12 @@ Route::get('/dashboard', function (Request $request) {
                     COALESCE(image_maintenance, 0) +
                     COALESCE(discipline, 0)) / 13
                 ), 2
-            )'),
+            ) AS user_attitude_evaluation'),
         ])
         ->groupBy('user_id')
         ->first();
 
-    $userAttitudeEvaluation = $userAttitudeEvaluation ?? 0;
+    $userAttitudeEvaluation = (float) ($userAttitudeEvaluation->user_attitude_evaluation ?? 0);
 
     return Inertia::render('dashboard', [
         'overall' => [

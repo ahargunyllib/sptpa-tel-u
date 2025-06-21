@@ -14,6 +14,8 @@ type Props = {
 export default function Dashboard({ overall }: Props) {
 	const user = usePage<PageProps>().props.auth.user;
 
+	console.log(overall);
+
 	const accessRoles = {
 		sdm: [
 			{
