@@ -128,32 +128,6 @@ export default function Edit({ activity, users, errors }: Props) {
 								/>
 							</div>
 
-							{/* User */}
-							<div>
-								<Label>Pengguna</Label>
-								<Select
-									onValueChange={(val) => setValue("user_id", val)}
-									defaultValue=""
-									value={watch("user_id")}
-								>
-									<SelectTrigger>
-										<SelectValue placeholder="Pilih pengguna" />
-									</SelectTrigger>
-									<SelectContent>
-										{users.map((user) => (
-											<SelectItem key={user.id} value={user.id}>
-												{user.name} - {user.division}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-								{validationErrors.user_id && (
-									<p className="text-sm text-red-500">
-										{validationErrors.user_id.message}
-									</p>
-								)}
-							</div>
-
 							{/* Submit */}
 							<div className="text-right">
 								<Button type="submit">Simpan</Button>

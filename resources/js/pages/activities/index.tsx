@@ -69,7 +69,6 @@ export default function Index({ activities }: Props) {
 								<TableRow>
 									<TableHead>Judul</TableHead>
 									<TableHead>Tipe</TableHead>
-									<TableHead>Metode</TableHead>
 									<TableHead>Tanggal</TableHead>
 									<TableHead>Pengguna</TableHead>
 									<TableHead>File Pendukung</TableHead>
@@ -90,7 +89,6 @@ export default function Index({ activities }: Props) {
 										<TableRow key={item.id}>
 											<TableCell>{item.title}</TableCell>
 											<TableCell>{item.type}</TableCell>
-											<TableCell>{item.method}</TableCell>
 											<TableCell>{item.implementation_date}</TableCell>
 											<TableCell>{item.user?.name ?? "-"}</TableCell>
 											<TableCell>
@@ -125,11 +123,23 @@ export default function Index({ activities }: Props) {
 											</TableCell> */}
 											<TableCell className="py-3 px-4">
 												<div className="flex gap-1 items-center justify-end">
-													<Link
-														href={`/dashboard/e-archive/pelatihan-pegawai/${item.id}/edit`}
-													>
-														<PencilLine className="text-warning-80" />
-													</Link>
+													{window.location.pathname ===
+													"/dashboard/e-archive/pelatihan-pegawai" ? (
+														<Link
+															href={route(
+																"activities.pelatihan-pegawai.edit.self",
+																{ id: item.id },
+															)}
+														>
+															<PencilLine className="text-warning-80" />
+														</Link>
+													) : (
+														<Link
+															href={`/dashboard/e-archive/pelatihan-pegawai/${item.id}/edit`}
+														>
+															<PencilLine className="text-warning-80" />
+														</Link>
+													)}
 													<AlertDialog
 														open={isDialogOpen}
 														onOpenChange={setIsDialogOpen}

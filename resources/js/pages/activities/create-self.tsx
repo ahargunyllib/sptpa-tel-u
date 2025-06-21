@@ -47,7 +47,7 @@ export default function Create() {
 		defaultValues: {
 			title: "",
 			type: "",
-			metode: undefined,
+			metode: "Online",
 			implementation_date: "",
 			user_id: user?.id || "",
 		},
@@ -97,30 +97,6 @@ export default function Create() {
 								{validationErrors.type && (
 									<p className="text-sm text-red-500">
 										{validationErrors.type.message}
-									</p>
-								)}
-							</div>
-
-							{/* Metode */}
-							<div>
-								<Label>Metode</Label>
-								<Select
-									onValueChange={(val) =>
-										setValue("metode", val as "Online" | "Offline")
-									}
-									defaultValue=""
-								>
-									<SelectTrigger>
-										<SelectValue placeholder="Pilih metode" />
-									</SelectTrigger>
-									<SelectContent>
-										<SelectItem value="Online">Online</SelectItem>
-										<SelectItem value="Offline">Offline</SelectItem>
-									</SelectContent>
-								</Select>
-								{validationErrors.metode && (
-									<p className="text-sm text-red-500">
-										{validationErrors.metode.message}
 									</p>
 								)}
 							</div>

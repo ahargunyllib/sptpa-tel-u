@@ -54,7 +54,8 @@ Route::middleware(['auth'])->group(function (): void {
         ->name('folders.show');
     Route::get('/dashboard/e-archive/pelatihan-pegawai/create-self', [ActivityController::class, 'createSelf'])
         ->name('activities.pelatihan-pegawai.create.self');
-
+    Route::get('/dashboard/e-archive/pelatihan-pegawai/{activity}/edit-self', [ActivityController::class, 'editSelf'])
+        ->name('activities.pelatihan-pegawai.edit.self');
 
 
     // Route::get('/dashboard/weekly-report', [WeeklyReportController::class, 'index'])->name('weekly-report.index');

@@ -177,6 +177,18 @@ class ActivityController extends Controller
         ]);
     }
 
+     public function editSelf(Activity $activity)
+    {
+        $auth = Auth::user();
+
+        $users = $this->getScopedUsers($auth);
+
+        return Inertia::render('activities/edit-self', [
+            'activity' => $activity,
+            'users' => $users,
+        ]);
+    }
+
     public function update(Request $request, Activity $activity)
     {
         $data = $request->validate([
