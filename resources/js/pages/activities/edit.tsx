@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -19,7 +19,7 @@ import { z } from "zod";
 
 const formSchema = z.object({
 	title: z.string().min(1, "Judul wajib diisi"),
-	type: z.string().min(1, "Tipe wajib diisi"),
+	type: z.string().min(1, "Deskripsi wajib diisi"),
 	metode: z.enum(["Online", "Offline"], {
 		required_error: "Metode wajib dipilih",
 	}),
@@ -74,8 +74,11 @@ export default function Edit({ activity, users, errors }: Props) {
 	return (
 		<DashboardLayout header="Pelatihan Pegawai">
 			<Head title="Create Activity" />
-			<div className="max-w-2xl mx-auto py-10">
+			<div className="w-full py-4">
 				<Card>
+					<CardTitle className="text-lg font-semibold px-6 pt-5">
+						Tambah Pelatihan Pegawai
+					</CardTitle>
 					<CardContent className="p-6 space-y-6">
 						<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 							{/* Title */}
@@ -91,7 +94,7 @@ export default function Edit({ activity, users, errors }: Props) {
 
 							{/* Type */}
 							<div>
-								<Label htmlFor="type">Tipe</Label>
+								<Label htmlFor="type">Deskripsi</Label>
 								<Input id="type" {...register("type")} />
 								{validationErrors.type && (
 									<p className="text-sm text-red-500">

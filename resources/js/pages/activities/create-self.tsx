@@ -10,9 +10,9 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import DashboardLayout from "@/layouts/dashboard-layout";
-import type { User } from "@/types";
+import type { PageProps, User } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Head, router } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -33,7 +33,9 @@ interface Props {
 	users: User[];
 	errors: Record<string, string>;
 }
-export default function Create({ users, errors }: Props) {
+export default function Create() {
+	const user = usePage<PageProps>().props.auth.user;
+
 	const {
 		register,
 		handleSubmit,
@@ -47,7 +49,7 @@ export default function Create({ users, errors }: Props) {
 			type: "",
 			metode: undefined,
 			implementation_date: "",
-			user_id: "",
+			user_id: user?.id || "",
 		},
 	});
 
@@ -146,31 +148,6 @@ export default function Create({ users, errors }: Props) {
 									type="file"
 									onChange={(e) => setFile(e.target.files?.[0] || null)}
 								/>
-							</div>
-
-							{/* User */}
-							<div>
-								<Label>Pengguna</Label>
-								<Select
-									onValueChange={(val) => setValue("user_id", val)}
-									defaultValue=""
-								>
-									<SelectTrigger>
-										<SelectValue placeholder="Pilih pengguna" />
-									</SelectTrigger>
-									<SelectContent>
-										{users.map((user) => (
-											<SelectItem key={user.id} value={user.id}>
-												{user.name} - {user.division}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-								{validationErrors.user_id && (
-									<p className="text-sm text-red-500">
-										{validationErrors.user_id.message}
-									</p>
-								)}
 							</div>
 
 							{/* Submit */}

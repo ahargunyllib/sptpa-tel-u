@@ -130,6 +130,17 @@ class ActivityController extends Controller
         ]);
     }
 
+    public function createSelf()
+    {
+        $auth = Auth::user();
+
+        $users = $this->getScopedUsers($auth);
+
+        return Inertia::render('activities/create-self', [
+            'users' => $users,
+        ]);
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -150,7 +161,7 @@ class ActivityController extends Controller
         if ($user->role === 'wadek1' || $user->role === 'wadek2') {
             return redirect()->back()->with('success', 'Activity updated.');
         } else {
-            return redirect()->back()('activities.index.kaur')->with('success', 'Activity updated.');
+            return redirect()->back()->with('success', 'Activity updated.');
         }
     }
 

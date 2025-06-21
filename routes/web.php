@@ -52,7 +52,8 @@ Route::middleware(['auth'])->group(function (): void {
         ->name('folders.earchive.pegawai-me');
     Route::get('/dashboard/e-archive/{folderId}', [FolderController::class, 'show'])
         ->name('folders.show');
-
+    Route::get('/dashboard/e-archive/pelatihan-pegawai/create-self', [ActivityController::class, 'createSelf'])
+        ->name('activities.pelatihan-pegawai.create.self');
 
 
 
@@ -127,7 +128,7 @@ Route::middleware(['auth', 'role:wadek1,wadek2'])->group(function () {
         ->name('folders.wadek-pegawai-kaur');
     Route::get('/dashboard/e-archive/pelatihan-pegawai/wadek', [ActivityController::class, 'wadekIndex'])
         ->name('activities.index.wadek');
-        Route::get('/dashboard/e-archive/pelatihan-pegawai-kaur/wadek', [ActivityController::class, 'kaurByWadekIndex'])
+    Route::get('/dashboard/e-archive/pelatihan-pegawai-kaur/wadek', [ActivityController::class, 'kaurByWadekIndex'])
         ->name('activities.index.kaurByWadek');
     // Route::get('/dashboard/performance/kaur/{id}', [WorkTargetController::class, 'show'])->name('dashboard.performance.kaur.show');
 });
