@@ -4,7 +4,14 @@ import { cn } from "@/lib/utils";
 import type { PageProps } from "@/types";
 import { usePage } from "@inertiajs/react";
 
-export default function Dashboard() {
+type Props = {
+	overall?: {
+		work_target: number;
+		user_attitude_evaluation: number;
+	};
+};
+
+export default function Dashboard({ overall }: Props) {
 	const user = usePage<PageProps>().props.auth.user;
 
 	const accessRoles = {
@@ -129,7 +136,7 @@ export default function Dashboard() {
 			}
 		>
 			<section className="flex flex-col gap-4">
-				<DataPegawaiCard user={user} />
+				<DataPegawaiCard user={user} overall={overall} />
 				<div className={cn("grid gap-4", getGridColsClass(roleItems.length))}>
 					{roleItems.map((item, index) => (
 						<div

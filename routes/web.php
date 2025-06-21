@@ -9,6 +9,8 @@ use App\Http\Controllers\WorkReportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkTargetController;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -21,8 +23,69 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('dashboard');
+Route::get('/dashboard', function (Request $request) {
+    $user = $request->user();
+    $role = $user->role;
+
+    if ($role !== 'staf' && $role !== 'kaur') {
+        return Inertia::render('dashboard');
+    }
+
+    $workTarget = DB::table('work_targets')
+        ->where('assigned_id', $user->id)
+        ->select([
+            DB::raw('
+                COALESCE(
+                    ROUND(
+                        AVG(
+                            (
+                                COALESCE(first_quarter_score, 0) +
+                                COALESCE(second_quarter_score, 0) +
+                                COALESCE(third_quarter_score, 0) +
+                                COALESCE(fourth_quarter_score, 0)
+                            ) / 4.0
+                        ), 2
+                    ),
+                 0)
+            '),
+        ])
+        ->groupBy('assigned_id')
+        ->first();
+
+    $workTarget = $workTarget ?? 0;
+
+    $userAttitudeEvaluation = DB::table('user_attitude_evaluations')
+        ->where('user_id', $user->id)
+        ->select([
+            DB::raw('ROUND(
+                AVG(
+                    (COALESCE(communication, 0) +
+                    COALESCE(teamwork, 0) +
+                    COALESCE(collaboration, 0) +
+                    COALESCE(solidarity, 0) +
+                    COALESCE(work_ethic, 0) +
+                    COALESCE(technology_usage, 0) +
+                    COALESCE(work_smart, 0) +
+                    COALESCE(initiative, 0) +
+                    COALESCE(role_model, 0) +
+                    COALESCE(responsibility, 0) +
+                    COALESCE(professional_ethic, 0) +
+                    COALESCE(image_maintenance, 0) +
+                    COALESCE(discipline, 0)) / 13
+                ), 2
+            )'),
+        ])
+        ->groupBy('user_id')
+        ->first();
+
+    $userAttitudeEvaluation = $userAttitudeEvaluation ?? 0;
+
+    return Inertia::render('dashboard', [
+        'overall' => [
+            'work_target' => $workTarget,
+            'user_attitude_evaluation' => $userAttitudeEvaluation,
+        ]
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -64,12 +127,12 @@ Route::middleware(['auth', 'role:sdm'])->group(function () {
     Route::get('/dashboard/user/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/dashboard/user/{id}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/dashboard/user/{id}', [UserController::class, 'destroy']);
-    Route::get('/dashboard/upload/rubrikasi',[FileController::class, 'rubrikasiIndex'])->name('files.rubrikasiIndex');
-    Route::post('/dashboard/file/rubrikasi',[FileController::class, 'rubrikasiUpload'])->name('files.rubrikasiUpload');
-    Route::get('/dashboard/upload/panduan',[FileController::class, 'panduanIndex'])->name('files.panduanIndex');
-    Route::post('/dashboard/file/panduan',[FileController::class, 'panduanUpload'])->name('files.panduanUpload');
-    Route::post('/api/file/panduan',[FileController::class, 'panduanApi'])->name('files.panduanApi');
-    Route::post('/api/file/rubrikasi',[FileController::class, 'rubrikasiApi'])->name('files.rubrikasiApi');
+    Route::get('/dashboard/upload/rubrikasi', [FileController::class, 'rubrikasiIndex'])->name('files.rubrikasiIndex');
+    Route::post('/dashboard/file/rubrikasi', [FileController::class, 'rubrikasiUpload'])->name('files.rubrikasiUpload');
+    Route::get('/dashboard/upload/panduan', [FileController::class, 'panduanIndex'])->name('files.panduanIndex');
+    Route::post('/dashboard/file/panduan', [FileController::class, 'panduanUpload'])->name('files.panduanUpload');
+    Route::post('/api/file/panduan', [FileController::class, 'panduanApi'])->name('files.panduanApi');
+    Route::post('/api/file/rubrikasi', [FileController::class, 'rubrikasiApi'])->name('files.rubrikasiApi');
 
 
     // Route::get('/dashboard/tag', [TagController::class, 'index'])->name('tags.index');
