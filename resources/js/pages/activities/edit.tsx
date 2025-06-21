@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-	title: z.string().min(1, "Judul wajib diisi"),
+	title: z.string().min(1, "Nama Kegiatan wajib diisi"),
 	type: z.string().min(1, "Deskripsi wajib diisi"),
 	metode: z.enum(["Online", "Offline"], {
 		required_error: "Metode wajib dipilih",
@@ -83,7 +83,7 @@ export default function Edit({ activity, users, errors }: Props) {
 						<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 							{/* Title */}
 							<div>
-								<Label htmlFor="title">Judul</Label>
+								<Label htmlFor="title">Nama Kegiatan</Label>
 								<Input id="title" {...register("title")} />
 								{validationErrors.title && (
 									<p className="text-sm text-red-500">

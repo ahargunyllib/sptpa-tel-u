@@ -22,7 +22,7 @@ import DashboardLayout from "@/layouts/dashboard-layout";
 import type { Activity, PageProps } from "@/types";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import { AlertDialog } from "@radix-ui/react-alert-dialog";
-import { Edit, PencilLine, Plus, Trash, Trash2 } from "lucide-react";
+import { Edit, PencilLine, Plus, SquarePen, Trash, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 interface Props {
@@ -58,8 +58,10 @@ export default function Index({ activities }: Props) {
 											: route("activities.pelatihan-pegawai.create")
 									}
 								>
-									<Button>
-										<Plus className="w-4 h-4 mr-2" /> Tambah Pelatihan
+									{" "}
+									<Button variant="outline" className="gap-2">
+										<SquarePen className="h-4 w-4" />
+										Tambah Pelatihan
 									</Button>
 								</Link>
 							)}
@@ -67,8 +69,8 @@ export default function Index({ activities }: Props) {
 						<Table>
 							<TableHeader>
 								<TableRow>
-									<TableHead>Judul</TableHead>
-									<TableHead>Tipe</TableHead>
+									<TableHead>Nama Kegiatan</TableHead>
+									<TableHead>Deskripsi</TableHead>
 									<TableHead>Tanggal</TableHead>
 									<TableHead>Pengguna</TableHead>
 									<TableHead>File Pendukung</TableHead>
