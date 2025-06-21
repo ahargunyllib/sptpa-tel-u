@@ -394,12 +394,12 @@ class WorkTargetController extends Controller
 
             DB::commit();
             $this->log("Membuat target kinerja dengan nama : {$validatedData['name']}");
-            return back();
+            return back()->with('success', 'Target kinerja berhasil dibuat.');
         } catch (\Exception $e) {
             // Rollback the transaction if an error occurs
             DB::rollBack();
 
-            return back();
+            return back()->withErrors(['error' => 'Gagal membuat target kinerja: ' . $e->getMessage()]);
         }
     }
 
@@ -468,12 +468,12 @@ class WorkTargetController extends Controller
             // Commit the transaction
             DB::commit();
             $this->log("Mengubah target kinerja dengan ID : {$id}");
-            return back();
+            return back()->with('success', 'Target kinerja berhasil diperbarui.');
         } catch (\Exception $e) {
             // Rollback the transaction if an error occurs
             DB::rollBack();
 
-            return back();
+            return back()->withErrors(['error' => 'Gagal memperbarui target kinerja: ' . $e->getMessage()]);
         }
     }
 
@@ -507,12 +507,12 @@ class WorkTargetController extends Controller
             // Commit the transaction
             DB::commit();
             $this->log("Menilai target kinerja dengan ID : {$id}");
-            return back();
+            return back()->with('success', 'Penilaian target kinerja berhasil diperbarui.');
         } catch (\Exception $e) {
             // Rollback the transaction if an error occurs
             DB::rollBack();
 
-            return back();
+            return back()->withErrors(['error' => 'Gagal memperbarui penilaian target kinerja: ' . $e->getMessage()]);
         }
     }
 
@@ -545,12 +545,12 @@ class WorkTargetController extends Controller
             // Commit the transaction
             DB::commit();
 
-            return back();
+            return back()->with('success', 'Target kinerja berhasil disubmit.');
         } catch (\Exception $e) {
             // Rollback the transaction if an error occurs
             DB::rollBack();
 
-            return back();
+            return back()->withErrors(['error' => 'Gagal submit target kinerja: ' . $e->getMessage()]);
         }
     }
 
@@ -571,12 +571,12 @@ class WorkTargetController extends Controller
             // Commit the transaction
             DB::commit();
             $this->log("Menghapus target kinerja dengan ID : {$id}");
-            return back();
+            return back()->with('success', 'Target kinerja berhasil dihapus.');
         } catch (\Exception $e) {
             // Rollback the transaction if an error occurs
             DB::rollBack();
 
-            return back();
+            return back()->withErrors(['error' => 'Gagal menghapus target kinerja: ' . $e->getMessage()]);
         }
     }
 

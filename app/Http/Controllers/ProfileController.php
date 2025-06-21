@@ -64,25 +64,29 @@ class ProfileController extends Controller
 
     public function updatePhoto(Request $request): RedirectResponse
     {
-        $request->validate([
-            'photo' => ['required', 'image', 'max:1024'], // 1MB Max
-        ]);
+        try {
+            $request->validate([
+                'photo' => ['required', 'image', 'max:1024'], // 1MB Max
+            ]);
 
-        $user = $request->user();
+            $user = $request->user();
 
-        // Delete old photo if exists
-        if ($user->photo_profile) {
-            Storage::disk('public')->delete($user->photo_profile);
+            // Delete old photo if exists
+            if ($user->photo_profile) {
+                Storage::disk('public')->delete($user->photo_profile);
+            }
+
+            // Store the new photo
+            $path = $request->file('photo')->store('profile-photos', 'public');
+
+            // Update user record with new photo path
+            $user->photo_profile = $path;
+            $user->save();
+
+            return Redirect::route('profile.edit')->with('status', 'photo-updated');
+        } catch (\Exception $e) {
+            return Redirect::route('profile.edit')->withErrors(['photo' => 'Failed to update photo: ' . $e->getMessage()]);
         }
-
-        // Store the new photo
-        $path = $request->file('photo')->store('profile-photos', 'public');
-
-        // Update user record with new photo path
-        $user->photo_profile = $path;
-        $user->save();
-
-        return Redirect::route('profile.edit')->with('status', 'photo-updated');
     }
 
     /**
