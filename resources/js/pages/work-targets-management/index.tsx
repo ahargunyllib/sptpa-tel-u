@@ -1,7 +1,7 @@
 import DashboardLayout from "@/layouts/dashboard-layout";
 import { Head } from "@inertiajs/react";
 import PerformanceAssessmentsCard from "../../components/features/work-targets-management/performance-assessments-card";
-import type { User, WorkTarget } from "../../types";
+import type { User, UserAttitudeEvaluation, WorkTarget } from "../../types";
 
 type Props = {
 	role: string;
@@ -14,6 +14,8 @@ type Props = {
 		work_targets: WorkTarget[];
 	} & {
 		bukti_kinerja_folder_id: string | null;
+	} & {
+		user_attitude_evaluations: UserAttitudeEvaluation | null;
 	})[];
 };
 

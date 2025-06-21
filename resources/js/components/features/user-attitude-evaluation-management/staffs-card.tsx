@@ -1,5 +1,6 @@
+import { useUser } from "@/hooks/use-user";
 import { capitalize } from "@/lib/utils";
-import type { User, UserAttitudeEvaluation } from "@/types";
+import type { User, UserAttitudeEvaluation, WorkTarget } from "@/types";
 import { router } from "@inertiajs/react";
 import {
 	CheckSquare2Icon,
@@ -52,17 +53,77 @@ export default function StaffsCard({
 	userAttitudeEvaluations: (User &
 		UserAttitudeEvaluation & {
 			note: string;
+		} & {
+			work_targets: WorkTarget[];
 		})[];
 }) {
 	const [staffId, setStaffId] = useState<string | null>(null);
 
+	const user = useUser();
+
 	return (
 		<Card className="shadow-sm">
-			<CardHeader>
-				<CardTitle>Daftar {capitalize(role)}</CardTitle>
-				<CardDescription>
-					Dibawah ini merupakan {role} yang Anda kelola
-				</CardDescription>
+			<CardHeader className="flex flex-row justify-between items-center">
+				<div className="flex flex-col space-y-1.5 p-6">
+					<CardTitle>Daftar {capitalize(role)}</CardTitle>
+					<CardDescription>
+						Dibawah ini merupakan {role} yang Anda kelola
+					</CardDescription>
+				</div>
+				{(user.role === "kaur" ||
+					user.role === "wadek1" ||
+					user.role === "wadek2") && (
+					<Dialog>
+						<DialogTrigger asChild>
+							<Button variant="outline" className="gap-2">
+								<FileTextIcon className="h-4 w-4" />
+								Lihat Detail Nilai Keseluruhan
+							</Button>
+						</DialogTrigger>
+						<DialogContent className="max-w-2xl">
+							<DialogHeader>
+								<DialogTitle>Detail Nilai Keseluruhan</DialogTitle>
+							</DialogHeader>
+							<div className="overflow-x-auto">
+								<Table className="w-full">
+									<TableHeader>
+										<TableRow>
+											<TableHead className="py-3 px-4 text-center">
+												No
+											</TableHead>
+											<TableHead className="py-3 px-4 w-full">
+												Nama Staf
+											</TableHead>
+											<TableHead className="py-3 px-4 text-center text-nowrap">
+												Target Kinerja
+											</TableHead>
+											<TableHead className="py-3 px-4 text-center text-nowrap">
+												Sikap Kerja
+											</TableHead>
+											<TableHead className="py-3 px-4 text-center text-nowrap">
+												Nilai Akhir
+											</TableHead>
+										</TableRow>
+									</TableHeader>
+									<TableBody>
+										{userAttitudeEvaluations.map((staff, idx) => (
+											<OverallRowDialog
+												key={staff.id}
+												staff={staff}
+												idx={idx}
+											/>
+										))}
+									</TableBody>
+								</Table>
+							</div>
+							<DialogFooter>
+								<DialogClose asChild>
+									<Button variant="outline">Kembali</Button>
+								</DialogClose>
+							</DialogFooter>
+						</DialogContent>
+					</Dialog>
+				)}
 			</CardHeader>
 			<CardContent>
 				<div className="overflow-x-auto">
@@ -980,5 +1041,74 @@ function IntegrityPerformanceAssessmentDialog({
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>
+	);
+}
+
+function OverallRowDialog({
+	staff,
+	idx,
+}: {
+	staff: User &
+		UserAttitudeEvaluation & {
+			note: string;
+		} & {
+			work_targets: WorkTarget[];
+		};
+	idx: number;
+}) {
+	const workTargetAverage = useMemo(() => {
+		const totalScore = staff.work_targets.reduce((acc, target) => {
+			return (
+				acc +
+				(target.first_quarter_score +
+					target.second_quarter_score +
+					target.third_quarter_score +
+					target.fourth_quarter_score) /
+					4
+			);
+		}, 0);
+
+		return staff.work_targets.length
+			? totalScore / staff.work_targets.length
+			: 0;
+	}, [staff.work_targets]);
+
+	const userAttitudeEvaluationAverage = useMemo(() => {
+		return (
+			(staff.communication +
+				staff.teamwork +
+				staff.collaboration +
+				staff.solidarity +
+				staff.work_ethic +
+				staff.technology_usage +
+				staff.work_smart +
+				staff.initiative +
+				staff.role_model +
+				staff.responsibility +
+				staff.professional_ethic +
+				staff.image_maintenance +
+				staff.discipline) /
+			13
+		);
+	}, [staff]);
+
+	const finalScore = useMemo(() => {
+		return 0.4 * workTargetAverage + 0.6 * userAttitudeEvaluationAverage;
+	}, [workTargetAverage, userAttitudeEvaluationAverage]);
+
+	return (
+		<TableRow>
+			<TableCell className="py-3 px-4 text-center">{idx + 1}</TableCell>
+			<TableCell className="py-3 px-4">{staff.name}</TableCell>
+			<TableCell className="py-3 px-4 text-center">
+				{workTargetAverage.toFixed(2)}
+			</TableCell>
+			<TableCell className="py-3 px-4 text-center">
+				{userAttitudeEvaluationAverage.toFixed(2)}
+			</TableCell>
+			<TableCell className="py-3 px-4 text-center">
+				{finalScore.toFixed(2)}
+			</TableCell>
+		</TableRow>
 	);
 }
