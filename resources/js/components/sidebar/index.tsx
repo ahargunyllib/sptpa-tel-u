@@ -34,7 +34,7 @@ export function AppSidebar() {
 			return "penilaian";
 		},
 	);
-	const isMobile = useIsBelow2XL();
+	const isMobile = useIsMobile();
 	const pathName = window.location.pathname;
 	const [menus, setMenus] = useState<NavSection[]>(tpaPenilaianSections);
 
