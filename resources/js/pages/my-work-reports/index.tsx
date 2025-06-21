@@ -14,7 +14,18 @@ import {
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "../../components/ui/button";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "../../components/ui/alert-dialog";
+import { Button, buttonVariants } from "../../components/ui/button";
 import {
 	Form,
 	FormControl,
@@ -414,10 +425,34 @@ function WorkReportRow({
 							}}
 						/>
 					)}
-					<Trash2Icon
-						className="size-4 cursor-pointer text-danger-80"
-						onClick={() => onDeleteHandler()}
-					/>
+					<AlertDialog>
+						<AlertDialogTrigger asChild>
+							<Trash2Icon className="size-4 cursor-pointer text-danger-80" />
+						</AlertDialogTrigger>
+						<AlertDialogContent>
+							<AlertDialogHeader>
+								<AlertDialogTitle>
+									Apakah Anda yakin ingin menghapus laporan ini?
+								</AlertDialogTitle>
+								<AlertDialogDescription>
+									Setelah dihapus, laporan ini tidak dapat dikembalikan lagi.
+								</AlertDialogDescription>
+							</AlertDialogHeader>
+							<AlertDialogFooter>
+								<AlertDialogCancel asChild>
+									<Button variant="outline">Batalkan</Button>
+								</AlertDialogCancel>
+								<AlertDialogAction
+									className={buttonVariants({
+										variant: "destructive",
+									})}
+									onClick={() => onDeleteHandler()}
+								>
+									Hapus
+								</AlertDialogAction>
+							</AlertDialogFooter>
+						</AlertDialogContent>
+					</AlertDialog>
 				</div>
 			</div>
 		</div>

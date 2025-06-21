@@ -1,4 +1,15 @@
-import { Button } from "@/components/ui/button";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
 	Table,
@@ -21,9 +32,7 @@ export default function Index({ activities }: Props) {
 	const user = usePage<PageProps>().props.auth.user;
 
 	const handleDelete = (id: string) => {
-		if (confirm("Yakin ingin menghapus data ini?")) {
-			router.delete(`/dashboard/e-archive/pelatihan-pegawai/${id}`);
-		}
+		router.delete(`/dashboard/e-archive/pelatihan-pegawai/${id}`);
 	};
 
 	return (
@@ -94,13 +103,37 @@ export default function Index({ activities }: Props) {
 														<Edit className="w-4 h-4" />
 													</Button>
 												</Link>
-												<Button
-													variant="destructive"
-													size="icon"
-													onClick={() => handleDelete(item.id)}
-												>
-													<Trash2 className="w-4 h-4" />
-												</Button>
+												<AlertDialog>
+													<AlertDialogTrigger asChild>
+														<Button variant="destructive" size="icon">
+															<Trash2 className="w-4 h-4" />
+														</Button>
+													</AlertDialogTrigger>
+													<AlertDialogContent>
+														<AlertDialogHeader>
+															<AlertDialogTitle>
+																Hapus Pelatihan
+															</AlertDialogTitle>
+															<AlertDialogDescription>
+																Apakah Anda yakin ingin menghapus pelatihan ini?
+																Tindakan ini tidak dapat dibatalkan.
+															</AlertDialogDescription>
+														</AlertDialogHeader>
+														<AlertDialogFooter>
+															<AlertDialogCancel asChild>
+																<Button variant="outline">Batalkan</Button>
+															</AlertDialogCancel>
+															<AlertDialogAction
+																className={buttonVariants({
+																	variant: "destructive",
+																})}
+																onClick={() => handleDelete(item.id)}
+															>
+																Hapus
+															</AlertDialogAction>
+														</AlertDialogFooter>
+													</AlertDialogContent>
+												</AlertDialog>
 											</TableCell>
 										</TableRow>
 									))

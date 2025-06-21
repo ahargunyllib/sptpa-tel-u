@@ -1,3 +1,14 @@
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input, LabelInput } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -14,7 +25,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { WorkTargetUnit } from "../../../lib/enums";
 import type { User, WorkTarget } from "../../../types";
-import { Button } from "../../ui/button";
+import { Button, buttonVariants } from "../../ui/button";
 import {
 	Dialog,
 	DialogClose,
@@ -343,12 +354,37 @@ function WorkTargetRow({
 								onSubmit();
 							}}
 						/>
-						<Trash2Icon
-							className="h-4 w-4 cursor-pointer text-danger-80"
-							onClick={() => {
-								router.delete(`/dashboard/work-target/${workTarget.id}`);
-							}}
-						/>
+						<AlertDialog>
+							<AlertDialogTrigger asChild>
+								<Trash2Icon className="h-4 w-4 cursor-pointer text-danger-80" />
+							</AlertDialogTrigger>
+							<AlertDialogContent>
+								<AlertDialogHeader>
+									<AlertDialogTitle>
+										Apakah Anda yakin ingin menghapus target kinerja ini?
+									</AlertDialogTitle>
+									<AlertDialogDescription>
+										Setelah dihapus, target kinerja ini tidak dapat dikembalikan
+										lagi.
+									</AlertDialogDescription>
+								</AlertDialogHeader>
+								<AlertDialogFooter>
+									<AlertDialogCancel asChild>
+										<Button variant="outline">Batalkan</Button>
+									</AlertDialogCancel>
+									<AlertDialogAction
+										className={buttonVariants({
+											variant: "destructive",
+										})}
+										onClick={() => {
+											router.delete(`/dashboard/work-target/${workTarget.id}`);
+										}}
+									>
+										Hapus
+									</AlertDialogAction>
+								</AlertDialogFooter>
+							</AlertDialogContent>
+						</AlertDialog>
 					</div>
 				) : (
 					<div className="flex flex-row gap-2">
@@ -356,12 +392,37 @@ function WorkTargetRow({
 							className="h-4 w-4 cursor-pointer text-warning-80"
 							onClick={() => setSelectedWorkTargetId(workTarget.id)}
 						/>
-						<Trash2Icon
-							className="h-4 w-4 cursor-pointer text-danger-80"
-							onClick={() => {
-								router.delete(`/dashboard/work-target/${workTarget.id}`);
-							}}
-						/>
+						<AlertDialog>
+							<AlertDialogTrigger asChild>
+								<Trash2Icon className="h-4 w-4 cursor-pointer text-danger-80" />
+							</AlertDialogTrigger>
+							<AlertDialogContent>
+								<AlertDialogHeader>
+									<AlertDialogTitle>
+										Apakah Anda yakin ingin menghapus target kinerja ini?
+									</AlertDialogTitle>
+									<AlertDialogDescription>
+										Setelah dihapus, target kinerja ini tidak dapat dikembalikan
+										lagi.
+									</AlertDialogDescription>
+								</AlertDialogHeader>
+								<AlertDialogFooter>
+									<AlertDialogCancel asChild>
+										<Button variant="outline">Batalkan</Button>
+									</AlertDialogCancel>
+									<AlertDialogAction
+										className={buttonVariants({
+											variant: "destructive",
+										})}
+										onClick={() => {
+											router.delete(`/dashboard/work-target/${workTarget.id}`);
+										}}
+									>
+										Hapus
+									</AlertDialogAction>
+								</AlertDialogFooter>
+							</AlertDialogContent>
+						</AlertDialog>
 					</div>
 				)}
 			</TableCell>

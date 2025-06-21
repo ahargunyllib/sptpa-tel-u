@@ -7,8 +7,9 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { AlertDialog } from "@/components/ui/alert-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
 	Form,
 	FormControl,
@@ -18,6 +19,16 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "../../components/ui/alert-dialog";
 
 const formSchema = z.object({
 	name: z.string().min(2, { message: "Nama harus diisi" }),
@@ -112,9 +123,7 @@ export default function Edit({
 	};
 
 	const handlePhotoDelete = () => {
-		if (confirm("Apakah Anda yakin ingin menghapus foto profil?")) {
-			router.delete(route("profile.deletePhoto"));
-		}
+		router.delete(route("profile.deletePhoto"));
 	};
 
 	return (
@@ -156,14 +165,41 @@ export default function Edit({
 										<ImagePlus className="mr-2 h-4 w-4" />
 										<span>Ubah foto profile</span>
 									</Button>
-									<Button
-										variant="destructive"
-										className="w-full justify-start "
-										onClick={handlePhotoDelete}
-									>
-										<Trash2 className="mr-2 h-4 w-4" />
-										Hapus foto profile
-									</Button>
+
+									<AlertDialog>
+										<AlertDialogTrigger asChild>
+											<Button
+												variant="destructive"
+												className="w-full justify-start "
+												onClick={handlePhotoDelete}
+											>
+												<Trash2 className="mr-2 h-4 w-4" />
+												Hapus foto profile
+											</Button>
+										</AlertDialogTrigger>
+										<AlertDialogContent>
+											<AlertDialogHeader>
+												<AlertDialogTitle>Hapus Foto Profil</AlertDialogTitle>
+												<AlertDialogDescription>
+													Apakah Anda yakin ingin menghapus foto profil ini?
+													Tindakan ini tidak dapat dibatalkan.
+												</AlertDialogDescription>
+											</AlertDialogHeader>
+											<AlertDialogFooter>
+												<AlertDialogCancel asChild>
+													<Button variant="outline">Batalkan</Button>
+												</AlertDialogCancel>
+												<AlertDialogAction
+													className={buttonVariants({
+														variant: "destructive",
+													})}
+													onClick={handlePhotoDelete}
+												>
+													Hapus
+												</AlertDialogAction>
+											</AlertDialogFooter>
+										</AlertDialogContent>
+									</AlertDialog>
 								</div>
 							)}
 						</div>
