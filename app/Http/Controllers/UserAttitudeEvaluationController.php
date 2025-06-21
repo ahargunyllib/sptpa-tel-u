@@ -136,6 +136,12 @@ class UserAttitudeEvaluationController extends Controller
             ->select(...$selectFields)
             ->get();
 
+        foreach ($userAttitudeEvaluations as $userAttitudeEvaluation) {
+            $userAttitudeEvaluation->work_targets = DB::table('work_targets')
+                ->where('assigned_id', $userAttitudeEvaluation->id)
+                ->get();
+        }
+
         return Inertia::render('user-attitude-evaluation-management/index', [
             'role' => 'kaur',
             'userAttitudeEvaluations' => $userAttitudeEvaluations,
@@ -192,6 +198,12 @@ class UserAttitudeEvaluationController extends Controller
             ->leftJoin('user_feedbacks', 'user_feedbacks.user_id', '=', 'users.id')
             ->select(...$selectFields)
             ->get();
+
+        foreach ($userAttitudeEvaluations as $userAttitudeEvaluation) {
+            $userAttitudeEvaluation->work_targets = DB::table('work_targets')
+                ->where('assigned_id', $userAttitudeEvaluation->id)
+                ->get();
+        }
 
         return Inertia::render('user-attitude-evaluation-management/index', [
             'role' => 'staf',
