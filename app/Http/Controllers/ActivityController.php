@@ -130,6 +130,17 @@ class ActivityController extends Controller
         ]);
     }
 
+    public function createSelf()
+    {
+        $auth = Auth::user();
+
+        $users = $this->getScopedUsers($auth);
+
+        return Inertia::render('activities/create-self', [
+            'users' => $users,
+        ]);
+    }
+
     public function store(Request $request)
     {
         try {
@@ -151,7 +162,7 @@ class ActivityController extends Controller
             if ($user->role === 'wadek1' || $user->role === 'wadek2') {
                 return redirect()->back()->with('success', 'Activity updated.');
             } else {
-                return redirect()->back()('activities.index.kaur')->with('success', 'Activity updated.');
+                return redirect()->back()->with('success', 'Activity updated.');
             }
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Failed to create activity: ' . $e->getMessage()]);
@@ -165,6 +176,18 @@ class ActivityController extends Controller
         $users = $this->getScopedUsers($auth);
 
         return Inertia::render('activities/edit', [
+            'activity' => $activity,
+            'users' => $users,
+        ]);
+    }
+
+     public function editSelf(Activity $activity)
+    {
+        $auth = Auth::user();
+
+        $users = $this->getScopedUsers($auth);
+
+        return Inertia::render('activities/edit-self', [
             'activity' => $activity,
             'users' => $users,
         ]);

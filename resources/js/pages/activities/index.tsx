@@ -1,5 +1,4 @@
 import {
-	AlertDialog,
 	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
@@ -9,8 +8,8 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import {
 	Table,
 	TableBody,
@@ -22,7 +21,9 @@ import {
 import DashboardLayout from "@/layouts/dashboard-layout";
 import type { Activity, PageProps } from "@/types";
 import { Head, Link, router, usePage } from "@inertiajs/react";
-import { Edit, Plus, Trash2 } from "lucide-react";
+import { AlertDialog } from "@radix-ui/react-alert-dialog";
+import { Edit, PencilLine, Plus, SquarePen, Trash, Trash2 } from "lucide-react";
+import { useState } from "react";
 
 interface Props {
 	activities: Activity[];
@@ -30,34 +31,44 @@ interface Props {
 
 export default function Index({ activities }: Props) {
 	const user = usePage<PageProps>().props.auth.user;
-
+	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const handleDelete = (id: string) => {
 		router.delete(`/dashboard/e-archive/pelatihan-pegawai/${id}`);
 	};
+	const [selectedActivityId, setSelectedActivityId] = useState<string | null>(
+		null,
+	);
 
 	return (
 		<DashboardLayout>
 			<Head title="Daftar Pelatihan" />
-			<div className="container px-6 py-10">
-				<div className="flex justify-between items-center mb-6">
-					<h1 className="text-xl font-bold">Daftar Pelatihan</h1>
-					{user && user.role !== "staf" && (
-						<Link href={route("activities.pelatihan-pegawai.create")}>
-							<Button>
-								<Plus className="w-4 h-4 mr-2" /> Tambah Pelatihan
-							</Button>
-						</Link>
-					)}
-				</div>
-
-				<Card>
+			<div className="container px-6">
+				<Card className="h-full">
 					<CardContent className="p-4 overflow-auto">
+						<div className="flex justify-between items-center mb-6">
+							<h1 className="text-xl font-bold">Daftar Pelatihan</h1>
+							{user && user.role !== "staf" && (
+								<Link
+									href={
+										window.location.pathname ===
+										"/dashboard/e-archive/pelatihan-pegawai"
+											? route("activities.pelatihan-pegawai.create.self")
+											: route("activities.pelatihan-pegawai.create")
+									}
+								>
+									{" "}
+									<Button variant="outline" className="gap-2">
+										<SquarePen className="h-4 w-4" />
+										Tambah Pelatihan
+									</Button>
+								</Link>
+							)}
+						</div>
 						<Table>
 							<TableHeader>
 								<TableRow>
-									<TableHead>Judul</TableHead>
-									<TableHead>Tipe</TableHead>
-									<TableHead>Metode</TableHead>
+									<TableHead>Nama Kegiatan</TableHead>
+									<TableHead>Deskripsi</TableHead>
 									<TableHead>Tanggal</TableHead>
 									<TableHead>Pengguna</TableHead>
 									<TableHead>File Pendukung</TableHead>
@@ -78,7 +89,6 @@ export default function Index({ activities }: Props) {
 										<TableRow key={item.id}>
 											<TableCell>{item.title}</TableCell>
 											<TableCell>{item.type}</TableCell>
-											<TableCell>{item.method}</TableCell>
 											<TableCell>{item.implementation_date}</TableCell>
 											<TableCell>{item.user?.name ?? "-"}</TableCell>
 											<TableCell>
@@ -95,7 +105,7 @@ export default function Index({ activities }: Props) {
 													"-"
 												)}
 											</TableCell>
-											<TableCell className="text-right space-x-2">
+											{/* <TableCell className="text-right space-x-2">
 												<Link
 													href={`/dashboard/e-archive/pelatihan-pegawai/${item.id}/edit`}
 												>
@@ -103,37 +113,69 @@ export default function Index({ activities }: Props) {
 														<Edit className="w-4 h-4" />
 													</Button>
 												</Link>
-												<AlertDialog>
-													<AlertDialogTrigger asChild>
-														<Button variant="destructive" size="icon">
-															<Trash2 className="w-4 h-4" />
-														</Button>
-													</AlertDialogTrigger>
-													<AlertDialogContent>
-														<AlertDialogHeader>
-															<AlertDialogTitle>
-																Hapus Pelatihan
-															</AlertDialogTitle>
-															<AlertDialogDescription>
-																Apakah Anda yakin ingin menghapus pelatihan ini?
-																Tindakan ini tidak dapat dibatalkan.
-															</AlertDialogDescription>
-														</AlertDialogHeader>
-														<AlertDialogFooter>
-															<AlertDialogCancel asChild>
-																<Button variant="outline">Batalkan</Button>
-															</AlertDialogCancel>
-															<AlertDialogAction
-																className={buttonVariants({
-																	variant: "destructive",
-																})}
-																onClick={() => handleDelete(item.id)}
-															>
-																Hapus
-															</AlertDialogAction>
-														</AlertDialogFooter>
-													</AlertDialogContent>
-												</AlertDialog>
+												<Button
+													variant="destructive"
+													size="icon"
+													onClick={() => handleDelete(item.id)}
+												>
+													<Trash2 className="w-4 h-4" />
+												</Button>
+											</TableCell> */}
+											<TableCell className="py-3 px-4">
+												<div className="flex gap-1 items-center justify-end">
+													{window.location.pathname ===
+													"/dashboard/e-archive/pelatihan-pegawai" ? (
+														<Link
+															href={route(
+																"activities.pelatihan-pegawai.edit.self",
+																{ id: item.id },
+															)}
+														>
+															<PencilLine className="text-warning-80" />
+														</Link>
+													) : (
+														<Link
+															href={`/dashboard/e-archive/pelatihan-pegawai/${item.id}/edit`}
+														>
+															<PencilLine className="text-warning-80" />
+														</Link>
+													)}
+													<AlertDialog
+														open={isDialogOpen}
+														onOpenChange={setIsDialogOpen}
+													>
+														<AlertDialogTrigger asChild>
+															<Trash
+																className="text-danger-80 cursor-pointer"
+																onClick={() => {
+																	setSelectedActivityId(user.id);
+																	setIsDialogOpen(true);
+																}}
+															/>
+														</AlertDialogTrigger>
+														<AlertDialogContent>
+															<AlertDialogHeader>
+																<AlertDialogTitle>Hapus User?</AlertDialogTitle>
+																<AlertDialogDescription>
+																	Apakah kamu yakin ingin menghapus user ini?
+																	Tindakan ini tidak dapat dibatalkan.
+																</AlertDialogDescription>
+															</AlertDialogHeader>
+															<AlertDialogFooter>
+																<AlertDialogCancel>Batal</AlertDialogCancel>
+																<AlertDialogAction
+																	onClick={() => {
+																		if (selectedActivityId)
+																			handleDelete(selectedActivityId);
+																	}}
+																	className="bg-destructive text-white hover:bg-destructive/90"
+																>
+																	Hapus
+																</AlertDialogAction>
+															</AlertDialogFooter>
+														</AlertDialogContent>
+													</AlertDialog>
+												</div>
 											</TableCell>
 										</TableRow>
 									))

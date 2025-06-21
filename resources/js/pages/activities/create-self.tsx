@@ -10,9 +10,9 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import DashboardLayout from "@/layouts/dashboard-layout";
-import type { Activity, User } from "@/types";
+import type { PageProps, User } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Head, router } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -30,11 +30,12 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 interface Props {
-	activity: Activity;
 	users: User[];
 	errors: Record<string, string>;
 }
-export default function Edit({ activity, users, errors }: Props) {
+export default function Create() {
+	const user = usePage<PageProps>().props.auth.user;
+
 	const {
 		register,
 		handleSubmit,
@@ -44,11 +45,11 @@ export default function Edit({ activity, users, errors }: Props) {
 	} = useForm<FormSchema>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			title: activity.title,
-			type: activity.type,
-			metode: activity.method as "Online" | "Offline",
-			implementation_date: activity.implementation_date,
-			user_id: activity.user_id,
+			title: "",
+			type: "",
+			metode: "Online",
+			implementation_date: "",
+			user_id: user?.id || "",
 		},
 	});
 
@@ -65,10 +66,7 @@ export default function Edit({ activity, users, errors }: Props) {
 			formData.append("file", file);
 		}
 
-		router.post(
-			route("activities.pelatihan-pegawai.update", activity.id),
-			formData,
-		);
+		router.post(route("activities.pelatihan-pegawai.store"), formData);
 		window.history.back();
 	};
 	return (
@@ -126,32 +124,6 @@ export default function Edit({ activity, users, errors }: Props) {
 									type="file"
 									onChange={(e) => setFile(e.target.files?.[0] || null)}
 								/>
-							</div>
-
-							{/* User */}
-							<div>
-								<Label>Pengguna</Label>
-								<Select
-									onValueChange={(val) => setValue("user_id", val)}
-									defaultValue=""
-									value={watch("user_id")}
-								>
-									<SelectTrigger>
-										<SelectValue placeholder="Pilih pengguna" />
-									</SelectTrigger>
-									<SelectContent>
-										{users.map((user) => (
-											<SelectItem key={user.id} value={user.id}>
-												{user.name} - {user.division}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-								{validationErrors.user_id && (
-									<p className="text-sm text-red-500">
-										{validationErrors.user_id.message}
-									</p>
-								)}
 							</div>
 
 							{/* Submit */}
