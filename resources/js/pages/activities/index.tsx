@@ -33,9 +33,7 @@ export default function Index({ activities }: Props) {
 	const user = usePage<PageProps>().props.auth.user;
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const handleDelete = (id: string) => {
-		if (confirm("Yakin ingin menghapus data ini?")) {
-			router.delete(`/dashboard/e-archive/pelatihan-pegawai/${id}`);
-		}
+		router.delete(`/dashboard/e-archive/pelatihan-pegawai/${id}`);
 	};
 	const [selectedActivityId, setSelectedActivityId] = useState<string | null>(
 		null,

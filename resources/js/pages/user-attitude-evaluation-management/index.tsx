@@ -1,5 +1,5 @@
 import DashboardLayout from "@/layouts/dashboard-layout";
-import type { User, UserAttitudeEvaluation } from "@/types";
+import type { User, UserAttitudeEvaluation, WorkTarget } from "@/types";
 import { Head } from "@inertiajs/react";
 import StaffsCard from "../../components/features/user-attitude-evaluation-management/staffs-card";
 
@@ -8,6 +8,8 @@ type Props = {
 	userAttitudeEvaluations: (User &
 		UserAttitudeEvaluation & {
 			note: string;
+		} & {
+			work_targets: WorkTarget[];
 		})[];
 };
 

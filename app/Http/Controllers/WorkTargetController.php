@@ -208,7 +208,7 @@ class WorkTargetController extends Controller
         foreach ($workTargets as $workTarget) {
             $folder = $folders->firstWhere('work_target_id', $workTarget->id);
 
-            if ($folder){
+            if ($folder) {
                 $workTarget->files = $files->where('folder_id', $folder->id)->values();
             } else {
                 $workTarget->files = [];
@@ -260,6 +260,25 @@ class WorkTargetController extends Controller
                 ->where('type', 'kinerja')
                 ->where('user_id', $staff->id)
                 ->value('id');
+
+            $staff->user_attitude_evaluation = DB::table('user_attitude_evaluations')
+                ->where('user_id', $staff->id)
+                ->select(
+                    DB::raw('COALESCE(communication, 0) as communication'),
+                    DB::raw('COALESCE(teamwork, 0) as teamwork'),
+                    DB::raw('COALESCE(collaboration, 0) as collaboration'),
+                    DB::raw('COALESCE(solidarity, 0) as solidarity'),
+                    DB::raw('COALESCE(work_ethic, 0) as work_ethic'),
+                    DB::raw('COALESCE(technology_usage, 0) as technology_usage'),
+                    DB::raw('COALESCE(work_smart, 0) as work_smart'),
+                    DB::raw('COALESCE(initiative, 0) as initiative'),
+                    DB::raw('COALESCE(role_model, 0) as role_model'),
+                    DB::raw('COALESCE(responsibility, 0) as responsibility'),
+                    DB::raw('COALESCE(professional_ethic, 0) as professional_ethic'),
+                    DB::raw('COALESCE(image_maintenance, 0) as image_maintenance'),
+                    DB::raw('COALESCE(discipline, 0) as discipline'),
+                )
+                ->first();
         }
 
         return Inertia::render('work-targets-management/index', [
@@ -310,6 +329,25 @@ class WorkTargetController extends Controller
                 ->where('type', 'kinerja')
                 ->where('user_id', $staff->id)
                 ->value('id');
+
+                $staff->user_attitude_evaluation = DB::table('user_attitude_evaluations')
+                ->where('user_id', $staff->id)
+                ->select(
+                    DB::raw('COALESCE(communication, 0) as communication'),
+                    DB::raw('COALESCE(teamwork, 0) as teamwork'),
+                    DB::raw('COALESCE(collaboration, 0) as collaboration'),
+                    DB::raw('COALESCE(solidarity, 0) as solidarity'),
+                    DB::raw('COALESCE(work_ethic, 0) as work_ethic'),
+                    DB::raw('COALESCE(technology_usage, 0) as technology_usage'),
+                    DB::raw('COALESCE(work_smart, 0) as work_smart'),
+                    DB::raw('COALESCE(initiative, 0) as initiative'),
+                    DB::raw('COALESCE(role_model, 0) as role_model'),
+                    DB::raw('COALESCE(responsibility, 0) as responsibility'),
+                    DB::raw('COALESCE(professional_ethic, 0) as professional_ethic'),
+                    DB::raw('COALESCE(image_maintenance, 0) as image_maintenance'),
+                    DB::raw('COALESCE(discipline, 0) as discipline'),
+                )
+                ->first();
         }
 
         return Inertia::render('work-targets-management/index', [
@@ -356,12 +394,12 @@ class WorkTargetController extends Controller
 
             DB::commit();
             $this->log("Membuat target kinerja dengan nama : {$validatedData['name']}");
-            return back();
+            return back()->with('success', 'Target kinerja berhasil dibuat.');
         } catch (\Exception $e) {
             // Rollback the transaction if an error occurs
             DB::rollBack();
 
-            return back();
+            return back()->withErrors(['error' => 'Gagal membuat target kinerja: ' . $e->getMessage()]);
         }
     }
 
@@ -430,12 +468,12 @@ class WorkTargetController extends Controller
             // Commit the transaction
             DB::commit();
             $this->log("Mengubah target kinerja dengan ID : {$id}");
-            return back();
+            return back()->with('success', 'Target kinerja berhasil diperbarui.');
         } catch (\Exception $e) {
             // Rollback the transaction if an error occurs
             DB::rollBack();
 
-            return back();
+            return back()->withErrors(['error' => 'Gagal memperbarui target kinerja: ' . $e->getMessage()]);
         }
     }
 
@@ -469,12 +507,12 @@ class WorkTargetController extends Controller
             // Commit the transaction
             DB::commit();
             $this->log("Menilai target kinerja dengan ID : {$id}");
-            return back();
+            return back()->with('success', 'Penilaian target kinerja berhasil diperbarui.');
         } catch (\Exception $e) {
             // Rollback the transaction if an error occurs
             DB::rollBack();
 
-            return back();
+            return back()->withErrors(['error' => 'Gagal memperbarui penilaian target kinerja: ' . $e->getMessage()]);
         }
     }
 
@@ -507,12 +545,12 @@ class WorkTargetController extends Controller
             // Commit the transaction
             DB::commit();
 
-            return back();
+            return back()->with('success', 'Target kinerja berhasil disubmit.');
         } catch (\Exception $e) {
             // Rollback the transaction if an error occurs
             DB::rollBack();
 
-            return back();
+            return back()->withErrors(['error' => 'Gagal submit target kinerja: ' . $e->getMessage()]);
         }
     }
 
@@ -533,12 +571,12 @@ class WorkTargetController extends Controller
             // Commit the transaction
             DB::commit();
             $this->log("Menghapus target kinerja dengan ID : {$id}");
-            return back();
+            return back()->with('success', 'Target kinerja berhasil dihapus.');
         } catch (\Exception $e) {
             // Rollback the transaction if an error occurs
             DB::rollBack();
 
-            return back();
+            return back()->withErrors(['error' => 'Gagal menghapus target kinerja: ' . $e->getMessage()]);
         }
     }
 

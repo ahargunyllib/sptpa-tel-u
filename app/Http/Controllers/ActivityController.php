@@ -143,25 +143,29 @@ class ActivityController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
-            'method' => 'required|in:Online,Offline',
-            'implementation_date' => 'required|date',
-            'file' => 'nullable|file',
-            'user_id' => 'required|exists:users,id',
-        ]);
+        try {
+            $data = $request->validate([
+                'title' => 'required|string|max:255',
+                'type' => 'required|string|max:255',
+                'method' => 'required|in:Online,Offline',
+                'implementation_date' => 'required|date',
+                'file' => 'nullable|file',
+                'user_id' => 'required|exists:users,id',
+            ]);
 
-        if ($request->hasFile('file')) {
-            $data['file'] = $request->file('file')->store('activities', 'public');
-        }
+            if ($request->hasFile('file')) {
+                $data['file'] = $request->file('file')->store('activities', 'public');
+            }
 
-        Activity::create($data);
-        $user = Auth::user();
-        if ($user->role === 'wadek1' || $user->role === 'wadek2') {
-            return redirect()->back()->with('success', 'Activity updated.');
-        } else {
-            return redirect()->back()->with('success', 'Activity updated.');
+            Activity::create($data);
+            $user = Auth::user();
+            if ($user->role === 'wadek1' || $user->role === 'wadek2') {
+                return redirect()->back()->with('success', 'Activity updated.');
+            } else {
+                return redirect()->back()->with('success', 'Activity updated.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to create activity: ' . $e->getMessage()]);
         }
     }
 
@@ -191,39 +195,47 @@ class ActivityController extends Controller
 
     public function update(Request $request, Activity $activity)
     {
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
-            'method' => 'required|in:Online,Offline',
-            'implementation_date' => 'required|date',
-            'file' => 'nullable|file',
-            'user_id' => 'required|exists:users,id',
-        ]);
+        try {
+            $data = $request->validate([
+                'title' => 'required|string|max:255',
+                'type' => 'required|string|max:255',
+                'method' => 'required|in:Online,Offline',
+                'implementation_date' => 'required|date',
+                'file' => 'nullable|file',
+                'user_id' => 'required|exists:users,id',
+            ]);
 
-        if ($request->hasFile('file')) {
-            if ($activity->file) {
-                Storage::delete($activity->file);
+            if ($request->hasFile('file')) {
+                if ($activity->file) {
+                    Storage::delete($activity->file);
+                }
+                $data['file'] = $request->file('file')->store('activities', 'public');
             }
-            $data['file'] = $request->file('file')->store('activities', 'public');
-        }
 
-        $activity->update($data);
-        $user = Auth::user();
-        if ($user->role === 'wadek1' || $user->role === 'wadek2') {
-            return redirect()->back()->with('success', 'Activity updated.');
-        } else {
-            return redirect()->back()->with('success', 'Activity updated.');
+            $activity->update($data);
+            $user = Auth::user();
+            if ($user->role === 'wadek1' || $user->role === 'wadek2') {
+                return redirect()->back()->with('success', 'Activity updated.');
+            } else {
+                return redirect()->back()->with('success', 'Activity updated.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to update activity: ' . $e->getMessage()]);
         }
     }
 
     public function destroy(Activity $activity)
     {
-        if ($activity->file_pendukung) {
-            Storage::delete($activity->file_pendukung);
+        try {
+            if ($activity->file_pendukung) {
+                Storage::delete($activity->file_pendukung);
+            }
+
+            $activity->delete();
+
+            return redirect()->back()->with('success', 'Activity deleted.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to delete activity: ' . $e->getMessage()]);
         }
-
-        $activity->delete();
-
-        return redirect()->back()->with('success', 'Activity deleted.');
     }
 }
