@@ -159,12 +159,10 @@ Route::middleware(['auth', 'role:sdm'])->group(function () {
 Route::middleware(['auth', 'role:wadek1,wadek2,kaur'])->group(function () {
     Route::get('/dashboard/e-archive/pelatihan-pegawai/create', [ActivityController::class, 'create'])
         ->name('activities.pelatihan-pegawai.create');
-    Route::post('/dashboard/e-archive/pelatihan-pegawai', [ActivityController::class, 'store'])
-        ->name('activities.pelatihan-pegawai.store');
+    
     Route::get('/dashboard/e-archive/pelatihan-pegawai/{activity}/edit', [ActivityController::class, 'edit'])
         ->name('activities.pelatihan-pegawai.edit');
-    Route::post('/dashboard/e-archive/pelatihan-pegawai/{activity}', [ActivityController::class, 'update'])
-        ->name('activities.pelatihan-pegawai.update');
+    
 });
 
 
