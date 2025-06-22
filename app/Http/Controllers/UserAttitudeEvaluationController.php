@@ -251,19 +251,19 @@ class UserAttitudeEvaluationController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'communication' => 'required|integer|min:0|max:100',
-                'teamwork' => 'required|integer|min:0|max:100',
-                'collaboration' => 'required|integer|min:0|max:100',
-                'solidarity' => 'required|integer|min:0|max:100',
-                'work_ethic' => 'required|integer|min:0|max:100',
-                'technology_usage' => 'required|integer|min:0|max:100',
-                'work_smart' => 'required|integer|min:0|max:100',
-                'initiative' => 'required|integer|min:0|max:100',
-                'role_model' => 'required|integer|min:0|max:100',
-                'responsibility' => 'required|integer|min:0|max:100',
-                'professional_ethic' => 'required|integer|min:0|max:100',
-                'image_maintenance' => 'required|integer|min:0|max:100',
-                'discipline' => 'required|integer|min:0|max:100',
+                'communication' => 'required|integer|min:0|max:120',
+                'teamwork' => 'required|integer|min:0|max:120',
+                'collaboration' => 'required|integer|min:0|max:120',
+                'solidarity' => 'required|integer|min:0|max:120',
+                'work_ethic' => 'required|integer|min:0|max:120',
+                'technology_usage' => 'required|integer|min:0|max:120',
+                'work_smart' => 'required|integer|min:0|max:120',
+                'initiative' => 'required|integer|min:0|max:120',
+                'role_model' => 'required|integer|min:0|max:120',
+                'responsibility' => 'required|integer|min:0|max:120',
+                'professional_ethic' => 'required|integer|min:0|max:120',
+                'image_maintenance' => 'required|integer|min:0|max:120',
+                'discipline' => 'required|integer|min:0|max:120',
                 'note' => 'nullable|string|max:255',
             ]);
 

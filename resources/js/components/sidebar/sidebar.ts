@@ -226,11 +226,11 @@ export const wadekArsipSections: NavSection[] = [
 	{
 		title: "DOKUMEN ANDA",
 		items: [
-			{
-				title: "Dokumen Kerja",
-				icon: FolderIcon,
-				href: "/dashboard/e-archive/kerja",
-			},
+			// {
+			// 	title: "Dokumen Kerja",
+			// 	icon: FolderIcon,
+			// 	href: "/dashboard/e-archive/kerja",
+			// },
 			{
 				title: "Data Pelatihan",
 				icon: FolderIcon,

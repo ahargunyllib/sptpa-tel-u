@@ -426,7 +426,7 @@ function WorkReportRow({
 						/>
 					)}
 					<AlertDialog>
-						<AlertDialogTrigger asChild>
+						<AlertDialogTrigger>
 							<Trash2Icon className="size-4 cursor-pointer text-danger-80" />
 						</AlertDialogTrigger>
 						<AlertDialogContent>

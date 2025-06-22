@@ -274,13 +274,13 @@ export default function MyUserAttitudeEvaluation({
 											Rata - rata penilaian dari <b>{average.toFixed(2)}</b>
 										</TableCell>
 									</TableRow>
-									<TableRow>
+									{/* <TableRow>
 										<TableCell>
 											Rata - rata Penilaian Sikap Kerja sebelum pembobotan
 											adalah <b>{average.toFixed(2)}</b>
-											{/* dengan keterangan ditunjukkan dengan */}
+											// dengan keterangan ditunjukkan dengan
 										</TableCell>
-									</TableRow>
+									</TableRow> */}
 								</TableBody>
 							</Table>
 						</div>

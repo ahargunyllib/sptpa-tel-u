@@ -159,11 +159,7 @@ class ActivityController extends Controller
 
             Activity::create($data);
             $user = Auth::user();
-            if ($user->role === 'wadek1' || $user->role === 'wadek2') {
-                return redirect()->back()->with('success', 'Activity updated.');
-            } else {
-                return redirect()->back()->with('success', 'Activity updated.');
-            }
+            return redirect()->route('activities.index')->with('success', 'Activity created successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Failed to create activity: ' . $e->getMessage()]);
         }
@@ -181,7 +177,7 @@ class ActivityController extends Controller
         ]);
     }
 
-     public function editSelf(Activity $activity)
+    public function editSelf(Activity $activity)
     {
         $auth = Auth::user();
 
@@ -214,11 +210,7 @@ class ActivityController extends Controller
 
             $activity->update($data);
             $user = Auth::user();
-            if ($user->role === 'wadek1' || $user->role === 'wadek2') {
-                return redirect()->back()->with('success', 'Activity updated.');
-            } else {
-                return redirect()->back()->with('success', 'Activity updated.');
-            }
+            return redirect()->route('activities.index')->with('success', 'Activity updated successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Failed to update activity: ' . $e->getMessage()]);
         }

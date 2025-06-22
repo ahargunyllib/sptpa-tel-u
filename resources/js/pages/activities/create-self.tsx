@@ -55,19 +55,25 @@ export default function Create() {
 
 	const [file, setFile] = useState<File | null>(null);
 
-	const onSubmit = (data: FormSchema) => {
-		const formData = new FormData();
-		formData.append("title", data.title);
-		formData.append("type", data.type);
-		formData.append("method", data.metode);
-		formData.append("implementation_date", data.implementation_date);
-		formData.append("user_id", data.user_id);
-		if (file) {
-			formData.append("file", file);
+	const onSubmit = async (data: FormSchema) => {
+		try {
+			const formData = new FormData();
+			formData.append("title", data.title);
+			formData.append("type", data.type);
+			formData.append("method", data.metode);
+			formData.append("implementation_date", data.implementation_date);
+			formData.append("user_id", data.user_id);
+			if (file) {
+				formData.append("file", file);
+			}
+
+			await router.post(route("activities.pelatihan-pegawai.store"), formData);
+		} catch (error) {
+			console.error("Error submitting form:", error);
+			// Handle error if needed
 		}
 
-		router.post(route("activities.pelatihan-pegawai.store"), formData);
-		window.history.back();
+		// window.history.back();
 	};
 	return (
 		<DashboardLayout header="Pelatihan Pegawai">

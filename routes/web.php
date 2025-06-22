@@ -119,6 +119,8 @@ Route::middleware(['auth'])->group(function (): void {
         ->name('activities.pelatihan-pegawai.create.self');
     Route::get('/dashboard/e-archive/pelatihan-pegawai/{activity}/edit-self', [ActivityController::class, 'editSelf'])
         ->name('activities.pelatihan-pegawai.edit.self');
+    Route::delete('/dashboard/e-archive/pelatihan-pegawai/{activity}', [ActivityController::class, 'destroy'])
+        ->name('activities.pelatihan-pegawai.destroy');
 
 
     // Route::get('/dashboard/weekly-report', [WeeklyReportController::class, 'index'])->name('weekly-report.index');
@@ -159,8 +161,6 @@ Route::middleware(['auth', 'role:wadek1,wadek2,kaur'])->group(function () {
         ->name('activities.pelatihan-pegawai.edit');
     Route::post('/dashboard/e-archive/pelatihan-pegawai/{activity}', [ActivityController::class, 'update'])
         ->name('activities.pelatihan-pegawai.update');
-    Route::delete('/dashboard/e-archive/pelatihan-pegawai/{activity}', [ActivityController::class, 'destroy'])
-        ->name('activities.pelatihan-pegawai.destroy');
 });
 
 
