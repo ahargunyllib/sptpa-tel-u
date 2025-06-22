@@ -65,7 +65,6 @@ export default function Create({ users, errors }: Props) {
 		}
 
 		router.post(route("activities.pelatihan-pegawai.store"), formData);
-		window.history.back();
 	};
 	return (
 		<DashboardLayout header="Pelatihan Pegawai">
