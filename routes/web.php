@@ -122,7 +122,11 @@ Route::middleware(['auth'])->group(function (): void {
     Route::delete('/dashboard/e-archive/pelatihan-pegawai/{activity}', [ActivityController::class, 'destroy'])
         ->name('activities.pelatihan-pegawai.destroy');
 
+    Route::post('/dashboard/e-archive/pelatihan-pegawai', [ActivityController::class, 'store'])
+        ->name('activities.pelatihan-pegawai.store');
 
+    Route::post('/dashboard/e-archive/pelatihan-pegawai/{activity}', [ActivityController::class, 'update'])
+        ->name('activities.pelatihan-pegawai.update');
     // Route::get('/dashboard/weekly-report', [WeeklyReportController::class, 'index'])->name('weekly-report.index');
     // Route::post('/dashboard/weekly-report', [WeeklyReportController::class, 'store'])->name('weekly-report.store');
     // Route::put('/dashboard/weekly-report/{weeklyReport}', [WeeklyReportController::class, 'update'])->name('weekly-report.update');
