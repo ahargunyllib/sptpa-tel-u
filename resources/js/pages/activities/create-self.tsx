@@ -67,8 +67,11 @@ export default function Create() {
 				formData.append("file", file);
 			}
 
-			await router.post(route("activities.pelatihan-pegawai.store"), formData);
-			window.location.assign("/dashboard/e-archive/pelatihan-pegawai");
+			await router.post(route("activities.pelatihan-pegawai.store"), formData, {
+				onSuccess: () => {
+					router.visit("/dashboard/e-archive/pelatihan-pegawai");
+				},
+			});
 		} catch (error) {
 			console.error("Error submitting form:", error);
 			// Handle error if needed
