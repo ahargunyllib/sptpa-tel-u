@@ -47,7 +47,7 @@ export default function Index({ activities }: Props) {
 					<CardContent className="p-4 overflow-auto">
 						<div className="flex justify-between items-center mb-6">
 							<h1 className="text-xl font-bold">Daftar Pelatihan</h1>
-							{window.location.href ===
+							{window.location.pathname ===
 							"/dashboard/e-archive/pelatihan-pegawai" ? (
 								<Link href={route("activities.pelatihan-pegawai.create.self")}>
 									{" "}
