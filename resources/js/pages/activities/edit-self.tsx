@@ -54,7 +54,7 @@ export default function Edit({ activity, users, errors }: Props) {
 
 	const [file, setFile] = useState<File | null>(null);
 
-	const onSubmit = (data: FormSchema) => {
+	const onSubmit = async (data: FormSchema) => {
 		const formData = new FormData();
 		formData.append("title", data.title);
 		formData.append("type", data.type);
@@ -65,7 +65,7 @@ export default function Edit({ activity, users, errors }: Props) {
 			formData.append("file", file);
 		}
 
-		router.post(
+		await router.post(
 			route("activities.pelatihan-pegawai.update", activity.id),
 			formData,
 		);

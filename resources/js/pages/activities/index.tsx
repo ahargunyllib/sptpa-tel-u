@@ -47,22 +47,16 @@ export default function Index({ activities }: Props) {
 					<CardContent className="p-4 overflow-auto">
 						<div className="flex justify-between items-center mb-6">
 							<h1 className="text-xl font-bold">Daftar Pelatihan</h1>
-							{user && user.role !== "staf" && (
-								<Link
-									href={
-										window.location.pathname ===
-										"/dashboard/e-archive/pelatihan-pegawai"
-											? route("activities.pelatihan-pegawai.create.self")
-											: route("activities.pelatihan-pegawai.create")
-									}
-								>
+							{window.location.href ===
+							"/dashboard/e-archive/pelatihan-pegawai" ? (
+								<Link href={route("activities.pelatihan-pegawai.create.self")}>
 									{" "}
 									<Button variant="outline" className="gap-2">
 										<SquarePen className="h-4 w-4" />
 										Tambah Pelatihan
 									</Button>
 								</Link>
-							)}
+							) : null}
 						</div>
 						<Table>
 							<TableHeader>
@@ -72,7 +66,10 @@ export default function Index({ activities }: Props) {
 									<TableHead>Tanggal</TableHead>
 									<TableHead>Pengguna</TableHead>
 									<TableHead>File Pendukung</TableHead>
-									<TableHead className="text-right">Aksi</TableHead>
+									{window.location.pathname ===
+										"/dashboard/e-archive/pelatihan-pegawai" && (
+										<TableHead className="text-right">Aksi</TableHead>
+									)}
 								</TableRow>
 							</TableHeader>
 							<TableBody>
@@ -121,62 +118,69 @@ export default function Index({ activities }: Props) {
 													<Trash2 className="w-4 h-4" />
 												</Button>
 											</TableCell> */}
-											<TableCell className="py-3 px-4">
-												<div className="flex gap-1 items-center justify-end">
-													{window.location.pathname ===
-													"/dashboard/e-archive/pelatihan-pegawai" ? (
-														<Link
-															href={route(
-																"activities.pelatihan-pegawai.edit.self",
-																{ id: item.id },
-															)}
+											{window.location.pathname ===
+												"/dashboard/e-archive/pelatihan-pegawai" && (
+												<TableCell className="py-3 px-4">
+													<div className="flex gap-1 items-center justify-end">
+														{window.location.pathname ===
+														"/dashboard/e-archive/pelatihan-pegawai" ? (
+															<Link
+																href={route(
+																	"activities.pelatihan-pegawai.edit.self",
+																	{
+																		id: item.id,
+																	},
+																)}
+															>
+																<PencilLine className="text-warning-80" />
+															</Link>
+														) : (
+															<Link
+																href={`/dashboard/e-archive/pelatihan-pegawai/${item.id}/edit`}
+															>
+																<PencilLine className="text-warning-80" />
+															</Link>
+														)}
+														<AlertDialog
+															open={isDialogOpen}
+															onOpenChange={setIsDialogOpen}
 														>
-															<PencilLine className="text-warning-80" />
-														</Link>
-													) : (
-														<Link
-															href={`/dashboard/e-archive/pelatihan-pegawai/${item.id}/edit`}
-														>
-															<PencilLine className="text-warning-80" />
-														</Link>
-													)}
-													<AlertDialog
-														open={isDialogOpen}
-														onOpenChange={setIsDialogOpen}
-													>
-														<AlertDialogTrigger asChild>
-															<Trash
-																className="text-danger-80 cursor-pointer"
-																onClick={() => {
-																	setSelectedActivityId(user.id);
-																	setIsDialogOpen(true);
-																}}
-															/>
-														</AlertDialogTrigger>
-														<AlertDialogContent>
-															<AlertDialogHeader>
-																<AlertDialogTitle>Hapus User?</AlertDialogTitle>
-																<AlertDialogDescription>
-																	Apakah kamu yakin ingin menghapus user ini?
-																	Tindakan ini tidak dapat dibatalkan.
-																</AlertDialogDescription>
-															</AlertDialogHeader>
-															<AlertDialogFooter>
-																<AlertDialogCancel>Batal</AlertDialogCancel>
-																<AlertDialogAction
+															<AlertDialogTrigger asChild>
+																<Trash
+																	className="text-danger-80 cursor-pointer"
 																	onClick={() => {
-																		if (selectedActivityId)
-																			handleDelete(selectedActivityId);
+																		setSelectedActivityId(item.id);
+																		setIsDialogOpen(true);
 																	}}
-																	className="bg-destructive text-white hover:bg-destructive/90"
-																>
-																	Hapus
-																</AlertDialogAction>
-															</AlertDialogFooter>
-														</AlertDialogContent>
-													</AlertDialog>
-												</div>
-											</TableCell>
+																/>
+															</AlertDialogTrigger>
+															<AlertDialogContent>
+																<AlertDialogHeader>
+																	<AlertDialogTitle>
+																		Hapus User?
+																	</AlertDialogTitle>
+																	<AlertDialogDescription>
+																		Apakah kamu yakin ingin menghapus data ini?
+																		Tindakan ini tidak dapat dibatalkan.
+																	</AlertDialogDescription>
+																</AlertDialogHeader>
+																<AlertDialogFooter>
+																	<AlertDialogCancel>Batal</AlertDialogCancel>
+																	<AlertDialogAction
+																		onClick={() => {
+																			if (selectedActivityId)
+																				handleDelete(selectedActivityId);
+																		}}
+																		className="bg-destructive text-white hover:bg-destructive/90"
+																	>
+																		Hapus
+																	</AlertDialogAction>
+																</AlertDialogFooter>
+															</AlertDialogContent>
+														</AlertDialog>
+													</div>
+												</TableCell>
+											)}
 										</TableRow>
 									))
 								)}

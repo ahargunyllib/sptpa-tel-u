@@ -55,7 +55,7 @@ export default function Create() {
 
 	const [file, setFile] = useState<File | null>(null);
 
-	const onSubmit = (data: FormSchema) => {
+	const onSubmit = async (data: FormSchema) => {
 		const formData = new FormData();
 		formData.append("title", data.title);
 		formData.append("type", data.type);
@@ -66,7 +66,7 @@ export default function Create() {
 			formData.append("file", file);
 		}
 
-		router.post(route("activities.pelatihan-pegawai.store"), formData);
+		await router.post(route("activities.pelatihan-pegawai.store"), formData);
 		window.history.back();
 	};
 	return (
