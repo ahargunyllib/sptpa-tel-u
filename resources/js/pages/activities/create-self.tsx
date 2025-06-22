@@ -67,7 +67,7 @@ export default function Create() {
 		}
 
 		await router.post(route("activities.pelatihan-pegawai.store"), formData);
-		window.history.back();
+		// window.history.back();
 	};
 	return (
 		<DashboardLayout header="Pelatihan Pegawai">
