@@ -55,21 +55,25 @@ export default function Edit({ activity, users, errors }: Props) {
 	const [file, setFile] = useState<File | null>(null);
 
 	const onSubmit = async (data: FormSchema) => {
-		const formData = new FormData();
-		formData.append("title", data.title);
-		formData.append("type", data.type);
-		formData.append("method", data.metode);
-		formData.append("implementation_date", data.implementation_date);
-		formData.append("user_id", data.user_id);
-		if (file) {
-			formData.append("file", file);
-		}
+		try {
+			const formData = new FormData();
+			formData.append("title", data.title);
+			formData.append("type", data.type);
+			formData.append("method", data.metode);
+			formData.append("implementation_date", data.implementation_date);
+			formData.append("user_id", data.user_id);
+			if (file) {
+				formData.append("file", file);
+			}
 
-		await router.post(
-			route("activities.pelatihan-pegawai.update", activity.id),
-			formData,
-		);
-		window.history.back();
+			await router.post(
+				route("activities.pelatihan-pegawai.update", activity.id),
+				formData,
+			);
+			window.location.assign("/dashboard/e-archive/pelatihan-pegawai");
+		} catch (error) {
+			console.log(error);
+		}
 	};
 	return (
 		<DashboardLayout header="Pelatihan Pegawai">

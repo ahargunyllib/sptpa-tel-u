@@ -56,17 +56,24 @@ export default function Create() {
 	const [file, setFile] = useState<File | null>(null);
 
 	const onSubmit = async (data: FormSchema) => {
-		const formData = new FormData();
-		formData.append("title", data.title);
-		formData.append("type", data.type);
-		formData.append("method", data.metode);
-		formData.append("implementation_date", data.implementation_date);
-		formData.append("user_id", data.user_id);
-		if (file) {
-			formData.append("file", file);
+		try {
+			const formData = new FormData();
+			formData.append("title", data.title);
+			formData.append("type", data.type);
+			formData.append("method", data.metode);
+			formData.append("implementation_date", data.implementation_date);
+			formData.append("user_id", data.user_id);
+			if (file) {
+				formData.append("file", file);
+			}
+
+			await router.post(route("activities.pelatihan-pegawai.store"), formData);
+			window.location.assign("/dashboard/e-archive/pelatihan-pegawai");
+		} catch (error) {
+			console.error("Error submitting form:", error);
+			// Handle error if needed
 		}
 
-		await router.post(route("activities.pelatihan-pegawai.store"), formData);
 		// window.history.back();
 	};
 	return (
