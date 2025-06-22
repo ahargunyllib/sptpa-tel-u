@@ -69,11 +69,6 @@ export default function Edit({ activity, users, errors }: Props) {
 			await router.post(
 				route("activities.pelatihan-pegawai.update", activity.id),
 				formData,
-				{
-					onSuccess: () => {
-						router.visit("/dashboard/e-archive/pelatihan-pegawai");
-					},
-				},
 			);
 		} catch (error) {
 			console.log(error);
