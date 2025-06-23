@@ -63,7 +63,7 @@ class ActivityController extends Controller
 
         $activities = Activity::with('user')
             ->whereHas('user', function ($query) use ($divisions) {
-                $query->whereIn('role', ['staf', 'kaur'])
+                $query->whereIn('role', ['staf'])
                     ->whereIn('division', $divisions);
             })
             ->latest()
