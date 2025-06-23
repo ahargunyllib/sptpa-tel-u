@@ -39,10 +39,10 @@ export default function WorkReportsManagement({ staffs }: Props) {
 						<div className="flex flex-row gap-2">
 							<Input placeholder="Cari Laporan Kinerja" />
 							<Button>Cari</Button>
-							<Button variant="outline">
+							{/* <Button variant="outline">
 								<ChevronDownIcon />
 								Nama Staf
-							</Button>
+							</Button> */}
 							<Button>
 								<CalendarIcon />
 								Filter

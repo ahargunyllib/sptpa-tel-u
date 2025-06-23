@@ -37,13 +37,22 @@ class ActivityController extends Controller
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
+        $sortField = $request->get('sort_field', 'implementation_date');
+        $sortOrder = $request->get('sort_order', 'desc');
+
         $activities = Activity::with('user')
             ->where('user_id', $user->id)
-            ->latest()
+            ->when($sortField === 'user', function ($query) use ($sortOrder) {
+                $query->join('users', 'activities.user_id', '=', 'users.id')
+                    ->orderBy('users.name', $sortOrder)
+                    ->select('activities.*'); // penting untuk menghindari konflik kolom
+            }, function ($query) use ($sortField, $sortOrder) {
+                $query->orderBy($sortField, $sortOrder);
+            })
             ->get();
 
         return Inertia::render('activities/index', [
@@ -52,21 +61,30 @@ class ActivityController extends Controller
     }
 
 
-    public function wadekIndex()
+
+    public function wadekIndex(Request $request)
     {
         $user = Auth::user();
-
 
         $divisions = $user->role === 'wadek1'
             ? ['academic_service', 'laboratory']
             : ['secretary', 'student_affair', 'finance_logistic_resource'];
 
+        $sortField = $request->get('sort_field', 'implementation_date');
+        $sortOrder = $request->get('sort_order', 'desc');
+
         $activities = Activity::with('user')
             ->whereHas('user', function ($query) use ($divisions) {
-                $query->whereIn('role', ['staf'])
+                $query->where('role', 'staf')
                     ->whereIn('division', $divisions);
             })
-            ->latest()
+            ->when($sortField === 'user', function ($query) use ($sortOrder) {
+                $query->join('users', 'activities.user_id', '=', 'users.id')
+                    ->orderBy('users.name', $sortOrder)
+                    ->select('activities.*');
+            }, function ($query) use ($sortField, $sortOrder) {
+                $query->orderBy($sortField, $sortOrder);
+            })
             ->get();
 
         return Inertia::render('activities/index', [
@@ -74,17 +92,26 @@ class ActivityController extends Controller
         ]);
     }
 
-    public function kaurIndex()
+
+    public function kaurIndex(Request $request)
     {
         $user = Auth::user();
 
+        $sortField = $request->get('sort_field', 'implementation_date');
+        $sortOrder = $request->get('sort_order', 'desc');
 
         $activities = Activity::with('user')
             ->whereHas('user', function ($query) use ($user) {
                 $query->where('role', 'staf')
                     ->where('division', $user->division);
             })
-            ->latest()
+            ->when($sortField === 'user', function ($query) use ($sortOrder) {
+                $query->join('users', 'activities.user_id', '=', 'users.id')
+                    ->orderBy('users.name', $sortOrder)
+                    ->select('activities.*');
+            }, function ($query) use ($sortField, $sortOrder) {
+                $query->orderBy($sortField, $sortOrder);
+            })
             ->get();
 
         return Inertia::render('activities/index', [
@@ -92,7 +119,7 @@ class ActivityController extends Controller
         ]);
     }
 
-    public function kaurByWadekIndex()
+    public function kaurByWadekIndex(Request $request)
     {
         $auth = Auth::user();
 
@@ -104,19 +131,29 @@ class ActivityController extends Controller
             ? ['academic_service', 'laboratory']
             : ['secretary', 'student_affair', 'finance_logistic_resource'];
 
+        $sortField = $request->get('sort_field', 'implementation_date');
+        $sortOrder = $request->get('sort_order', 'desc');
+
         $kaurUsers = User::where('role', 'kaur')
             ->whereIn('division', $divisions)
             ->pluck('id');
 
         $activities = Activity::with('user')
             ->whereIn('user_id', $kaurUsers)
-            ->latest()
+            ->when($sortField === 'user', function ($query) use ($sortOrder) {
+                $query->join('users', 'activities.user_id', '=', 'users.id')
+                    ->orderBy('users.name', $sortOrder)
+                    ->select('activities.*');
+            }, function ($query) use ($sortField, $sortOrder) {
+                $query->orderBy($sortField, $sortOrder);
+            })
             ->get();
 
         return Inertia::render('activities/index', [
             'activities' => $activities,
         ]);
     }
+
 
 
     public function create()
