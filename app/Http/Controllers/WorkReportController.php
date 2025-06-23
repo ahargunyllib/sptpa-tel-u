@@ -114,6 +114,9 @@ class WorkReportController extends Controller
 
     public function indexStaf(Request $request)
     {
+        $search = $request->query('search');
+        $date = $request->query('date');
+
         $user = $request->user();
         $division = $user->division;
         $role = 'staf';
@@ -134,6 +137,10 @@ class WorkReportController extends Controller
             );
         }
 
+        if ($search) {
+            $staffs = $staffs->where('users.name', 'like', '%' . $search . '%');
+        }
+
         $staffs = $staffs->where('users.role', $role)
             ->select(
                 'users.*'
@@ -151,6 +158,14 @@ class WorkReportController extends Controller
             $workTargets = $workTargets->whereIn('assigned.division', ['academic_service', 'laboratory']);
         } else if ($user->role === 'wadek2') {
             $workTargets = $workTargets->whereIn('assigned.division', ['secretary', 'student_affair', 'finance_logistic_resource']);
+        }
+
+        if ($search) {
+            $workTargets = $workTargets->where('work_targets.name', 'like', '%' . $search . '%');
+        }
+
+        if ($date) {
+            $workTargets = $workTargets->whereDate('work_targets.created_at', $date);
         }
 
         $workTargets = $workTargets->select(
@@ -259,6 +274,9 @@ class WorkReportController extends Controller
 
     public function indexKaur(Request $request)
     {
+        $search = $request->query('search');
+        $date = $request->query('date');
+
         $user = $request->user();
         $division = $user->division;
         $role = 'kaur';
@@ -277,6 +295,10 @@ class WorkReportController extends Controller
             );
         }
 
+        if ($search) {
+            $staffs = $staffs->where('users.name', 'like', '%' . $search . '%');
+        }
+
         $staffs = $staffs->where('users.role', $role)
             ->select(
                 'users.*'
@@ -292,6 +314,14 @@ class WorkReportController extends Controller
             $workTargets = $workTargets->whereIn('assigned.division', ['academic_service', 'laboratory']);
         } else if ($user->role === 'wadek2') {
             $workTargets = $workTargets->whereIn('assigned.division', ['secretary', 'student_affair', 'finance_logistic_resource']);
+        }
+
+        if ($search) {
+            $workTargets = $workTargets->where('work_targets.name', 'like', '%' . $search . '%');
+        }
+
+        if ($date) {
+            $workTargets = $workTargets->whereDate('work_targets.created_at', $date);
         }
 
         $workTargets = $workTargets->select(
