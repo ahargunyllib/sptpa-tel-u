@@ -95,8 +95,7 @@ export default function MyWorkTargets({
 								<DialogHeader>
 									<DialogTitle>Bukti Kinerja</DialogTitle>
 									<DialogDescription>
-										Tambahkan bukti dokumen dan hanya bisa mengunggah maksimal 1
-										dokumen
+										Tambahkan bukti dokumen sesuai dengan target kinerja dan periodenya
 									</DialogDescription>
 								</DialogHeader>
 								<Tabs defaultValue="first_quarter" className="w-full">
@@ -169,9 +168,8 @@ export default function MyWorkTargets({
 														// DDmmYYYY_workTargetName
 														const fileName = `${date
 															.split(" ")
-															.join("")}_${workTargetName}_${
-															fileItem.file.name
-														}`;
+															.join("")}_${workTargetName}_${fileItem.file.name
+															}`;
 
 														const formData = new FormData();
 														formData.append("evidence", fileItem.file);
@@ -252,7 +250,7 @@ export default function MyWorkTargets({
 																".png",
 																".pdf",
 																".zip",
-                                                                ".xlsx",
+																".xlsx",
 															]}
 															onOpenChange={setIsModalOpen}
 															maxFiles={5}
@@ -287,7 +285,7 @@ export default function MyWorkTargets({
 										<Button variant="ghost">Kembali</Button>
 									</DialogClose>
 									<DialogClose asChild>
-										<Button onClick={() => {}}>Simpan</Button>
+										<Button onClick={() => { }}>Simpan</Button>
 									</DialogClose>
 								</DialogFooter>
 							</DialogContent>
