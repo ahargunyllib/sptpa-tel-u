@@ -141,7 +141,7 @@ export default function StaffsCard({
 									Nilai Harmony
 								</TableHead>
 								<TableHead className="py-3 px-4 text-center">
-									Nilai Exellence
+									Nilai Excellence
 								</TableHead>
 								<TableHead className="py-3 px-4 text-center">
 									Nilai Integrity
@@ -647,7 +647,7 @@ function ExcellencePerformanceAssessmentDialog({
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Penilaian Sikap (Exellence): {staffName}</DialogTitle>
+					<DialogTitle>Penilaian Sikap (Excellence): {staffName}</DialogTitle>
 				</DialogHeader>
 				<div className="flex flex-col gap-4">
 					<Table>
