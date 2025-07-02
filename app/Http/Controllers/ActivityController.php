@@ -41,14 +41,14 @@ class ActivityController extends Controller
     {
         $user = Auth::user();
 
-        $sortField = $request->get('sort_field', 'implementation_date');
+        $sortField = $request->get('sort_field', 'start_date');
         $sortOrder = $request->get('sort_order', 'desc');
 
         $activities = Activity::with('user')
             ->where('user_id', $user->id)
             ->when($sortField === 'user', function ($query) use ($sortOrder) {
                 $query->join('users', 'activities.user_id', '=', 'users.id')
-                    ->orderBy('users.name', $sortOrder)
+                    ->orderBy('activities.title', $sortOrder)
                     ->select('activities.*'); // penting untuk menghindari konflik kolom
             }, function ($query) use ($sortField, $sortOrder) {
                 $query->orderBy($sortField, $sortOrder);
@@ -70,7 +70,7 @@ class ActivityController extends Controller
             ? ['academic_service', 'laboratory']
             : ['secretary', 'student_affair', 'finance_logistic_resource'];
 
-        $sortField = $request->get('sort_field', 'implementation_date');
+        $sortField = $request->get('sort_field', 'start_date');
         $sortOrder = $request->get('sort_order', 'desc');
 
         $activities = Activity::with('user')
@@ -80,7 +80,7 @@ class ActivityController extends Controller
             })
             ->when($sortField === 'user', function ($query) use ($sortOrder) {
                 $query->join('users', 'activities.user_id', '=', 'users.id')
-                    ->orderBy('users.name', $sortOrder)
+                    ->orderBy('activities.title', $sortOrder)
                     ->select('activities.*');
             }, function ($query) use ($sortField, $sortOrder) {
                 $query->orderBy($sortField, $sortOrder);
@@ -97,7 +97,7 @@ class ActivityController extends Controller
     {
         $user = Auth::user();
 
-        $sortField = $request->get('sort_field', 'implementation_date');
+        $sortField = $request->get('sort_field', 'start_date');
         $sortOrder = $request->get('sort_order', 'desc');
 
         $activities = Activity::with('user')
@@ -107,7 +107,7 @@ class ActivityController extends Controller
             })
             ->when($sortField === 'user', function ($query) use ($sortOrder) {
                 $query->join('users', 'activities.user_id', '=', 'users.id')
-                    ->orderBy('users.name', $sortOrder)
+                    ->orderBy('activities.title', $sortOrder)
                     ->select('activities.*');
             }, function ($query) use ($sortField, $sortOrder) {
                 $query->orderBy($sortField, $sortOrder);
@@ -131,7 +131,7 @@ class ActivityController extends Controller
             ? ['academic_service', 'laboratory']
             : ['secretary', 'student_affair', 'finance_logistic_resource'];
 
-        $sortField = $request->get('sort_field', 'implementation_date');
+        $sortField = $request->get('sort_field', 'start_date');
         $sortOrder = $request->get('sort_order', 'desc');
 
         $kaurUsers = User::where('role', 'kaur')
@@ -142,7 +142,7 @@ class ActivityController extends Controller
             ->whereIn('user_id', $kaurUsers)
             ->when($sortField === 'user', function ($query) use ($sortOrder) {
                 $query->join('users', 'activities.user_id', '=', 'users.id')
-                    ->orderBy('users.name', $sortOrder)
+                    ->orderBy('activities.title', $sortOrder)
                     ->select('activities.*');
             }, function ($query) use ($sortField, $sortOrder) {
                 $query->orderBy($sortField, $sortOrder);
@@ -185,7 +185,8 @@ class ActivityController extends Controller
                 'title' => 'required|string|max:255',
                 'type' => 'required|string|max:255',
                 'method' => 'required|in:Online,Offline',
-                'implementation_date' => 'required|date',
+                'start_date' => 'required|date',
+                'end_date' => 'nullable|date|after_or_equal:start_date',
                 'file' => 'nullable|file',
                 'user_id' => 'required|exists:users,id',
             ]);
@@ -233,7 +234,8 @@ class ActivityController extends Controller
                 'title' => 'required|string|max:255',
                 'type' => 'required|string|max:255',
                 'method' => 'required|in:Online,Offline',
-                'implementation_date' => 'required|date',
+                'start_date' => 'required|date',
+                'end_date' => 'nullable|date|after_or_equal:start_date',
                 'file' => 'nullable|file',
                 'user_id' => 'required|exists:users,id',
             ]);

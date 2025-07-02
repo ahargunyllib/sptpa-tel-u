@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('title');
             $table->string('type');
             $table->enum('method', ['Online', 'Offline']);
-            $table->date('implementation_date');
-            $table->string('file')->nullable(); 
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->string('file')->nullable();
             $table->foreignUuid('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

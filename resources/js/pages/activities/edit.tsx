@@ -17,16 +17,22 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const formSchema = z.object({
-	title: z.string().min(1, "Nama Kegiatan wajib diisi"),
-	type: z.string().min(1, "Deskripsi wajib diisi"),
-	metode: z.enum(["Online", "Offline"], {
-		required_error: "Metode wajib dipilih",
-	}),
-	implementation_date: z.string().min(1, "Tanggal wajib diisi"),
-	user_id: z.string().min(1, "Pengguna wajib dipilih"),
-	file_pendukung: z.any().optional(), // handled separately in FormData
-});
+const formSchema = z
+	.object({
+		title: z.string().min(1, "Nama Kegiatan wajib diisi"),
+		type: z.string().min(1, "Deskripsi wajib diisi"),
+		metode: z.enum(["Online", "Offline"], {
+			required_error: "Metode wajib dipilih",
+		}),
+		start_date: z.string().min(1, "Tanggal wajib diisi"),
+		end_date: z.string().min(1, "Tanggal akhir wajib diisi"),
+		user_id: z.string().min(1, "Pengguna wajib dipilih"),
+		file_pendukung: z.any().optional(), // handled separately in FormData
+	})
+	.refine((data) => data.start_date > data.end_date, {
+		message: "Start date cannot be later than end date.",
+		path: ["start_date"],
+	});
 
 type FormSchema = z.infer<typeof formSchema>;
 interface Props {
@@ -47,7 +53,8 @@ export default function Edit({ activity, users, errors }: Props) {
 			title: activity.title,
 			type: activity.type,
 			metode: activity.method as "Online" | "Offline",
-			implementation_date: activity.implementation_date,
+			start_date: activity.start_date,
+			end_date: activity.end_date,
 			user_id: activity.user_id,
 		},
 	});
@@ -59,7 +66,8 @@ export default function Edit({ activity, users, errors }: Props) {
 		formData.append("title", data.title);
 		formData.append("type", data.type);
 		formData.append("method", data.metode);
-		formData.append("implementation_date", data.implementation_date);
+		formData.append("start_date", data.start_date);
+		formData.append("end_date", data.end_date);
 		formData.append("user_id", data.user_id);
 		if (file) {
 			formData.append("file", file);
@@ -105,15 +113,24 @@ export default function Edit({ activity, users, errors }: Props) {
 
 							{/* Tanggal */}
 							<div>
-								<Label htmlFor="implementation_date">Tanggal Pelaksanaan</Label>
+								<Label htmlFor="start_date">Tanggal Mulai</Label>
 								<Input
-									id="implementation_date"
+									id="start_date"
 									type="date"
-									{...register("implementation_date")}
+									{...register("start_date")}
 								/>
-								{validationErrors.implementation_date && (
+								{validationErrors.start_date && (
 									<p className="text-sm text-red-500">
-										{validationErrors.implementation_date.message}
+										{validationErrors.start_date.message}
+									</p>
+								)}
+							</div>
+							<div>
+								<Label htmlFor="end_date">Tanggal Akhir</Label>
+								<Input id="end_date" type="date" {...register("end_date")} />
+								{validationErrors.end_date && (
+									<p className="text-sm text-red-500">
+										{validationErrors.end_date.message}
 									</p>
 								)}
 							</div>

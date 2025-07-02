@@ -14,7 +14,8 @@ class Activity extends Model
     protected $fillable = [
         'title',
         'type',
-        'implementation_date',
+        'start_date',
+        'end_date',
         'file',
         'method',
         'user_id',

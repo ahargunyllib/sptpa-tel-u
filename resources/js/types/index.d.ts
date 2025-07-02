@@ -163,7 +163,8 @@ interface Activity {
 	title: string;
 	type: string;
 	method: string;
-	implementation_date: string;
+	start_date: string;
+	end_date: string;
 	user: User;
 	file: string | null;
 	user_id: string;
