@@ -38,6 +38,7 @@ class ActivityController extends Controller
 
 
     public function index(Request $request)
+    public function index(Request $request)
     {
         $user = Auth::user();
 
@@ -63,6 +64,8 @@ class ActivityController extends Controller
 
 
     public function wadekIndex(Request $request)
+
+    public function wadekIndex(Request $request)
     {
         $user = Auth::user();
 
@@ -75,6 +78,7 @@ class ActivityController extends Controller
 
         $activities = Activity::with('user')
             ->whereHas('user', function ($query) use ($divisions) {
+                $query->where('role', 'staf')
                 $query->where('role', 'staf')
                     ->whereIn('division', $divisions);
             })
@@ -92,6 +96,8 @@ class ActivityController extends Controller
         ]);
     }
 
+
+    public function kaurIndex(Request $request)
 
     public function kaurIndex(Request $request)
     {
@@ -119,6 +125,7 @@ class ActivityController extends Controller
         ]);
     }
 
+    public function kaurByWadekIndex(Request $request)
     public function kaurByWadekIndex(Request $request)
     {
         $auth = Auth::user();
@@ -153,6 +160,7 @@ class ActivityController extends Controller
             'activities' => $activities,
         ]);
     }
+
 
 
 

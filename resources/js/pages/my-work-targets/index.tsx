@@ -260,6 +260,7 @@ export default function MyWorkTargets({
 																".pdf",
 																".zip",
 																".xlsx",
+																".xlsx",
 															]}
 															onOpenChange={setIsModalOpen}
 															maxFiles={5}
