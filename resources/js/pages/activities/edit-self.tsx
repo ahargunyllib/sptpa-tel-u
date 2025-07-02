@@ -2,13 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 import DashboardLayout from "@/layouts/dashboard-layout";
 import type { Activity, User } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,7 +22,7 @@ const formSchema = z
 		user_id: z.string().min(1, "Pengguna wajib dipilih"),
 		file_pendukung: z.any().optional(), // handled separately in FormData
 	})
-	.refine((data) => data.start_date > data.end_date, {
+	.refine((data) => data.start_date <= data.end_date, {
 		message: "Start date cannot be later than end date.",
 		path: ["start_date"],
 	});
