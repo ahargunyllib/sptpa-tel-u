@@ -198,12 +198,12 @@ export default function WorkReportsManagement({ staffs }: Props) {
 																				<div
 																					className="bg-primary-60 h-2 rounded-lg"
 																					style={{
-																						width: `${quarter.progress}%`,
+																						width: `${quarter.progress * 100 > 100 ? 100 : quarter.progress * 100}%`,
 																					}}
 																				/>
 																			</div>
 																			<span className="px-2 text-xs text-muted-foreground">
-																				{quarter.progress}%
+																				{(quarter.progress * 100).toFixed(1)}%
 																			</span>
 																		</div>
 																		<div className="flex flex-row items-center justify-end w-1/8">
@@ -234,7 +234,7 @@ export default function WorkReportsManagement({ staffs }: Props) {
 																							})}
 																						</span>
 																					</div>
-																					<div className="flex flex-grow items-center bg-red-300">
+																					<div className="flex flex-grow items-center">
 																						<span className="py-3 px-6 font-medium text-black text-wrap">
 																							{workReport.content}
 																						</span>

@@ -8,7 +8,7 @@ import {
 	Trash2Icon,
 } from "lucide-react";
 import { useState } from "react";
-import { WorkTargetUnit } from "../../../lib/enums";
+import { WorkTargetComparator, WorkTargetUnit } from "../../../lib/enums";
 import type { User, WorkTarget } from "../../../types";
 import { Button } from "../../ui/button";
 import {
@@ -80,6 +80,7 @@ export default function PerformanceAssessmentsDialog({
 									Daftar Target Kinerja
 								</TableHead>
 								<TableHead className="py-3 px-4 text-center">Satuan</TableHead>
+								<TableHead className="py-3 px-4 text-center">Ukuran</TableHead>
 								<TableHead className="py-3 px-4 text-center">
 									Target TW1
 								</TableHead>
@@ -183,6 +184,9 @@ function PerformanceAssessmentRow({
 			<TableCell className="py-3 w-full px-4">{workTarget.name}</TableCell>
 			<TableCell className="py-3 px-4 text-center">
 				{WorkTargetUnit[workTarget.unit]}
+			</TableCell>
+			<TableCell className="py-3 px-4 text-center">
+				{WorkTargetComparator[workTarget.comparator]}
 			</TableCell>
 			<TableCell className="py-3 px-4 text-center">
 				{workTarget.first_quarter_target}

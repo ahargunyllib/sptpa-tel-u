@@ -251,12 +251,12 @@ function WorkTargetQuarterRow({
 						<div
 							className="bg-primary-60 h-2 rounded-lg"
 							style={{
-								width: `${quarter.progress}%`,
+								width: `${quarter.progress * 100 > 100 ? 100 : quarter.progress * 100}%`,
 							}}
 						/>
 					</div>
 					<span className="px-2 text-xs text-muted-foreground">
-						{quarter.progress}%
+						{(quarter.progress * 100).toFixed(1)}%
 					</span>
 				</div>
 				<div className="flex flex-row items-center justify-end w-1/8">
@@ -269,7 +269,7 @@ function WorkTargetQuarterRow({
 						Tidak ada Komentar Laporan Kinerja.
 					</div>
 				)}
-				{(new Date().getMonth() + 1) % 4 === quarter.quarter && (
+				{(new Date().getMonth() + 1) % 4 === quarter.quarter - 1 && (
 					<details>
 						<summary className="py-3 flex flex-row items-center justify-center text-xs gap-2 cursor-pointer">
 							<PlusSquareIcon className="size-4" />

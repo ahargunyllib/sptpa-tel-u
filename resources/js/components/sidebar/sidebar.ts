@@ -227,7 +227,7 @@ export const wadekArsipSections: NavSection[] = [
 		title: "DOKUMEN ANDA",
 		items: [
 			// {
-			// 	title: "Dokumen Kerja",
+			// 	title: "Dokumen Kinerja",
 			// 	icon: FolderIcon,
 			// 	href: "/dashboard/e-archive/kerja",
 			// },
@@ -242,7 +242,7 @@ export const wadekArsipSections: NavSection[] = [
 		title: "DOKUMEN KAUR",
 		items: [
 			{
-				title: "Dokumen Kerja",
+				title: "Dokumen Kinerja",
 				icon: FolderIcon,
 				href: "/dashboard/e-archive/kaur/kerja",
 			},
@@ -257,7 +257,7 @@ export const wadekArsipSections: NavSection[] = [
 		title: "DOKUMEN STAF",
 		items: [
 			{
-				title: "Dokumen Kerja",
+				title: "Dokumen Kinerja",
 				icon: FolderIcon,
 				href: "/dashboard/e-archive/staf/wadek/kerja",
 			},
@@ -302,7 +302,7 @@ export const kaurArsipSections: NavSection[] = [
 		title: "DOKUMEN ANDA",
 		items: [
 			{
-				title: "Dokumen Kerja",
+				title: "Dokumen Kinerja",
 				icon: FolderIcon,
 				href: "/dashboard/e-archive/kerja",
 			},
@@ -317,7 +317,7 @@ export const kaurArsipSections: NavSection[] = [
 		title: "DOKUMEN STAF",
 		items: [
 			{
-				title: "Dokumen Kerja",
+				title: "Dokumen Kinerja",
 				icon: FolderIcon,
 				href: "/dashboard/e-archive/staf/kerja",
 			},
@@ -345,7 +345,7 @@ export const tpaArsipSections: NavSection[] = [
 		title: "DOKUMEN ANDA",
 		items: [
 			{
-				title: "Dokumen Kerja",
+				title: "Dokumen Kinerja",
 				icon: FolderIcon,
 				href: "/dashboard/e-archive/kerja",
 			},

@@ -19,6 +19,19 @@ export const WorkTargetUnit = {
 	work_day: "Hari kerja",
 	total: "Jumlah",
 	percentage: "Persentase",
+	month: "Bulan",
+	rupiah: "Rupiah",
+	date: "Tanggal",
+	time: "Jam",
+	other: "Lainnya",
+} as const;
+
+export const WorkTargetComparator = {
+	eq: "=",
+	lte: "<=",
+	gte: ">=",
+	lt: "<",
+	gt: ">",
 } as const;
 
 export const WorkTargetCategory = {
@@ -28,9 +41,9 @@ export const WorkTargetCategory = {
 } as const;
 
 export const getRoleLabel = (role: keyof typeof UserRoles) => {
-    return UserRoles[role] || role;
+	return UserRoles[role] || role;
 };
 
 export const getDivisionLabel = (division: keyof typeof UserDivisions) => {
-    return UserDivisions[division] || division;
+	return UserDivisions[division] || division;
 };

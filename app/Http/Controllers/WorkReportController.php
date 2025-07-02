@@ -49,10 +49,10 @@ class WorkReportController extends Controller
         $workTargetMap = [];
         foreach ($workTargets as $target) {
             $target = (array) $target;
-            $first_quarter_progress = $target['first_quarter_target'] > 0 ? ceil($target['first_quarter_value'] / $target['first_quarter_target']) : 0;
-            $second_quarter_progress = $target['second_quarter_target'] > 0 ? ceil($target['second_quarter_value'] / $target['second_quarter_target']) : 0;
-            $third_quarter_progress = $target['third_quarter_target'] > 0 ? ceil($target['third_quarter_value'] / $target['third_quarter_target']) : 0;
-            $fourth_quarter_progress = $target['fourth_quarter_target'] > 0 ? ceil($target['fourth_quarter_value'] / $target['fourth_quarter_target']) : 0;
+            $first_quarter_progress = $target['first_quarter_target'] > 0 ? $target['first_quarter_value'] / $target['first_quarter_target'] : 0;
+            $second_quarter_progress = $target['second_quarter_target'] > 0 ? $target['second_quarter_value'] / $target['second_quarter_target'] : 0;
+            $third_quarter_progress = $target['third_quarter_target'] > 0 ? $target['third_quarter_value'] / $target['third_quarter_target'] : 0;
+            $fourth_quarter_progress = $target['fourth_quarter_target'] > 0 ? $target['fourth_quarter_value'] / $target['fourth_quarter_target'] : 0;
 
             $target['quarters'] = [
                 1 => ['target' => $target['first_quarter_target'], 'progress' => $first_quarter_progress, 'work_reports' => []],
@@ -199,10 +199,10 @@ class WorkReportController extends Controller
         $workTargetMap = [];
         foreach ($workTargets as $target) {
             $target = (array) $target;
-            $first_quarter_progress = $target['first_quarter_target'] > 0 ? ceil($target['first_quarter_value'] / $target['first_quarter_target']) : 0;
-            $second_quarter_progress = $target['second_quarter_target'] > 0 ? ceil($target['second_quarter_value'] / $target['second_quarter_target']) : 0;
-            $third_quarter_progress = $target['third_quarter_target'] > 0 ? ceil($target['third_quarter_value'] / $target['third_quarter_target']) : 0;
-            $fourth_quarter_progress = $target['fourth_quarter_target'] > 0 ? ceil($target['fourth_quarter_value'] / $target['fourth_quarter_target']) : 0;
+            $first_quarter_progress = $target['first_quarter_target'] > 0 ? $target['first_quarter_value'] / $target['first_quarter_target'] : 0;
+            $second_quarter_progress = $target['second_quarter_target'] > 0 ? $target['second_quarter_value'] / $target['second_quarter_target'] : 0;
+            $third_quarter_progress = $target['third_quarter_target'] > 0 ? $target['third_quarter_value'] / $target['third_quarter_target'] : 0;
+            $fourth_quarter_progress = $target['fourth_quarter_target'] > 0 ? $target['fourth_quarter_value'] / $target['fourth_quarter_target'] : 0;
 
             $target['quarters'] = [
                 1 => ['target' => $target['first_quarter_target'], 'progress' => $first_quarter_progress, 'work_reports' => []],
@@ -353,10 +353,10 @@ class WorkReportController extends Controller
         $workTargetMap = [];
         foreach ($workTargets as $target) {
             $target = (array) $target;
-            $first_quarter_progress = $target['first_quarter_target'] > 0 ? ceil($target['first_quarter_value'] / $target['first_quarter_target']) : 0;
-            $second_quarter_progress = $target['second_quarter_target'] > 0 ? ceil($target['second_quarter_value'] / $target['second_quarter_target']) : 0;
-            $third_quarter_progress = $target['third_quarter_target'] > 0 ? ceil($target['third_quarter_value'] / $target['third_quarter_target']) : 0;
-            $fourth_quarter_progress = $target['fourth_quarter_target'] > 0 ? ceil($target['fourth_quarter_value'] / $target['fourth_quarter_target']) : 0;
+            $first_quarter_progress = $target['first_quarter_target'] > 0 ? $target['first_quarter_value'] / $target['first_quarter_target'] : 0;
+            $second_quarter_progress = $target['second_quarter_target'] > 0 ? $target['second_quarter_value'] / $target['second_quarter_target'] : 0;
+            $third_quarter_progress = $target['third_quarter_target'] > 0 ? $target['third_quarter_value'] / $target['third_quarter_target'] : 0;
+            $fourth_quarter_progress = $target['fourth_quarter_target'] > 0 ? $target['fourth_quarter_value'] / $target['fourth_quarter_target'] : 0;
 
             $target['quarters'] = [
                 1 => ['target' => $target['first_quarter_target'], 'progress' => $first_quarter_progress, 'work_reports' => []],

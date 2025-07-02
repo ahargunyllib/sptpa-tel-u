@@ -51,7 +51,11 @@ import {
 	TabsTrigger,
 } from "../../components/ui/tabs";
 import DashboardLayout from "../../layouts/dashboard-layout";
-import { WorkTargetCategory, WorkTargetUnit } from "../../lib/enums";
+import {
+	WorkTargetCategory,
+	WorkTargetComparator,
+	WorkTargetUnit,
+} from "../../lib/enums";
 import type { File, WorkTarget } from "../../types";
 
 export default function MyWorkTargets({
@@ -95,7 +99,8 @@ export default function MyWorkTargets({
 								<DialogHeader>
 									<DialogTitle>Bukti Kinerja</DialogTitle>
 									<DialogDescription>
-										Tambahkan bukti dokumen sesuai dengan target kinerja dan periodenya
+										Tambahkan bukti dokumen sesuai dengan target kinerja dan
+										periodenya
 									</DialogDescription>
 								</DialogHeader>
 								<Tabs defaultValue="first_quarter" className="w-full">
@@ -165,11 +170,11 @@ export default function MyWorkTargets({
 															year: "numeric",
 														}).format(new Date());
 														const workTargetName = workTarget.name;
-														// DDmmYYYY_workTargetName
-														const fileName = `${date
-															.split(" ")
-															.join("")}_${workTargetName}_${fileItem.file.name
-															}`;
+														// TWX_DDmmYYYY_workTargetName
+														// Example: TW1_01Jan2023_workTargetName
+														const currentMonth = new Date().getMonth() + 1;
+														const tw = `TW${(currentMonth % 4) + 1}`;
+														const fileName = `${tw}_${date.split(" ").join("")}_${workTargetName}`;
 
 														const formData = new FormData();
 														formData.append("evidence", fileItem.file);
@@ -185,7 +190,7 @@ export default function MyWorkTargets({
 
 												const workTargetFiles = workTarget.files.filter(
 													(file) =>
-														new Date(file.created_at).getMonth() % 4 ===
+														(new Date(file.created_at).getMonth() + 1) % 4 ===
 														quarter.idx - 1,
 												);
 
@@ -212,6 +217,10 @@ export default function MyWorkTargets({
 																		onClick={() => {
 																			setIsModalOpen(true);
 																		}}
+																		disabled={
+																			(new Date().getMonth() + 1) % 4 !==
+																			quarter.idx - 1
+																		}
 																	>
 																		<PlusSquareIcon />
 																		Unggah
@@ -251,6 +260,7 @@ export default function MyWorkTargets({
 																".pdf",
 																".zip",
 																".xlsx",
+																".xlsx",
 															]}
 															onOpenChange={setIsModalOpen}
 															maxFiles={5}
@@ -285,7 +295,7 @@ export default function MyWorkTargets({
 										<Button variant="ghost">Kembali</Button>
 									</DialogClose>
 									<DialogClose asChild>
-										<Button onClick={() => { }}>Simpan</Button>
+										<Button onClick={() => {}}>Simpan</Button>
 									</DialogClose>
 								</DialogFooter>
 							</DialogContent>
@@ -381,6 +391,9 @@ export default function MyWorkTargets({
 										Satuan
 									</TableHead>
 									<TableHead className="py-3 px-4 text-center">
+										Ukuran
+									</TableHead>
+									<TableHead className="py-3 px-4 text-center">
 										Target TW1
 									</TableHead>
 									<TableHead className="py-3 px-4 text-center">
@@ -470,6 +483,9 @@ function WorkTargetRow({
 			<TableCell className="py-3 w-full px-4">{workTarget.name}</TableCell>
 			<TableCell className="py-3 px-4 text-center">
 				{WorkTargetUnit[workTarget.unit]}
+			</TableCell>
+			<TableCell className="py-3 px-4 text-center">
+				{WorkTargetComparator[workTarget.comparator]}
 			</TableCell>
 			<TableCell className="py-3 px-4 text-center">
 				{workTarget.first_quarter_target}

@@ -51,7 +51,7 @@ export default function Dashboard({ overall }: Props) {
 			{
 				title: "Penilaian Sikap Kerja",
 				description:
-					"Melakukan pengisian penilaian berdasarkan 3 kategori  yaitu Harmony, Exellence, dan Integrity sesuai dengan kinerja staf.",
+					"Melakukan pengisian penilaian berdasarkan 3 kategori  yaitu Harmony, Excellence, dan Integrity sesuai dengan kinerja staf.",
 			},
 			{
 				title: "Laporan Kinerja",
@@ -60,7 +60,7 @@ export default function Dashboard({ overall }: Props) {
 			{
 				title: "Penilaian Sikap Kerja",
 				description:
-					"Melakukan pengisian penilaian berdasarkan 3 kategori  yaitu Harmony, Exellence, dan Integrity sesuai dengan kinerja staf.",
+					"Melakukan pengisian penilaian berdasarkan 3 kategori  yaitu Harmony, Excellence, dan Integrity sesuai dengan kinerja staf.",
 			},
 			{
 				title: "Laporan Kinerja",
@@ -86,7 +86,7 @@ export default function Dashboard({ overall }: Props) {
 			{
 				title: "Penilaian Sikap Kerja",
 				description:
-					"Melakukan pengisian penilaian berdasarkan 3 kategori  yaitu Harmony, Exellence, dan Integrity sesuai dengan kinerja staf.",
+					"Melakukan pengisian penilaian berdasarkan 3 kategori  yaitu Harmony, Excellence, dan Integrity sesuai dengan kinerja staf.",
 			},
 			{
 				title: "Laporan Kinerja",
