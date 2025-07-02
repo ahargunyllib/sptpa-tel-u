@@ -256,7 +256,7 @@ function WorkTargetQuarterRow({
 						/>
 					</div>
 					<span className="px-2 text-xs text-muted-foreground">
-						{quarter.progress * 100}%
+						{(quarter.progress * 100).toFixed(1)}%
 					</span>
 				</div>
 				<div className="flex flex-row items-center justify-end w-1/8">
