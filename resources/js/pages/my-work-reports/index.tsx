@@ -269,7 +269,7 @@ function WorkTargetQuarterRow({
 						Tidak ada Komentar Laporan Kinerja.
 					</div>
 				)}
-				{(new Date().getMonth() + 1) % 4 === quarter.quarter && (
+				{(new Date().getMonth() + 1) % 4 === quarter.quarter - 1 && (
 					<details>
 						<summary className="py-3 flex flex-row items-center justify-center text-xs gap-2 cursor-pointer">
 							<PlusSquareIcon className="size-4" />
