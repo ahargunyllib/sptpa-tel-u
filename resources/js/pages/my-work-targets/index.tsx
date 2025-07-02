@@ -51,7 +51,11 @@ import {
 	TabsTrigger,
 } from "../../components/ui/tabs";
 import DashboardLayout from "../../layouts/dashboard-layout";
-import { WorkTargetCategory, WorkTargetUnit } from "../../lib/enums";
+import {
+	WorkTargetCategory,
+	WorkTargetComparator,
+	WorkTargetUnit,
+} from "../../lib/enums";
 import type { File, WorkTarget } from "../../types";
 
 export default function MyWorkTargets({
@@ -95,7 +99,8 @@ export default function MyWorkTargets({
 								<DialogHeader>
 									<DialogTitle>Bukti Kinerja</DialogTitle>
 									<DialogDescription>
-										Tambahkan bukti dokumen sesuai dengan target kinerja dan periodenya
+										Tambahkan bukti dokumen sesuai dengan target kinerja dan
+										periodenya
 									</DialogDescription>
 								</DialogHeader>
 								<Tabs defaultValue="first_quarter" className="w-full">
@@ -168,8 +173,9 @@ export default function MyWorkTargets({
 														// DDmmYYYY_workTargetName
 														const fileName = `${date
 															.split(" ")
-															.join("")}_${workTargetName}_${fileItem.file.name
-															}`;
+															.join("")}_${workTargetName}_${
+															fileItem.file.name
+														}`;
 
 														const formData = new FormData();
 														formData.append("evidence", fileItem.file);
@@ -285,7 +291,7 @@ export default function MyWorkTargets({
 										<Button variant="ghost">Kembali</Button>
 									</DialogClose>
 									<DialogClose asChild>
-										<Button onClick={() => { }}>Simpan</Button>
+										<Button onClick={() => {}}>Simpan</Button>
 									</DialogClose>
 								</DialogFooter>
 							</DialogContent>
@@ -381,6 +387,9 @@ export default function MyWorkTargets({
 										Satuan
 									</TableHead>
 									<TableHead className="py-3 px-4 text-center">
+										Ukuran
+									</TableHead>
+									<TableHead className="py-3 px-4 text-center">
 										Target TW1
 									</TableHead>
 									<TableHead className="py-3 px-4 text-center">
@@ -470,6 +479,9 @@ function WorkTargetRow({
 			<TableCell className="py-3 w-full px-4">{workTarget.name}</TableCell>
 			<TableCell className="py-3 px-4 text-center">
 				{WorkTargetUnit[workTarget.unit]}
+			</TableCell>
+			<TableCell className="py-3 px-4 text-center">
+				{WorkTargetComparator[workTarget.comparator]}
 			</TableCell>
 			<TableCell className="py-3 px-4 text-center">
 				{workTarget.first_quarter_target}
