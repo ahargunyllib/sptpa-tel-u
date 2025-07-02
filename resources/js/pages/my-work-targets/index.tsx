@@ -173,7 +173,7 @@ export default function MyWorkTargets({
 														// TWX_DDmmYYYY_workTargetName
 														// Example: TW1_01Jan2023_workTargetName
 														const tw = `TW${quarter.idx}`;
-														const fileName = `${tw}_${date.split(" ").join("")}_${workTargetName}}`;
+														const fileName = `${tw}_${date.split(" ").join("")}_${workTargetName}`;
 
 														const formData = new FormData();
 														formData.append("evidence", fileItem.file);
