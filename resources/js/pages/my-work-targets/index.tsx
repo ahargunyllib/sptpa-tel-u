@@ -170,12 +170,10 @@ export default function MyWorkTargets({
 															year: "numeric",
 														}).format(new Date());
 														const workTargetName = workTarget.name;
-														// DDmmYYYY_workTargetName
-														const fileName = `${date
-															.split(" ")
-															.join("")}_${workTargetName}_${
-															fileItem.file.name
-														}`;
+														// TWX_DDmmYYYY_workTargetName
+														// Example: TW1_01Jan2023_workTargetName
+														const tw = `TW${quarter.idx}`;
+														const fileName = `${tw}_${date.split(" ").join("")}_${workTargetName}}`;
 
 														const formData = new FormData();
 														formData.append("evidence", fileItem.file);
