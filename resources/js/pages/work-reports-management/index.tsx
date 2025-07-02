@@ -234,7 +234,7 @@ export default function WorkReportsManagement({ staffs }: Props) {
 																							})}
 																						</span>
 																					</div>
-																					<div className="flex flex-grow items-center bg-red-300">
+																					<div className="flex flex-grow items-center">
 																						<span className="py-3 px-6 font-medium text-black text-wrap">
 																							{workReport.content}
 																						</span>
