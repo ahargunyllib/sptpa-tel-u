@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('work_targets', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('name', 255)->notNullable();
-            $table->enum('unit', ['at_week', 'work_day', 'total', 'percentage'])->default('at_week');
+            $table->enum('unit', ['at_week', 'work_day', 'total', 'percentage', 'month', 'rupiah', 'date', 'time', 'other'])->default('at_week');
             $table->enum('category', ['light', 'medium', 'heavy'])->default('light');
 
-            // $table->enum('comparator', ['eq', 'lte', 'gte', 'gt', 'lt'])->default('eq');
+            $table->enum('comparator', ['eq', 'lte', 'gte', 'gt', 'lt'])->default('eq');
             $table->integer('first_quarter_target')->default(0);
             $table->integer('second_quarter_target')->default(0);
             $table->integer('third_quarter_target')->default(0);

@@ -23,7 +23,7 @@ import {
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { WorkTargetUnit } from "../../../lib/enums";
+import { WorkTargetComparator, WorkTargetUnit } from "../../../lib/enums";
 import type { User, WorkTarget } from "../../../types";
 import { Button, buttonVariants } from "../../ui/button";
 import {
@@ -142,6 +142,9 @@ export default function WorkTargetsDialog({
 										Satuan
 									</TableHead>
 									<TableHead className="py-3 px-4 text-center">
+										Ukuran
+									</TableHead>
+									<TableHead className="py-3 px-4 text-center">
 										Target TW1
 									</TableHead>
 									<TableHead className="py-3 px-4 text-center">
@@ -244,6 +247,34 @@ function WorkTargetRow({
 					</SelectTrigger>
 					<SelectContent>
 						{Object.entries(WorkTargetUnit)
+							.map(([key, value]) => ({
+								key,
+								value,
+							}))
+							.map((unit) => (
+								<SelectItem key={unit.key} value={unit.key}>
+									{unit.value}
+								</SelectItem>
+							))}
+					</SelectContent>
+				</Select>
+			</TableCell>
+			<TableCell className="py-3 px-4">
+				<Select
+					value={data.comparator}
+					onValueChange={(value) => {
+						setSelectedWorkTargetId(workTarget.id);
+						setData((prev) => ({
+							...prev,
+							comparator: value as WorkTarget["comparator"],
+						}));
+					}}
+				>
+					<SelectTrigger>
+						<SelectValue placeholder="eq" />
+					</SelectTrigger>
+					<SelectContent>
+						{Object.entries(WorkTargetComparator)
 							.map(([key, value]) => ({
 								key,
 								value,

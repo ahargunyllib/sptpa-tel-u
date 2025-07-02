@@ -83,8 +83,18 @@ export interface BreadCrumbs {
 export type WorkTarget = {
 	id: string;
 	name: string;
-	unit: "at_week" | "total" | "work_day" | "percentage";
+	unit:
+		| "at_week"
+		| "total"
+		| "work_day"
+		| "percentage"
+		| "month"
+		| "rupiah"
+		| "date"
+		| "time"
+		| "other";
 	category: "light" | "medium" | "heavy";
+	comparator: "eq" | "gt" | "gte" | "lt" | "lte";
 
 	first_quarter_target: number;
 	second_quarter_target: number;
