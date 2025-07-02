@@ -384,7 +384,7 @@ class FolderController extends Controller
 
         $subfolders = Folder::where('type', 'kinerja')
             ->whereHas('user', function ($query) use ($subDivisions) {
-                $query->where('role', 'staf')
+                $query->where('role', 'kaur')
                     ->whereIn('division', $subDivisions);
             })
             ->get();
