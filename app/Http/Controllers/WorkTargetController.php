@@ -443,7 +443,8 @@ class WorkTargetController extends Controller
             // Validate the request data
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
-                'unit' => 'required|in:at_week,work_day,total,percentage',
+                'unit' => 'required',
+                'comparator' => 'required',
                 'first_quarter_target' => 'required|integer',
                 'second_quarter_target' => 'required|integer',
                 'third_quarter_target' => 'required|integer',
@@ -458,6 +459,7 @@ class WorkTargetController extends Controller
                 ->update([
                     'name' => $validatedData['name'],
                     'unit' => $validatedData['unit'],
+                    'comparator' => $validatedData['comparator'],
                     'first_quarter_target' => $validatedData['first_quarter_target'],
                     'second_quarter_target' => $validatedData['second_quarter_target'],
                     'third_quarter_target' => $validatedData['third_quarter_target'],
