@@ -172,7 +172,8 @@ export default function MyWorkTargets({
 														const workTargetName = workTarget.name;
 														// TWX_DDmmYYYY_workTargetName
 														// Example: TW1_01Jan2023_workTargetName
-														const tw = `TW${quarter.idx}`;
+														const currentMonth = new Date().getMonth() + 1;
+														const tw = `TW${currentMonth % 4}`;
 														const fileName = `${tw}_${date.split(" ").join("")}_${workTargetName}`;
 
 														const formData = new FormData();
@@ -189,8 +190,8 @@ export default function MyWorkTargets({
 
 												const workTargetFiles = workTarget.files.filter(
 													(file) =>
-														new Date(file.created_at).getMonth() % 4 ===
-														quarter.idx - 1,
+														(new Date(file.created_at).getMonth() + 1) % 4 ===
+														quarter.idx,
 												);
 
 												return (
@@ -216,6 +217,10 @@ export default function MyWorkTargets({
 																		onClick={() => {
 																			setIsModalOpen(true);
 																		}}
+																		disabled={
+																			(new Date().getMonth() + 1) % 4 !==
+																			quarter.idx
+																		}
 																	>
 																		<PlusSquareIcon />
 																		Unggah

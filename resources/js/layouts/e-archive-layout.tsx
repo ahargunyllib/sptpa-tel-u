@@ -9,11 +9,18 @@ import {
 	BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { useEArchive } from "@/hooks/use-e-archive";
 import type { BreadCrumbs, File, Folder } from "@/types";
 import { router } from "@inertiajs/react";
 import { LayoutGrid, List } from "lucide-react";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import RootLayout from "./root-layout";
 
 export default function EArchiveLayout({
@@ -52,6 +59,22 @@ export default function EArchiveLayout({
 		});
 	};
 
+	const [selectedQuarter, setSelectedQuarter] = useState<
+		"1" | "2" | "3" | "4" | "all"
+	>("all");
+
+	const filteredFiles = useMemo(() => {
+		if (currentFolder.type !== "target_kinerja" || selectedQuarter === "all")
+			return files;
+
+		// filter by created at to suit the quarter
+		return files.filter(
+			(file) =>
+				(new Date(file.created_at).getMonth() + 1) % 4 ===
+				Number.parseInt(selectedQuarter),
+		);
+	}, [selectedQuarter, currentFolder.type, files]);
+
 	return (
 		<RootLayout>
 			<main className="px-4 py-6 bg-white flex flex-col gap-6 flex-1">
@@ -62,9 +85,28 @@ export default function EArchiveLayout({
 							Kumpulan dokumen arsip yang telah diunggah.
 						</p>
 					</div>
-					<div className="flex flex-row justify-between items-center gap-1">
+					<div className="flex flex-row justify-between items-center gap-2">
 						{currentFolder.type === "kepegawaian" && (
 							<Button onClick={() => setIsModalOpen(true)}>Add</Button>
+						)}
+						{currentFolder.type === "target_kinerja" && (
+							<Select
+								value={selectedQuarter}
+								onValueChange={(val: "1" | "2" | "3" | "4" | "all") =>
+									setSelectedQuarter(val)
+								}
+							>
+								<SelectTrigger>
+									<SelectValue placeholder="Pilih TW" />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem value="all">Semua</SelectItem>
+									<SelectItem value="1">TW1</SelectItem>
+									<SelectItem value="2">TW2</SelectItem>
+									<SelectItem value="3">TW3</SelectItem>
+									<SelectItem value="4">TW4</SelectItem>
+								</SelectContent>
+							</Select>
 						)}
 						<div className="flex items-center gap-1 ">
 							<Button
@@ -119,13 +161,13 @@ export default function EArchiveLayout({
 				) : layout === "grid" ? (
 					<EArchiveBlockContainer
 						folders={subfolders}
-						files={files}
+						files={filteredFiles}
 						folderType={currentFolder.type}
 					/>
 				) : (
 					<EArchiveListContainer
 						folders={subfolders}
-						files={files}
+						files={filteredFiles}
 						folderType={currentFolder.type}
 					/>
 				)}
