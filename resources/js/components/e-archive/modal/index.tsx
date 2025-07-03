@@ -35,6 +35,7 @@ interface FileUploadModalProps {
 	saveButtonText?: string;
 	cancelButtonText?: string;
 	initialFiles?: FileItem[];
+	showCancelButton?: boolean;
 	onDeleteFile?: (id: string) => void;
 }
 
@@ -50,6 +51,7 @@ export function FileUploadModal({
 	saveButtonText = "Simpan",
 	cancelButtonText = "Batalkan",
 	initialFiles = [],
+	showCancelButton = true,
 	onDeleteFile,
 }: FileUploadModalProps) {
 	const [files, setFiles] = useState<FileItem[]>(initialFiles);
@@ -387,7 +389,7 @@ export function FileUploadModal({
 										</button>
 									)}
 
-									{!file.status && (
+									{!file.status && showCancelButton && (
 										<button
 											type="button"
 											onClick={() => {

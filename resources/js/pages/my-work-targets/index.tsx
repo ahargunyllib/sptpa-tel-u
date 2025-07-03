@@ -172,8 +172,9 @@ export default function MyWorkTargets({
 														const workTargetName = workTarget.name;
 														// TWX_DDmmYYYY_workTargetName
 														// Example: TW1_01Jan2023_workTargetName
-														const currentMonth = new Date().getMonth() + 1;
-														const tw = `TW${(currentMonth % 4) + 1}`;
+														const currentQuarter =
+															Math.floor(new Date().getMonth() / 3) + 1;
+														const tw = `TW${currentQuarter}`;
 														const fileName = `${tw}_${date.split(" ").join("")}_${workTargetName}`;
 
 														const formData = new FormData();
@@ -190,8 +191,11 @@ export default function MyWorkTargets({
 
 												const workTargetFiles = workTarget.files.filter(
 													(file) =>
-														(new Date(file.created_at).getMonth() + 1) % 4 ===
-														quarter.idx - 1,
+														Math.floor(
+															new Date(file.created_at).getMonth() / 3,
+														) +
+															1 ===
+														quarter.idx,
 												);
 
 												return (
@@ -218,8 +222,9 @@ export default function MyWorkTargets({
 																			setIsModalOpen(true);
 																		}}
 																		disabled={
-																			(new Date().getMonth() + 1) % 4 !==
-																			quarter.idx - 1
+																			Math.floor(new Date().getMonth() / 3) +
+																				1 !==
+																			quarter.idx
 																		}
 																	>
 																		<PlusSquareIcon />
@@ -275,13 +280,14 @@ export default function MyWorkTargets({
 																status: undefined,
 																file: new File([], file.name),
 															}))}
-															onDeleteFile={(fileId) => {
-																router.delete(
-																	`/dashboard/work-target/${workTarget.id}/evidence/${fileId}`,
-																	{
-																		preserveState: true,
-																	},
-																);
+															showCancelButton={false}
+															onDeleteFile={() => {
+																// router.delete(
+																// 	`/dashboard/work-target/${workTarget.id}/evidence/${fileId}`,
+																// 	{
+																// 		preserveState: true,
+																// 	},
+																// );
 															}}
 														/>
 													</div>
