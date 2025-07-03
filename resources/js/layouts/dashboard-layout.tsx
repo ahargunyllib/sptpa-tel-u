@@ -45,6 +45,7 @@ export default function DashboardLayout({
 												Sistem Informasi Tenaga Penunjang Akademik
 											</span>
 										</div>
+										{new Date().getMonth()}
 										{/* <img
                                                     src="/logo-fri.webp"
                                                     alt="logo"

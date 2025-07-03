@@ -70,8 +70,8 @@ export default function EArchiveLayout({
 		// filter by created at to suit the quarter
 		return files.filter(
 			(file) =>
-				(new Date(file.created_at).getMonth() + 1) % 4 ===
-				Number.parseInt(selectedQuarter) - 1,
+				Math.floor(new Date(file.created_at).getMonth() / 3) + 1 ===
+				Number.parseInt(selectedQuarter),
 		);
 	}, [selectedQuarter, currentFolder.type, files]);
 
