@@ -271,7 +271,7 @@ function WorkTargetRow({
 					}}
 				>
 					<SelectTrigger>
-						<SelectValue placeholder="eq" />
+						<SelectValue placeholder="=" />
 					</SelectTrigger>
 					<SelectContent>
 						{Object.entries(WorkTargetComparator)
