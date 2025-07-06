@@ -709,6 +709,7 @@ class WorkTargetController extends Controller
                 ->where('type', 'target_kinerja')
                 ->where('parent_id', $kinerjaYearFolderId)
                 ->where('user_id', $user->id)
+                ->where('work_target_id', $id)
                 ->first();
 
             if (!$workTargetFolder) {
