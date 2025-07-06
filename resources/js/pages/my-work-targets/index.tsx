@@ -153,6 +153,7 @@ export default function MyWorkTargets({
 										<TabsContent
 											value={`${quarter.value}_quarter`}
 											key={quarter.value}
+											className="space-y-2"
 										>
 											{workTargets.map((workTarget) => {
 												const [uploadedFiles, setUploadedFiles] = useState<
