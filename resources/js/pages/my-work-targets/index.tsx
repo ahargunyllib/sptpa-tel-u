@@ -245,7 +245,7 @@ export default function MyWorkTargets({
 																			<FileIcon />
 																			Lihat
 																		</Button>
-																		<Button
+																		{/* <Button
 																			variant="ghost"
 																			onClick={() => {
 																				setIsModalOpen(true);
@@ -254,6 +254,20 @@ export default function MyWorkTargets({
 																		>
 																			<PencilLineIcon />
 																			Ubah
+																		</Button> */}
+																		<Button
+																			variant="ghost"
+																			onClick={() => {
+																				setIsModalOpen(true);
+																			}}
+																			disabled={
+																				Math.floor(new Date().getMonth() / 3) +
+																					1 !==
+																				quarter.idx
+																			}
+																		>
+																			<PlusSquareIcon />
+																			Unggah
 																		</Button>
 																	</>
 																)}
