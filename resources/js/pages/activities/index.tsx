@@ -11,6 +11,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
+	Dialog,
+	DialogContent,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import {
 	Table,
 	TableBody,
 	TableCell,
@@ -24,12 +33,14 @@ import { Head, Link, router, usePage } from "@inertiajs/react";
 import { AlertDialog } from "@radix-ui/react-alert-dialog";
 import { PencilLine, SquarePen, Trash } from "lucide-react";
 import { useState } from "react";
+import Select from "react-select";
 
 interface Props {
 	activities: Activity[];
+	staffList: { id: string; name: string }[];
 }
 
-export default function Index({ activities }: Props) {
+export default function Index({ activities, staffList }: Props) {
 	const user = usePage<PageProps>().props.auth.user;
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const handleDelete = (id: string) => {
@@ -82,6 +93,27 @@ export default function Index({ activities }: Props) {
 			},
 		);
 	};
+	const [isFilterDialogOpen, setIsFilterDialogOpen] = useState(false);
+	const [selectedStaffs, setSelectedStaffs] = useState<
+		{ label: string; value: string }[]
+	>([]);
+
+	const handleFilterStaff = () => {
+		const staffIds = selectedStaffs.map((s) => s.value);
+
+		router.get(
+			route(routeName),
+			{
+				user_ids: staffIds,
+			},
+			{
+				preserveState: true,
+				replace: true,
+			},
+		);
+
+		setIsFilterDialogOpen(false);
+	};
 
 	return (
 		<DashboardLayout>
@@ -105,18 +137,68 @@ export default function Index({ activities }: Props) {
 										{sortField === "start_date" &&
 											(sortOrder === "asc" ? "⬆️" : "⬇️")}
 									</Button>
+
+									{/* Tombol Filter */}
+									<Dialog
+										open={isFilterDialogOpen}
+										onOpenChange={setIsFilterDialogOpen}
+									>
+										<DialogTrigger asChild>
+											<Button variant="outline">Filter Staf</Button>
+										</DialogTrigger>
+										<DialogContent className="max-w-md">
+											<DialogHeader>
+												<DialogTitle>
+													Filter berdasarkan beberapa staf
+												</DialogTitle>
+											</DialogHeader>
+
+											<div className="space-y-4">
+												<Label>Pilih Staf</Label>
+												<Select
+													isMulti
+													options={staffList.map(
+														(staff: { id: string; name: string }) => ({
+															value: staff.id,
+															label: staff.name,
+														}),
+													)}
+													value={selectedStaffs}
+													onChange={(value) =>
+														setSelectedStaffs(
+															Array.isArray(value) ? [...value] : [],
+														)
+													}
+													className="react-select-container"
+													classNamePrefix="react-select"
+												/>
+											</div>
+
+											<DialogFooter className="pt-4">
+												<Button
+													variant="ghost"
+													onClick={() => setIsFilterDialogOpen(false)}
+												>
+													Batal
+												</Button>
+												<Button onClick={handleFilterStaff}>
+													Terapkan Filter
+												</Button>
+											</DialogFooter>
+										</DialogContent>
+									</Dialog>
+
 									{window.location.pathname ===
-									"/dashboard/e-archive/pelatihan-pegawai" ? (
+										"/dashboard/e-archive/pelatihan-pegawai" && (
 										<Link
 											href={route("activities.pelatihan-pegawai.create.self")}
 										>
-											{" "}
 											<Button variant="outline" className="gap-2">
 												<SquarePen className="h-4 w-4" />
 												Tambah Pelatihan
 											</Button>
 										</Link>
-									) : null}
+									)}
 								</div>
 							</div>
 						</div>
@@ -167,21 +249,21 @@ export default function Index({ activities }: Props) {
 												)}
 											</TableCell>
 											{/* <TableCell className="text-right space-x-2">
-												<Link
-													href={`/dashboard/e-archive/pelatihan-pegawai/${item.id}/edit`}
-												>
-													<Button variant="outline" size="icon">
-														<Edit className="w-4 h-4" />
+													<Link
+														href={`/dashboard/e-archive/pelatihan-pegawai/${item.id}/edit`}
+													>
+														<Button variant="outline" size="icon">
+															<Edit className="w-4 h-4" />
+														</Button>
+													</Link>
+													<Button
+														variant="destructive"
+														size="icon"
+														onClick={() => handleDelete(item.id)}
+													>
+														<Trash2 className="w-4 h-4" />
 													</Button>
-												</Link>
-												<Button
-													variant="destructive"
-													size="icon"
-													onClick={() => handleDelete(item.id)}
-												>
-													<Trash2 className="w-4 h-4" />
-												</Button>
-											</TableCell> */}
+												</TableCell> */}
 											{window.location.pathname ===
 												"/dashboard/e-archive/pelatihan-pegawai" && (
 												<TableCell className="py-3 px-4">

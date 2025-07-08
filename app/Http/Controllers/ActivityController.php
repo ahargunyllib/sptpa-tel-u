@@ -95,23 +95,38 @@ class ActivityController extends Controller
 
         $sortField = $request->get('sort_field', 'start_date');
         $sortOrder = $request->get('sort_order', 'desc');
+        $filterUserIds = $request->get('user_ids'); // array dari frontend
 
+        // Ambil daftar staf dari divisi yang sama
+        $staffList = User::where('role', 'staf')
+            ->where('division', $user->division)
+            ->select('id', 'name')
+            ->get();
+
+        // Query utama untuk data aktivitas
         $activities = Activity::with('user')
-            ->whereHas('user', function ($query) use ($user) {
+            ->whereHas('user', function ($query) use ($user, $filterUserIds) {
                 $query->where('role', 'staf')
                     ->where('division', $user->division);
+
+                if (is_array($filterUserIds) && count($filterUserIds) > 0) {
+                    $query->whereIn('id', $filterUserIds);
+                }
             })
             ->when($sortField === 'user', function ($query) use ($sortOrder) {
+                // Sort berdasarkan nama user (join ke tabel users)
                 $query->join('users', 'activities.user_id', '=', 'users.id')
-                    ->orderBy('activities.title', $sortOrder)
+                    ->orderBy('users.name', $sortOrder)
                     ->select('activities.*');
             }, function ($query) use ($sortField, $sortOrder) {
+                // Sort berdasarkan kolom dari tabel activities
                 $query->orderBy($sortField, $sortOrder);
             })
             ->get();
 
         return Inertia::render('activities/index', [
             'activities' => $activities,
+            'staffList' => $staffList,
         ]);
     }
 
