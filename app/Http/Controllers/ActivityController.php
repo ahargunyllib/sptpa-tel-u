@@ -134,26 +134,38 @@ class ActivityController extends Controller
     {
         $auth = Auth::user();
 
+        // Hanya untuk role wadek1 atau wadek2
         if (!in_array($auth->role, ['wadek1', 'wadek2'])) {
             abort(403, 'Unauthorized');
         }
 
+        // Divisi yang diampu berdasarkan peran
         $divisions = $auth->role === 'wadek1'
             ? ['academic_service', 'laboratory']
             : ['secretary', 'student_affair', 'finance_logistic_resource'];
 
+        // Parameter sort & filter dari request
         $sortField = $request->get('sort_field', 'start_date');
         $sortOrder = $request->get('sort_order', 'desc');
+        $filterUserIds = $request->get('user_ids');
 
+        // Ambil semua user kaur dari divisi yang bersangkutan
         $kaurUsers = User::where('role', 'kaur')
             ->whereIn('division', $divisions)
-            ->pluck('id');
+            ->select('id', 'name')
+            ->get();
+
+        // Ambil ID user kaur
+        $kaurUserIds = $kaurUsers->pluck('id');
 
         $activities = Activity::with('user')
-            ->whereIn('user_id', $kaurUsers)
+            ->whereIn('user_id', $kaurUserIds)
+            ->when(is_array($filterUserIds) && count($filterUserIds) > 0, function ($query) use ($filterUserIds) {
+                $query->whereIn('user_id', $filterUserIds);
+            })
             ->when($sortField === 'user', function ($query) use ($sortOrder) {
                 $query->join('users', 'activities.user_id', '=', 'users.id')
-                    ->orderBy('activities.title', $sortOrder)
+                    ->orderBy('users.name', $sortOrder)
                     ->select('activities.*');
             }, function ($query) use ($sortField, $sortOrder) {
                 $query->orderBy($sortField, $sortOrder);
@@ -162,6 +174,7 @@ class ActivityController extends Controller
 
         return Inertia::render('activities/index', [
             'activities' => $activities,
+            'kaurList' => $kaurUsers, 
         ]);
     }
 

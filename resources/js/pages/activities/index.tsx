@@ -38,9 +38,10 @@ import Select from "react-select";
 interface Props {
 	activities: Activity[];
 	staffList: { id: string; name: string }[];
+	kaurList: { id: string; name: string }[];
 }
 
-export default function Index({ activities, staffList }: Props) {
+export default function Index({ activities, staffList, kaurList }: Props) {
 	const user = usePage<PageProps>().props.auth.user;
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const handleDelete = (id: string) => {
@@ -55,6 +56,11 @@ export default function Index({ activities, staffList }: Props) {
 	);
 	const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 	const pathname = window.location.pathname;
+
+	const filteredList =
+		pathname === "/dashboard/e-archive/pelatihan-pegawai-kaur/wadek"
+			? kaurList
+			: staffList;
 	function getRouteNameFromPath(pathname: string) {
 		if (
 			pathname.includes("/dashboard/e-archive/pelatihan-pegawai-kaur/wadek")
@@ -146,24 +152,37 @@ export default function Index({ activities, staffList }: Props) {
 											onOpenChange={setIsFilterDialogOpen}
 										>
 											<DialogTrigger asChild>
-												<Button variant="outline">Filter Staf</Button>
+												<Button variant="outline">
+													{pathname ===
+													"/dashboard/e-archive/pelatihan-pegawai-kaur/wadek"
+														? "Filter Kaur"
+														: "Filter Staf"}{" "}
+												</Button>
 											</DialogTrigger>
 											<DialogContent className="max-w-md">
 												<DialogHeader>
 													<DialogTitle>
-														Filter berdasarkan beberapa staf
+														{pathname ===
+														"/dashboard/e-archive/pelatihan-pegawai-kaur/wadek"
+															? "Filter Berdasarkan Kaur"
+															: "Filter Berdasarkan Staf"}{" "}
 													</DialogTitle>
 												</DialogHeader>
 
 												<div className="space-y-4">
-													<Label>Pilih Staf</Label>
-													{staffList && staffList.length > 0 ? (
+													<Label>
+														{pathname ===
+														"/dashboard/e-archive/pelatihan-pegawai-kaur/wadek"
+															? "Pilih Kaur"
+															: "Pilih Staf"}
+													</Label>
+													{filteredList && filteredList.length > 0 ? (
 														<Select
 															isMulti
-															options={staffList.map(
-																(staff: { id: string; name: string }) => ({
-																	value: staff.id,
-																	label: staff.name,
+															options={filteredList.map(
+																(person: { id: string; name: string }) => ({
+																	value: person.id,
+																	label: person.name,
 																}),
 															)}
 															value={selectedStaffs}
@@ -176,7 +195,7 @@ export default function Index({ activities, staffList }: Props) {
 															classNamePrefix="react-select"
 														/>
 													) : (
-														<div>Data Staff/Kaur Tidak ada</div>
+														<div>Data Staf/Kaur tidak tersedia</div>
 													)}
 												</div>
 
