@@ -142,10 +142,10 @@ class WorkReportController extends Controller
         }
 
         $staffs = $staffs->where('users.role', $role)
-            ->select(
-                'users.*'
-            )
+            ->select('users.*')
+            ->orderBy('users.name', 'asc') 
             ->get();
+
 
         $workTargets = DB::table('work_targets')
             ->leftJoin('users as creator', 'creator.id', '=', 'work_targets.creator_id')
@@ -300,9 +300,8 @@ class WorkReportController extends Controller
         }
 
         $staffs = $staffs->where('users.role', $role)
-            ->select(
-                'users.*'
-            )
+            ->select('users.*')
+            ->orderBy('users.name', 'asc')
             ->get();
 
         $workTargets = DB::table('work_targets')
