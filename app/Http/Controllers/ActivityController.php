@@ -69,15 +69,27 @@ class ActivityController extends Controller
 
         $sortField = $request->get('sort_field', 'start_date');
         $sortOrder = $request->get('sort_order', 'desc');
+        $filterUserIds = $request->get('user_ids'); 
+
+            $staffList = User::where('role', 'staf')
+            ->whereIn('division', $divisions)
+            ->select('id', 'name')
+            ->get();
+
+        $staffIds = $staffList->pluck('id');
 
         $activities = Activity::with('user')
-            ->whereHas('user', function ($query) use ($divisions) {
+            ->whereHas('user', function ($query) use ($divisions, $filterUserIds) {
                 $query->where('role', 'staf')
                     ->whereIn('division', $divisions);
+
+                if (is_array($filterUserIds) && count($filterUserIds) > 0) {
+                    $query->whereIn('id', $filterUserIds);
+                }
             })
             ->when($sortField === 'user', function ($query) use ($sortOrder) {
                 $query->join('users', 'activities.user_id', '=', 'users.id')
-                    ->orderBy('activities.title', $sortOrder)
+                    ->orderBy('users.name', $sortOrder)
                     ->select('activities.*');
             }, function ($query) use ($sortField, $sortOrder) {
                 $query->orderBy($sortField, $sortOrder);
@@ -86,6 +98,7 @@ class ActivityController extends Controller
 
         return Inertia::render('activities/index', [
             'activities' => $activities,
+            'staffList' => $staffList, 
         ]);
     }
 
@@ -174,7 +187,7 @@ class ActivityController extends Controller
 
         return Inertia::render('activities/index', [
             'activities' => $activities,
-            'kaurList' => $kaurUsers, 
+            'kaurList' => $kaurUsers,
         ]);
     }
 
