@@ -139,58 +139,61 @@ export default function Index({ activities, staffList }: Props) {
 									</Button>
 
 									{/* Tombol Filter */}
-									<Dialog
-										open={isFilterDialogOpen}
-										onOpenChange={setIsFilterDialogOpen}
-									>
-										<DialogTrigger asChild>
-											<Button variant="outline">Filter Staf</Button>
-										</DialogTrigger>
-										<DialogContent className="max-w-md">
-											<DialogHeader>
-												<DialogTitle>
-													Filter berdasarkan beberapa staf
-												</DialogTitle>
-											</DialogHeader>
+									{window.location.pathname !==
+										"/dashboard/e-archive/pelatihan-pegawai" && (
+										<Dialog
+											open={isFilterDialogOpen}
+											onOpenChange={setIsFilterDialogOpen}
+										>
+											<DialogTrigger asChild>
+												<Button variant="outline">Filter Staf</Button>
+											</DialogTrigger>
+											<DialogContent className="max-w-md">
+												<DialogHeader>
+													<DialogTitle>
+														Filter berdasarkan beberapa staf
+													</DialogTitle>
+												</DialogHeader>
 
-											<div className="space-y-4">
-												<Label>Pilih Staf</Label>
-												{staffList && staffList.length > 0 ? (
-													<Select
-														isMulti
-														options={staffList.map(
-															(staff: { id: string; name: string }) => ({
-																value: staff.id,
-																label: staff.name,
-															}),
-														)}
-														value={selectedStaffs}
-														onChange={(value) =>
-															setSelectedStaffs(
-																Array.isArray(value) ? [...value] : [],
-															)
-														}
-														className="react-select-container"
-														classNamePrefix="react-select"
-													/>
-												) : (
-													<div>Data Staff/Kaur Tidak ada</div>
-												)}
-											</div>
+												<div className="space-y-4">
+													<Label>Pilih Staf</Label>
+													{staffList && staffList.length > 0 ? (
+														<Select
+															isMulti
+															options={staffList.map(
+																(staff: { id: string; name: string }) => ({
+																	value: staff.id,
+																	label: staff.name,
+																}),
+															)}
+															value={selectedStaffs}
+															onChange={(value) =>
+																setSelectedStaffs(
+																	Array.isArray(value) ? [...value] : [],
+																)
+															}
+															className="react-select-container"
+															classNamePrefix="react-select"
+														/>
+													) : (
+														<div>Data Staff/Kaur Tidak ada</div>
+													)}
+												</div>
 
-											<DialogFooter className="pt-4">
-												<Button
-													variant="ghost"
-													onClick={() => setIsFilterDialogOpen(false)}
-												>
-													Batal
-												</Button>
-												<Button onClick={handleFilterStaff}>
-													Terapkan Filter
-												</Button>
-											</DialogFooter>
-										</DialogContent>
-									</Dialog>
+												<DialogFooter className="pt-4">
+													<Button
+														variant="ghost"
+														onClick={() => setIsFilterDialogOpen(false)}
+													>
+														Batal
+													</Button>
+													<Button onClick={handleFilterStaff}>
+														Terapkan Filter
+													</Button>
+												</DialogFooter>
+											</DialogContent>
+										</Dialog>
+									)}
 
 									{window.location.pathname ===
 										"/dashboard/e-archive/pelatihan-pegawai" && (
