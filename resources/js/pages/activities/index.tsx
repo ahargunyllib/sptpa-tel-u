@@ -155,7 +155,7 @@ export default function Index({ activities, staffList }: Props) {
 
 											<div className="space-y-4">
 												<Label>Pilih Staf</Label>
-												{staffList && staffList.length > 0 && (
+												{staffList && staffList.length > 0 ? (
 													<Select
 														isMulti
 														options={staffList.map(
@@ -173,6 +173,8 @@ export default function Index({ activities, staffList }: Props) {
 														className="react-select-container"
 														classNamePrefix="react-select"
 													/>
+												) : (
+													<div>Data Staff/Kaur Tidak ada</div>
 												)}
 											</div>
 
