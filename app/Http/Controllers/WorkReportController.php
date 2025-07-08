@@ -24,9 +24,9 @@ class WorkReportController extends Controller
 
         $workTargets = DB::table('work_targets')
             ->where('work_targets.assigned_id', $user->id)
-            ->select(
-                'work_targets.*',
-            );
+            ->select('work_targets.*')
+            ->orderBy('work_targets.name', 'asc');
+
 
         if ($search) {
             $workTargets = $workTargets->where('work_targets.name', 'like', '%' . $search . '%');
