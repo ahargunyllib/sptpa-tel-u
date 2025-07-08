@@ -143,7 +143,7 @@ class WorkReportController extends Controller
 
         $staffs = $staffs->where('users.role', $role)
             ->select('users.*')
-            ->orderBy('users.name', 'asc') 
+            ->orderBy('users.name', 'asc')
             ->get();
 
 
@@ -246,7 +246,8 @@ class WorkReportController extends Controller
                 'work_targets' => [],
             ];
 
-            foreach ($staff['work_targets'] as $target) {
+            $sortedTargets = collect($staff['work_targets'])->sortBy('name')->values();
+            foreach ($sortedTargets as $target) {
                 $quarters = [];
                 foreach ($target['quarters'] as $qnum => $qdata) {
                     $quarters[] = [
@@ -399,7 +400,8 @@ class WorkReportController extends Controller
                 'work_targets' => [],
             ];
 
-            foreach ($staff['work_targets'] as $target) {
+            $sortedTargets = collect($staff['work_targets'])->sortBy('name')->values();
+            foreach ($sortedTargets as $target) {
                 $quarters = [];
                 foreach ($target['quarters'] as $qnum => $qdata) {
                     $quarters[] = [
