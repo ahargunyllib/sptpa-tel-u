@@ -155,23 +155,25 @@ export default function Index({ activities, staffList }: Props) {
 
 											<div className="space-y-4">
 												<Label>Pilih Staf</Label>
-												<Select
-													isMulti
-													options={staffList.map(
-														(staff: { id: string; name: string }) => ({
-															value: staff.id,
-															label: staff.name,
-														}),
-													)}
-													value={selectedStaffs}
-													onChange={(value) =>
-														setSelectedStaffs(
-															Array.isArray(value) ? [...value] : [],
-														)
-													}
-													className="react-select-container"
-													classNamePrefix="react-select"
-												/>
+												{staffList && staffList.length > 0 && (
+													<Select
+														isMulti
+														options={staffList.map(
+															(staff: { id: string; name: string }) => ({
+																value: staff.id,
+																label: staff.name,
+															}),
+														)}
+														value={selectedStaffs}
+														onChange={(value) =>
+															setSelectedStaffs(
+																Array.isArray(value) ? [...value] : [],
+															)
+														}
+														className="react-select-container"
+														classNamePrefix="react-select"
+													/>
+												)}
 											</div>
 
 											<DialogFooter className="pt-4">
