@@ -27,6 +27,8 @@ Route::get('/', function () {
 Route::get('/dashboard', function (Request $request) {
     $user = $request->user();
     $role = $user->role;
+    $period = $request->query('period');
+    $period = $period ? date('Y', strtotime($period)) : date('Y');
 
     if ($role !== 'staf' && $role !== 'kaur') {
         return Inertia::render('dashboard');
@@ -34,6 +36,7 @@ Route::get('/dashboard', function (Request $request) {
 
     $workTarget = DB::table('work_targets')
         ->where('assigned_id', $user->id)
+        ->whereYear('created_at', $period)
         ->select(
             DB::raw('
                 COALESCE(
@@ -57,6 +60,7 @@ Route::get('/dashboard', function (Request $request) {
 
     $userAttitudeEvaluation = DB::table('user_attitude_evaluations')
         ->where('user_id', $user->id)
+        ->whereYear('created_at', $period)
         ->select([
             DB::raw('ROUND(
                 AVG(
@@ -159,10 +163,10 @@ Route::middleware(['auth', 'role:sdm'])->group(function () {
 Route::middleware(['auth', 'role:wadek1,wadek2,kaur'])->group(function () {
     Route::get('/dashboard/e-archive/pelatihan-pegawai/create', [ActivityController::class, 'create'])
         ->name('activities.pelatihan-pegawai.create');
-    
+
     Route::get('/dashboard/e-archive/pelatihan-pegawai/{activity}/edit', [ActivityController::class, 'edit'])
         ->name('activities.pelatihan-pegawai.edit');
-    
+
 });
 
 

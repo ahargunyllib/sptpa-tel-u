@@ -43,14 +43,18 @@ class ActivityController extends Controller
         $sortField = $request->get('sort_field', 'start_date');
         $sortOrder = $request->get('sort_order', 'desc');
 
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
+
         $activities = Activity::with('user')
             ->where('user_id', $user->id)
             ->when($sortField === 'user', function ($query) use ($sortOrder) {
                 $query->join('users', 'activities.user_id', '=', 'users.id')
                     ->orderBy('activities.title', $sortOrder)
                     ->select('activities.*'); // penting untuk menghindari konflik kolom
-            }, function ($query) use ($sortField, $sortOrder) {
-                $query->orderBy($sortField, $sortOrder);
+            }, function ($query) use ($sortField, $sortOrder, $period) {
+                $query->orderBy($sortField, $sortOrder)
+                    ->whereYear('activities.created_at', $period);
             })
             ->get();
 
@@ -69,7 +73,7 @@ class ActivityController extends Controller
 
         $sortField = $request->get('sort_field', 'start_date');
         $sortOrder = $request->get('sort_order', 'desc');
-        $filterUserIds = $request->get('user_ids'); 
+        $filterUserIds = $request->get('user_ids');
 
             $staffList = User::where('role', 'staf')
             ->whereIn('division', $divisions)
@@ -77,6 +81,9 @@ class ActivityController extends Controller
             ->get();
 
         $staffIds = $staffList->pluck('id');
+
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
 
         $activities = Activity::with('user')
             ->whereHas('user', function ($query) use ($divisions, $filterUserIds) {
@@ -91,14 +98,15 @@ class ActivityController extends Controller
                 $query->join('users', 'activities.user_id', '=', 'users.id')
                     ->orderBy('users.name', $sortOrder)
                     ->select('activities.*');
-            }, function ($query) use ($sortField, $sortOrder) {
-                $query->orderBy($sortField, $sortOrder);
+            }, function ($query) use ($sortField, $sortOrder, $period) {
+                $query->orderBy($sortField, $sortOrder)
+                    ->whereYear('activities.created_at', $period);
             })
             ->get();
 
         return Inertia::render('activities/index', [
             'activities' => $activities,
-            'staffList' => $staffList, 
+            'staffList' => $staffList,
         ]);
     }
 
@@ -117,6 +125,9 @@ class ActivityController extends Controller
             ->get();
 
         // Query utama untuk data aktivitas
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
+
         $activities = Activity::with('user')
             ->whereHas('user', function ($query) use ($user, $filterUserIds) {
                 $query->where('role', 'staf')
@@ -131,9 +142,10 @@ class ActivityController extends Controller
                 $query->join('users', 'activities.user_id', '=', 'users.id')
                     ->orderBy('users.name', $sortOrder)
                     ->select('activities.*');
-            }, function ($query) use ($sortField, $sortOrder) {
+            }, function ($query) use ($sortField, $sortOrder, $period) {
                 // Sort berdasarkan kolom dari tabel activities
-                $query->orderBy($sortField, $sortOrder);
+                $query->orderBy($sortField, $sortOrder)
+                    ->whereYear('activities.created_at', $period);
             })
             ->get();
 
@@ -160,6 +172,9 @@ class ActivityController extends Controller
         // Parameter sort & filter dari request
         $sortField = $request->get('sort_field', 'start_date');
         $sortOrder = $request->get('sort_order', 'desc');
+
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
         $filterUserIds = $request->get('user_ids');
 
         // Ambil semua user kaur dari divisi yang bersangkutan
@@ -180,8 +195,9 @@ class ActivityController extends Controller
                 $query->join('users', 'activities.user_id', '=', 'users.id')
                     ->orderBy('users.name', $sortOrder)
                     ->select('activities.*');
-            }, function ($query) use ($sortField, $sortOrder) {
-                $query->orderBy($sortField, $sortOrder);
+            }, function ($query) use ($sortField, $sortOrder, $period) {
+                $query->orderBy($sortField, $sortOrder)
+                    ->whereYear('activities.created_at', $period);
             })
             ->get();
 

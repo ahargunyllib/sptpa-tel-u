@@ -3,7 +3,7 @@ export const UserRoles = {
 	kaur: "Kaur",
 	wadek1: "Wadek 1",
 	wadek2: "Wadek 2",
-	sdm: "SDM",
+	sdm: "Admin",
 } as const;
 
 export const UserDivisions = {

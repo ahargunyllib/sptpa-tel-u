@@ -36,6 +36,8 @@ class WorkTargetController extends Controller
         }
 
         $search = $request->input('search', '');
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
 
         $users = [];
         if (!empty($search)) {
@@ -79,6 +81,7 @@ class WorkTargetController extends Controller
                             ->orWhere('users.role', '=', $role);
                     });
             })
+            ->whereYear('work_targets.created_at', $period)
             ->select(
                 'work_targets.*',
                 'users.id as user_id',
@@ -124,6 +127,7 @@ class WorkTargetController extends Controller
         $staffs = DB::table('work_target_values')
             ->rightJoin('users', 'users.id', '=', 'work_target_values.user_id')
             ->where('users.role', $role)
+            ->whereYear('work_target_values.created_at', $period)
             ->select(
                 'users.*',
                 DB::raw('CEIL(COALESCE(AVG(first_quarter_score), 0)) as average_first_quarter_score'),
@@ -162,6 +166,7 @@ class WorkTargetController extends Controller
             ->where('users.role', $role)
             ->leftJoin('user_attitude_evaluations', 'user_attitude_evaluations.user_id', '=', 'users.id')
             ->leftJoin('user_feedbacks', 'user_feedbacks.user_id', '=', 'users.id')
+            ->whereYear('user_attitude_evaluations.created_at', $period)
             ->select(...$selectFields)
             ->get();
 
@@ -178,9 +183,12 @@ class WorkTargetController extends Controller
     public function indexMe(Request $request)
     {
         $user = $request->user();
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
 
         $workTargets = DB::table('work_targets')
             ->where('work_targets.assigned_id', $user->id)
+            ->whereYear('work_targets.created_at', $period)
             ->select(
                 'work_targets.*',
             )
@@ -224,11 +232,14 @@ class WorkTargetController extends Controller
     {
         $user = $request->user();
         $role = "kaur";
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
 
         $staffs = DB::table('work_targets')
             ->rightJoin('users as assigned', 'assigned.id', '=', 'work_targets.assigned_id')
             ->leftJoin('users as creator', 'creator.id', '=', 'work_targets.creator_id')
-            ->where('assigned.role', $role);
+            ->where('assigned.role', $role)
+            ->whereYear('work_targets.created_at', $period);
 
         if ($user->role === 'wadek1') {
             $staffs = $staffs->whereIn('assigned.division', ['academic_service', 'laboratory']);
@@ -250,6 +261,7 @@ class WorkTargetController extends Controller
         foreach ($staffs as $staff) {
             $staff->work_targets = DB::table('work_targets')
                 ->where('assigned_id', $staff->id)
+                ->whereYear('created_at', $period)
                 ->select(
                     'work_targets.*',
                 )
@@ -263,6 +275,7 @@ class WorkTargetController extends Controller
 
             $staff->user_attitude_evaluation = DB::table('user_attitude_evaluations')
                 ->where('user_id', $staff->id)
+                ->whereYear('created_at', $period)
                 ->select(
                     DB::raw('COALESCE(communication, 0) as communication'),
                     DB::raw('COALESCE(teamwork, 0) as teamwork'),
@@ -291,10 +304,13 @@ class WorkTargetController extends Controller
     {
         $user = $request->user();
         $role = "staf";
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
 
         $staffs = DB::table('work_targets')
             ->rightJoin('users as assigned', 'assigned.id', '=', 'work_targets.assigned_id')
             ->leftJoin('users as creator', 'creator.id', '=', 'work_targets.creator_id')
+            ->whereYear('work_targets.created_at', $period)
             ->where('assigned.role', $role);
 
         if ($user->role === 'kaur') {
@@ -319,6 +335,7 @@ class WorkTargetController extends Controller
         foreach ($staffs as $staff) {
             $staff->work_targets = DB::table('work_targets')
                 ->where('assigned_id', $staff->id)
+                ->whereYear('created_at', $period)
                 ->select(
                     'work_targets.*',
                 )
@@ -330,8 +347,9 @@ class WorkTargetController extends Controller
                 ->where('user_id', $staff->id)
                 ->value('id');
 
-                $staff->user_attitude_evaluation = DB::table('user_attitude_evaluations')
+            $staff->user_attitude_evaluation = DB::table('user_attitude_evaluations')
                 ->where('user_id', $staff->id)
+                ->whereYear('created_at', $period)
                 ->select(
                     DB::raw('COALESCE(communication, 0) as communication'),
                     DB::raw('COALESCE(teamwork, 0) as teamwork'),
@@ -585,10 +603,13 @@ class WorkTargetController extends Controller
     public function myWorkTargets(Request $request)
     {
         $user = $request->user();
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
 
         $workTargets = DB::table('work_target_values')
             ->rightJoin('work_targets', 'work_targets.id', '=', 'work_target_values.work_target_id')
             ->where('work_target_values.user_id', $user->id)
+            ->whereYear('work_targets.created_at', $period)
             ->select(
                 "work_targets.*",
                 "work_target_values.*",
@@ -599,6 +620,7 @@ class WorkTargetController extends Controller
 
         $userAttitudeEvaluation = DB::table('user_attitude_evaluations')
             ->where('user_id', $user->id)
+            ->whereYear('created_at', $period)
             ->select(
                 DB::raw('COALESCE(communication, 0) as communication'),
                 DB::raw('COALESCE(teamwork, 0) as teamwork'),
@@ -638,6 +660,7 @@ class WorkTargetController extends Controller
 
         $userFeedback = DB::table('user_feedbacks')
             ->where('user_id', $user->id)
+            ->whereYear('created_at', $period)
             ->select(
                 DB::raw("COALESCE(kaur_feedback, '-') as kaur_feedback"),
                 DB::raw("COALESCE(wadek_feedback, '-') as wadek_feedback"),
