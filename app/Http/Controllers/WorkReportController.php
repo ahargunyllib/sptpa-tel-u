@@ -27,9 +27,9 @@ class WorkReportController extends Controller
         $workTargets = DB::table('work_targets')
             ->where('work_targets.assigned_id', $user->id)
             ->whereYear('work_targets.created_at', $period)
-            ->select(
-                'work_targets.*',
-            );
+            ->select('work_targets.*')
+            ->orderBy('work_targets.name', 'asc');
+
 
         if ($search) {
             $workTargets = $workTargets->where('work_targets.name', 'like', '%' . $search . '%');
@@ -148,10 +148,10 @@ class WorkReportController extends Controller
         }
 
         $staffs = $staffs->where('users.role', $role)
-            ->select(
-                'users.*'
-            )
+            ->select('users.*')
+            ->orderBy('users.name', 'asc')
             ->get();
+
 
         $workTargets = DB::table('work_targets')
             ->leftJoin('users as creator', 'creator.id', '=', 'work_targets.creator_id')
@@ -254,7 +254,8 @@ class WorkReportController extends Controller
                 'work_targets' => [],
             ];
 
-            foreach ($staff['work_targets'] as $target) {
+            $sortedTargets = collect($staff['work_targets'])->sortBy('name')->values();
+            foreach ($sortedTargets as $target) {
                 $quarters = [];
                 foreach ($target['quarters'] as $qnum => $qdata) {
                     $quarters[] = [
@@ -310,9 +311,8 @@ class WorkReportController extends Controller
         }
 
         $staffs = $staffs->where('users.role', $role)
-            ->select(
-                'users.*'
-            )
+            ->select('users.*')
+            ->orderBy('users.name', 'asc')
             ->get();
 
         $workTargets = DB::table('work_targets')
@@ -412,7 +412,8 @@ class WorkReportController extends Controller
                 'work_targets' => [],
             ];
 
-            foreach ($staff['work_targets'] as $target) {
+            $sortedTargets = collect($staff['work_targets'])->sortBy('name')->values();
+            foreach ($sortedTargets as $target) {
                 $quarters = [];
                 foreach ($target['quarters'] as $qnum => $qdata) {
                     $quarters[] = [

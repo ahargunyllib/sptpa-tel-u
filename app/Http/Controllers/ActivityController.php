@@ -73,18 +73,30 @@ class ActivityController extends Controller
 
         $sortField = $request->get('sort_field', 'start_date');
         $sortOrder = $request->get('sort_order', 'desc');
+        $filterUserIds = $request->get('user_ids');
+
+            $staffList = User::where('role', 'staf')
+            ->whereIn('division', $divisions)
+            ->select('id', 'name')
+            ->get();
+
+        $staffIds = $staffList->pluck('id');
 
         $period = $request->query('period');
         $period = $period ? date('Y', strtotime($period)) : date('Y');
 
         $activities = Activity::with('user')
-            ->whereHas('user', function ($query) use ($divisions) {
+            ->whereHas('user', function ($query) use ($divisions, $filterUserIds) {
                 $query->where('role', 'staf')
                     ->whereIn('division', $divisions);
+
+                if (is_array($filterUserIds) && count($filterUserIds) > 0) {
+                    $query->whereIn('id', $filterUserIds);
+                }
             })
             ->when($sortField === 'user', function ($query) use ($sortOrder, $period) {
                 $query->join('users', 'activities.user_id', '=', 'users.id')
-                    ->orderBy('activities.title', $sortOrder)
+                    ->orderBy('users.name', $sortOrder)
                     ->select('activities.*')
                     ->whereYear('activities.created_at', $period);
             }, function ($query) use ($sortField, $sortOrder) {
@@ -94,6 +106,7 @@ class ActivityController extends Controller
 
         return Inertia::render('activities/index', [
             'activities' => $activities,
+            'staffList' => $staffList,
         ]);
     }
 
@@ -103,27 +116,42 @@ class ActivityController extends Controller
 
         $sortField = $request->get('sort_field', 'start_date');
         $sortOrder = $request->get('sort_order', 'desc');
+        $filterUserIds = $request->get('user_ids'); // array dari frontend
 
+        // Ambil daftar staf dari divisi yang sama
+        $staffList = User::where('role', 'staf')
+            ->where('division', $user->division)
+            ->select('id', 'name')
+            ->get();
+
+        // Query utama untuk data aktivitas
         $period = $request->query('period');
         $period = $period ? date('Y', strtotime($period)) : date('Y');
 
         $activities = Activity::with('user')
-            ->whereHas('user', function ($query) use ($user) {
+            ->whereHas('user', function ($query) use ($user, $filterUserIds) {
                 $query->where('role', 'staf')
                     ->where('division', $user->division);
+
+                if (is_array($filterUserIds) && count($filterUserIds) > 0) {
+                    $query->whereIn('id', $filterUserIds);
+                }
             })
             ->when($sortField === 'user', function ($query) use ($sortOrder, $period) {
+                // Sort berdasarkan nama user (join ke tabel users)
                 $query->join('users', 'activities.user_id', '=', 'users.id')
-                    ->orderBy('activities.title', $sortOrder)
+                    ->orderBy('users.name', $sortOrder)
                     ->select('activities.*')
                     ->whereYear('activities.created_at', $period);
             }, function ($query) use ($sortField, $sortOrder) {
+                // Sort berdasarkan kolom dari tabel activities
                 $query->orderBy($sortField, $sortOrder);
             })
             ->get();
 
         return Inertia::render('activities/index', [
             'activities' => $activities,
+            'staffList' => $staffList,
         ]);
     }
 
@@ -131,29 +159,41 @@ class ActivityController extends Controller
     {
         $auth = Auth::user();
 
+        // Hanya untuk role wadek1 atau wadek2
         if (!in_array($auth->role, ['wadek1', 'wadek2'])) {
             abort(403, 'Unauthorized');
         }
 
+        // Divisi yang diampu berdasarkan peran
         $divisions = $auth->role === 'wadek1'
             ? ['academic_service', 'laboratory']
             : ['secretary', 'student_affair', 'finance_logistic_resource'];
 
+        // Parameter sort & filter dari request
         $sortField = $request->get('sort_field', 'start_date');
         $sortOrder = $request->get('sort_order', 'desc');
 
         $period = $request->query('period');
         $period = $period ? date('Y', strtotime($period)) : date('Y');
+        $filterUserIds = $request->get('user_ids');
 
+        // Ambil semua user kaur dari divisi yang bersangkutan
         $kaurUsers = User::where('role', 'kaur')
             ->whereIn('division', $divisions)
-            ->pluck('id');
+            ->select('id', 'name')
+            ->get();
+
+        // Ambil ID user kaur
+        $kaurUserIds = $kaurUsers->pluck('id');
 
         $activities = Activity::with('user')
-            ->whereIn('user_id', $kaurUsers)
+            ->whereIn('user_id', $kaurUserIds)
+            ->when(is_array($filterUserIds) && count($filterUserIds) > 0, function ($query) use ($filterUserIds) {
+                $query->whereIn('user_id', $filterUserIds);
+            })
             ->when($sortField === 'user', function ($query) use ($sortOrder, $period) {
                 $query->join('users', 'activities.user_id', '=', 'users.id')
-                    ->orderBy('activities.title', $sortOrder)
+                    ->orderBy('users.name', $sortOrder)
                     ->select('activities.*')
                     ->whereYear('activities.created_at', $period);
             }, function ($query) use ($sortField, $sortOrder) {
@@ -163,6 +203,7 @@ class ActivityController extends Controller
 
         return Inertia::render('activities/index', [
             'activities' => $activities,
+            'kaurList' => $kaurUsers,
         ]);
     }
 
