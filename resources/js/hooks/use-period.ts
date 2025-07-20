@@ -12,7 +12,7 @@ export const usePeriod = () => {
 	const getAvailableYears = () => {
 		const currentYear = new Date().getFullYear();
 		const years = [];
-		for (let year = START_YEAR; year <= currentYear; year++) {
+		for (let year = START_YEAR; year <= currentYear + 1; year++) {
 			years.push(year);
 		}
 		return years;
