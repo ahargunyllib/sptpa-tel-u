@@ -1,9 +1,17 @@
+import { router } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
 const START_YEAR = 2024;
 
 export const usePeriod = () => {
-	const [period, setPeriod] = useState<Date>(new Date());
+	const searchParams = new URLSearchParams(window.location.search);
+	const initialPeriod = searchParams.get("period");
+	const initialYear = initialPeriod
+		? Number.parseInt(initialPeriod, 10)
+		: new Date().getFullYear();
+	const [period, setPeriod] = useState<Date>(
+		initialPeriod ? new Date(initialYear, 0, 1) : new Date(),
+	);
 
 	const getCurrentYear = () => {
 		return period.getFullYear();
@@ -22,7 +30,16 @@ export const usePeriod = () => {
 		const currentYear = period.getFullYear();
 		const url = new URL(window.location.href);
 		url.searchParams.set("period", currentYear.toString());
-		window.history.replaceState({}, "", url.toString());
+		router.get(
+			window.location.pathname,
+			{
+				period: currentYear.toString(),
+			},
+			{
+				preserveState: true,
+				preserveScroll: false,
+			},
+		);
 	}, [period]);
 
 	return {
