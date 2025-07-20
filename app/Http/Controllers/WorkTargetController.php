@@ -37,7 +37,7 @@ class WorkTargetController extends Controller
 
         $search = $request->input('search', '');
         $period = $request->query('period');
-        $period = $period ? date('Y', strtotime($period)) : date('Y');
+        $period = $period ? $period : date('Y');
 
         $users = [];
         if (!empty($search)) {
@@ -184,7 +184,7 @@ class WorkTargetController extends Controller
     {
         $user = $request->user();
         $period = $request->query('period');
-        $period = $period ? date('Y', strtotime($period)) : date('Y');
+        $period = $period ? $period : date('Y');
 
         $workTargets = DB::table('work_targets')
             ->where('work_targets.assigned_id', $user->id)
@@ -233,7 +233,7 @@ class WorkTargetController extends Controller
         $user = $request->user();
         $role = "kaur";
         $period = $request->query('period');
-        $period = $period ? date('Y', strtotime($period)) : date('Y');
+        $period = $period ? $period : date('Y');
 
         $staffs = DB::table('work_targets')
             ->rightJoin('users as assigned', 'assigned.id', '=', 'work_targets.assigned_id')
@@ -305,7 +305,7 @@ class WorkTargetController extends Controller
         $user = $request->user();
         $role = "staf";
         $period = $request->query('period');
-        $period = $period ? date('Y', strtotime($period)) : date('Y');
+        $period = $period ? $period : date('Y');
 
         $staffs = DB::table('work_targets')
             ->rightJoin('users as assigned', 'assigned.id', '=', 'work_targets.assigned_id')
@@ -604,7 +604,7 @@ class WorkTargetController extends Controller
     {
         $user = $request->user();
         $period = $request->query('period');
-        $period = $period ? date('Y', strtotime($period)) : date('Y');
+        $period = $period ? $period : date('Y');
 
         $workTargets = DB::table('work_target_values')
             ->rightJoin('work_targets', 'work_targets.id', '=', 'work_target_values.work_target_id')

@@ -28,7 +28,7 @@ Route::get('/dashboard', function (Request $request) {
     $user = $request->user();
     $role = $user->role;
     $period = $request->query('period');
-    $period = $period ? date('Y', strtotime($period)) : date('Y');
+    $period = $period ? $period : date('Y');
 
     if ($role !== 'staf' && $role !== 'kaur') {
         return Inertia::render('dashboard');
@@ -166,7 +166,6 @@ Route::middleware(['auth', 'role:wadek1,wadek2,kaur'])->group(function () {
 
     Route::get('/dashboard/e-archive/pelatihan-pegawai/{activity}/edit', [ActivityController::class, 'edit'])
         ->name('activities.pelatihan-pegawai.edit');
-
 });
 
 

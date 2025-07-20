@@ -20,7 +20,7 @@ class WorkReportController extends Controller
         $search = $request->query('search');
         $date = $request->query('date');
         $period = $request->query('period');
-        $period = $period ? date('Y', strtotime($period)) : date('Y');
+        $period = $period ? $period : date('Y');
 
         $user = $request->user();
 
@@ -121,7 +121,7 @@ class WorkReportController extends Controller
         $search = $request->query('search');
         $date = $request->query('date');
         $period = $request->query('period');
-        $period = $period ? date('Y', strtotime($period)) : date('Y');
+        $period = $period ? $period : date('Y');
 
         $user = $request->user();
         $division = $user->division;
@@ -286,7 +286,7 @@ class WorkReportController extends Controller
         $search = $request->query('search');
         $date = $request->query('date');
         $period = $request->query('period');
-        $period = $period ? date('Y', strtotime($period)) : date('Y');
+        $period = $period ? $period : date('Y');
 
         $user = $request->user();
         $division = $user->division;
