@@ -24,10 +24,14 @@ class UserAttitudeEvaluationController extends Controller
 
     public function indexMe(Request $request)
     {
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
+
         $user = $request->user();
 
         $userAttitudeEvaluation = DB::table('user_attitude_evaluations')
             ->where('user_id', $user->id)
+            ->whereYear('created_at', $period)
             ->select(
                 DB::raw('COALESCE(communication, 0) as communication'),
                 DB::raw('COALESCE(teamwork, 0) as teamwork'),
@@ -67,6 +71,7 @@ class UserAttitudeEvaluationController extends Controller
 
         $userFeedback = DB::table('user_feedbacks')
             ->where('user_id', $user->id)
+            ->whereYear('created_at', $period)
             ->select(
                 DB::raw("COALESCE(kaur_feedback, '-') as kaur_feedback"),
                 DB::raw("COALESCE(wadek_feedback, '-') as wadek_feedback"),
@@ -90,6 +95,9 @@ class UserAttitudeEvaluationController extends Controller
     {
         $userRole = $request->user()->role;
         $userDivision = $request->user()->division;
+
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
 
         $selectFields = [
             'users.*',
@@ -133,11 +141,13 @@ class UserAttitudeEvaluationController extends Controller
 
         $userAttitudeEvaluations = $userAttitudeEvaluations->leftJoin('user_attitude_evaluations', 'user_attitude_evaluations.user_id', '=', 'users.id')
             ->leftJoin('user_feedbacks', 'user_feedbacks.user_id', '=', 'users.id')
+            ->whereYear('user_attitude_evaluations.created_at', $period)
             ->select(...$selectFields)
             ->get();
 
         foreach ($userAttitudeEvaluations as $userAttitudeEvaluation) {
             $userAttitudeEvaluation->work_targets = DB::table('work_targets')
+                ->whereYear('created_at', $period)
                 ->where('assigned_id', $userAttitudeEvaluation->id)
                 ->get();
         }
@@ -152,6 +162,9 @@ class UserAttitudeEvaluationController extends Controller
     {
         $userRole = $request->user()->role;
         $userDivision = $request->user()->division;
+
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
 
         $selectFields = [
             'users.*',
@@ -196,12 +209,14 @@ class UserAttitudeEvaluationController extends Controller
 
         $userAttitudeEvaluations = $userAttitudeEvaluations->leftJoin('user_attitude_evaluations', 'user_attitude_evaluations.user_id', '=', 'users.id')
             ->leftJoin('user_feedbacks', 'user_feedbacks.user_id', '=', 'users.id')
+            ->whereYear('user_attitude_evaluations.created_at', $period)
             ->select(...$selectFields)
             ->get();
 
         foreach ($userAttitudeEvaluations as $userAttitudeEvaluation) {
             $userAttitudeEvaluation->work_targets = DB::table('work_targets')
                 ->where('assigned_id', $userAttitudeEvaluation->id)
+                ->whereYear('created_at', $period)
                 ->get();
         }
 

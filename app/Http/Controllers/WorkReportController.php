@@ -19,11 +19,14 @@ class WorkReportController extends Controller
     {
         $search = $request->query('search');
         $date = $request->query('date');
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
 
         $user = $request->user();
 
         $workTargets = DB::table('work_targets')
             ->where('work_targets.assigned_id', $user->id)
+            ->whereYear('work_targets.created_at', $period)
             ->select(
                 'work_targets.*',
             );
@@ -36,6 +39,7 @@ class WorkReportController extends Controller
 
         $workReports = DB::table('work_reports')
             ->where('work_reports.creator_id', $user->id)
+            ->whereYear('work_reports.created_at', $period)
             ->select(
                 'work_reports.*',
             );
@@ -116,6 +120,8 @@ class WorkReportController extends Controller
     {
         $search = $request->query('search');
         $date = $request->query('date');
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
 
         $user = $request->user();
         $division = $user->division;
@@ -150,6 +156,7 @@ class WorkReportController extends Controller
         $workTargets = DB::table('work_targets')
             ->leftJoin('users as creator', 'creator.id', '=', 'work_targets.creator_id')
             ->leftJoin('users as assigned', 'assigned.id', '=', 'work_targets.assigned_id')
+            ->whereYear('work_targets.created_at', $period)
             ->where('assigned.role', $role);
 
         if ($user->role === 'kaur') {
@@ -174,7 +181,8 @@ class WorkReportController extends Controller
             ->get();
 
         $workReports = DB::table('work_reports')
-            ->leftJoin('users as creator', 'creator.id', '=', 'work_reports.creator_id');
+            ->leftJoin('users as creator', 'creator.id', '=', 'work_reports.creator_id')
+            ->whereYear('work_reports.created_at', $period);
 
         if ($user->role === 'kaur') {
             $workReports = $workReports->where('creator.division', $division);
@@ -276,6 +284,8 @@ class WorkReportController extends Controller
     {
         $search = $request->query('search');
         $date = $request->query('date');
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
 
         $user = $request->user();
         $division = $user->division;
@@ -308,6 +318,7 @@ class WorkReportController extends Controller
         $workTargets = DB::table('work_targets')
             ->leftJoin('users as creator', 'creator.id', '=', 'work_targets.creator_id')
             ->leftJoin('users as assigned', 'assigned.id', '=', 'work_targets.assigned_id')
+            ->whereYear('work_targets.created_at', $period)
             ->where('assigned.role', $role);
 
         if ($user->role === 'wadek1') {
@@ -330,7 +341,8 @@ class WorkReportController extends Controller
             ->get();
 
         $workReports = DB::table('work_reports')
-            ->leftJoin('users as creator', 'creator.id', '=', 'work_reports.creator_id');
+            ->leftJoin('users as creator', 'creator.id', '=', 'work_reports.creator_id')
+            ->whereYear('work_reports.created_at', $period);
 
         if ($user->role === 'wadek1') {
             $workReports = $workReports->whereIn('creator.division', ['academic_service', 'laboratory']);

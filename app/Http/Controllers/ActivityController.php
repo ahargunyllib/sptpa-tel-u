@@ -43,12 +43,16 @@ class ActivityController extends Controller
         $sortField = $request->get('sort_field', 'start_date');
         $sortOrder = $request->get('sort_order', 'desc');
 
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
+
         $activities = Activity::with('user')
             ->where('user_id', $user->id)
-            ->when($sortField === 'user', function ($query) use ($sortOrder) {
+            ->when($sortField === 'user', function ($query) use ($sortOrder, $period) {
                 $query->join('users', 'activities.user_id', '=', 'users.id')
                     ->orderBy('activities.title', $sortOrder)
-                    ->select('activities.*'); // penting untuk menghindari konflik kolom
+                    ->select('activities.*') // penting untuk menghindari konflik kolom
+                    ->whereYear('activities.created_at', $period);
             }, function ($query) use ($sortField, $sortOrder) {
                 $query->orderBy($sortField, $sortOrder);
             })
@@ -70,15 +74,19 @@ class ActivityController extends Controller
         $sortField = $request->get('sort_field', 'start_date');
         $sortOrder = $request->get('sort_order', 'desc');
 
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
+
         $activities = Activity::with('user')
             ->whereHas('user', function ($query) use ($divisions) {
                 $query->where('role', 'staf')
                     ->whereIn('division', $divisions);
             })
-            ->when($sortField === 'user', function ($query) use ($sortOrder) {
+            ->when($sortField === 'user', function ($query) use ($sortOrder, $period) {
                 $query->join('users', 'activities.user_id', '=', 'users.id')
                     ->orderBy('activities.title', $sortOrder)
-                    ->select('activities.*');
+                    ->select('activities.*')
+                    ->whereYear('activities.created_at', $period);
             }, function ($query) use ($sortField, $sortOrder) {
                 $query->orderBy($sortField, $sortOrder);
             })
@@ -96,15 +104,19 @@ class ActivityController extends Controller
         $sortField = $request->get('sort_field', 'start_date');
         $sortOrder = $request->get('sort_order', 'desc');
 
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
+
         $activities = Activity::with('user')
             ->whereHas('user', function ($query) use ($user) {
                 $query->where('role', 'staf')
                     ->where('division', $user->division);
             })
-            ->when($sortField === 'user', function ($query) use ($sortOrder) {
+            ->when($sortField === 'user', function ($query) use ($sortOrder, $period) {
                 $query->join('users', 'activities.user_id', '=', 'users.id')
                     ->orderBy('activities.title', $sortOrder)
-                    ->select('activities.*');
+                    ->select('activities.*')
+                    ->whereYear('activities.created_at', $period);
             }, function ($query) use ($sortField, $sortOrder) {
                 $query->orderBy($sortField, $sortOrder);
             })
@@ -130,16 +142,20 @@ class ActivityController extends Controller
         $sortField = $request->get('sort_field', 'start_date');
         $sortOrder = $request->get('sort_order', 'desc');
 
+        $period = $request->query('period');
+        $period = $period ? date('Y', strtotime($period)) : date('Y');
+
         $kaurUsers = User::where('role', 'kaur')
             ->whereIn('division', $divisions)
             ->pluck('id');
 
         $activities = Activity::with('user')
             ->whereIn('user_id', $kaurUsers)
-            ->when($sortField === 'user', function ($query) use ($sortOrder) {
+            ->when($sortField === 'user', function ($query) use ($sortOrder, $period) {
                 $query->join('users', 'activities.user_id', '=', 'users.id')
                     ->orderBy('activities.title', $sortOrder)
-                    ->select('activities.*');
+                    ->select('activities.*')
+                    ->whereYear('activities.created_at', $period);
             }, function ($query) use ($sortField, $sortOrder) {
                 $query->orderBy($sortField, $sortOrder);
             })
