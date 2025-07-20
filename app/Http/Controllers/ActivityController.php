@@ -44,7 +44,7 @@ class ActivityController extends Controller
         $sortOrder = $request->get('sort_order', 'desc');
 
         $period = $request->query('period');
-        $period = $period ? date('Y', strtotime($period)) : date('Y');
+        $period = $period ? $period : date('Y');
 
         $activities = Activity::with('user')
             ->where('user_id', $user->id)
@@ -75,7 +75,7 @@ class ActivityController extends Controller
         $sortOrder = $request->get('sort_order', 'desc');
         $filterUserIds = $request->get('user_ids');
 
-            $staffList = User::where('role', 'staf')
+        $staffList = User::where('role', 'staf')
             ->whereIn('division', $divisions)
             ->select('id', 'name')
             ->get();
@@ -83,7 +83,7 @@ class ActivityController extends Controller
         $staffIds = $staffList->pluck('id');
 
         $period = $request->query('period');
-        $period = $period ? date('Y', strtotime($period)) : date('Y');
+        $period = $period ? $period : date('Y');
 
         $activities = Activity::with('user')
             ->whereHas('user', function ($query) use ($divisions, $filterUserIds) {
@@ -126,7 +126,7 @@ class ActivityController extends Controller
 
         // Query utama untuk data aktivitas
         $period = $request->query('period');
-        $period = $period ? date('Y', strtotime($period)) : date('Y');
+        $period = $period ? $period : date('Y');
 
         $activities = Activity::with('user')
             ->whereHas('user', function ($query) use ($user, $filterUserIds) {
@@ -174,7 +174,7 @@ class ActivityController extends Controller
         $sortOrder = $request->get('sort_order', 'desc');
 
         $period = $request->query('period');
-        $period = $period ? date('Y', strtotime($period)) : date('Y');
+        $period = $period ? $period : date('Y');
         $filterUserIds = $request->get('user_ids');
 
         // Ambil semua user kaur dari divisi yang bersangkutan

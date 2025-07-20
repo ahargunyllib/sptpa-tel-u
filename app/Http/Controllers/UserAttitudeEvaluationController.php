@@ -25,7 +25,7 @@ class UserAttitudeEvaluationController extends Controller
     public function indexMe(Request $request)
     {
         $period = $request->query('period');
-        $period = $period ? date('Y', strtotime($period)) : date('Y');
+        $period = $period ? $period : date('Y');
 
         $user = $request->user();
 
@@ -97,7 +97,7 @@ class UserAttitudeEvaluationController extends Controller
         $userDivision = $request->user()->division;
 
         $period = $request->query('period');
-        $period = $period ? date('Y', strtotime($period)) : date('Y');
+        $period = $period ? $period : date('Y');
 
         $selectFields = [
             'users.*',
@@ -164,7 +164,7 @@ class UserAttitudeEvaluationController extends Controller
         $userDivision = $request->user()->division;
 
         $period = $request->query('period');
-        $period = $period ? date('Y', strtotime($period)) : date('Y');
+        $period = $period ? $period : date('Y');
 
         $selectFields = [
             'users.*',
