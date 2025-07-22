@@ -235,63 +235,143 @@ class WorkTargetController extends Controller
         $period = $request->query('period');
         $period = $period ? $period : date('Y');
 
-        $staffs = DB::table('work_targets')
-            ->rightJoin('users as assigned', 'assigned.id', '=', 'work_targets.assigned_id')
-            ->leftJoin('users as creator', 'creator.id', '=', 'work_targets.creator_id')
-            ->where('assigned.role', $role)
-            ->whereYear('work_targets.created_at', $period);
+        // $staffs = DB::table('work_targets')
+        //     ->rightJoin('users as assigned', 'assigned.id', '=', 'work_targets.assigned_id')
+        //     ->leftJoin('users as creator', 'creator.id', '=', 'work_targets.creator_id')
+        //     ->where('assigned.role', $role)
+        //     ->whereYear('work_targets.created_at', $period);
+
+        // if ($user->role === 'wadek1') {
+        //     $staffs = $staffs->whereIn('assigned.division', ['academic_service', 'laboratory']);
+        // } else if ($user->role === 'wadek2') {
+        //     $staffs = $staffs->whereIn('assigned.division', ['secretary', 'student_affair', 'finance_logistic_resource']);
+        // }
+
+        // $staffs = $staffs->select(
+        //     'assigned.*',
+        //     DB::raw('COALESCE(CEIL(AVG(first_quarter_score)), 0) as average_first_quarter_score'),
+        //     DB::raw('COALESCE(CEIL(AVG(second_quarter_score)), 0) as average_second_quarter_score'),
+        //     DB::raw('COALESCE(CEIL(AVG(third_quarter_score)), 0) as average_third_quarter_score'),
+        //     DB::raw('COALESCE(CEIL(AVG(fourth_quarter_score)), 0) as average_fourth_quarter_score'),
+        // )
+        //     ->groupBy('assigned.id')
+        //     ->orderBy('assigned.name')
+        //     ->get();
+
+        // foreach ($staffs as $staff) {
+        //     $staff->work_targets = DB::table('work_targets')
+        //         ->where('assigned_id', $staff->id)
+        //         ->whereYear('created_at', $period)
+        //         ->select(
+        //             'work_targets.*',
+        //         )
+        //         ->orderBy('work_targets.name')
+        //         ->get();
+
+        //     $staff->bukti_kinerja_folder_id = DB::table('folders')
+        //         ->where('type', 'kinerja')
+        //         ->where('user_id', $staff->id)
+        //         ->value('id');
+
+        //     $staff->user_attitude_evaluation = DB::table('user_attitude_evaluations')
+        //         ->where('user_id', $staff->id)
+        //         ->whereYear('created_at', $period)
+        //         ->select(
+        //             DB::raw('COALESCE(communication, 0) as communication'),
+        //             DB::raw('COALESCE(teamwork, 0) as teamwork'),
+        //             DB::raw('COALESCE(collaboration, 0) as collaboration'),
+        //             DB::raw('COALESCE(solidarity, 0) as solidarity'),
+        //             DB::raw('COALESCE(work_ethic, 0) as work_ethic'),
+        //             DB::raw('COALESCE(technology_usage, 0) as technology_usage'),
+        //             DB::raw('COALESCE(work_smart, 0) as work_smart'),
+        //             DB::raw('COALESCE(initiative, 0) as initiative'),
+        //             DB::raw('COALESCE(role_model, 0) as role_model'),
+        //             DB::raw('COALESCE(responsibility, 0) as responsibility'),
+        //             DB::raw('COALESCE(professional_ethic, 0) as professional_ethic'),
+        //             DB::raw('COALESCE(image_maintenance, 0) as image_maintenance'),
+        //             DB::raw('COALESCE(discipline, 0) as discipline'),
+        //         )
+        //         ->first();
+        // }
+
+        $staffs = DB::table('users')
+            ->where('role', $role);
 
         if ($user->role === 'wadek1') {
-            $staffs = $staffs->whereIn('assigned.division', ['academic_service', 'laboratory']);
+            $staffs = $staffs->whereIn('division', ['academic_service', 'laboratory']);
         } else if ($user->role === 'wadek2') {
-            $staffs = $staffs->whereIn('assigned.division', ['secretary', 'student_affair', 'finance_logistic_resource']);
+            $staffs = $staffs->whereIn('division', ['secretary', 'student_affair', 'finance_logistic_resource']);
         }
 
-        $staffs = $staffs->select(
-            'assigned.*',
-            DB::raw('COALESCE(CEIL(AVG(first_quarter_score)), 0) as average_first_quarter_score'),
-            DB::raw('COALESCE(CEIL(AVG(second_quarter_score)), 0) as average_second_quarter_score'),
-            DB::raw('COALESCE(CEIL(AVG(third_quarter_score)), 0) as average_third_quarter_score'),
-            DB::raw('COALESCE(CEIL(AVG(fourth_quarter_score)), 0) as average_fourth_quarter_score'),
-        )
-            ->groupBy('assigned.id')
-            ->orderBy('assigned.name')
+        $staffs = $staffs->orderBy('name')->get();
+
+        $staffIds = $staffs->pluck('id');
+
+        $workTargets = DB::table('work_targets')
+            ->whereIn('assigned_id', $staffIds)
+            ->whereYear('created_at', $period)
+            ->select()
+            ->get();
+
+        $folders = DB::table('folders')
+            ->whereIn('user_id', $staffIds)
+            ->where('type', 'kinerja')
+            ->get();
+
+        $userAttitudeEvaluations = DB::table('user_attitude_evaluations')
+            ->whereIn('user_id', $staffIds)
+            ->whereYear('created_at', $period)
+            ->select(
+                'user_id',
+                DB::raw('COALESCE(communication, 0) as communication'),
+                DB::raw('COALESCE(teamwork, 0) as teamwork'),
+                DB::raw('COALESCE(collaboration, 0) as collaboration'),
+                DB::raw('COALESCE(solidarity, 0) as solidarity'),
+                DB::raw('COALESCE(work_ethic, 0) as work_ethic'),
+                DB::raw('COALESCE(technology_usage, 0) as technology_usage'),
+                DB::raw('COALESCE(work_smart, 0) as work_smart'),
+                DB::raw('COALESCE(initiative, 0) as initiative'),
+                DB::raw('COALESCE(role_model, 0) as role_model'),
+                DB::raw('COALESCE(responsibility, 0) as responsibility'),
+                DB::raw('COALESCE(professional_ethic, 0) as professional_ethic'),
+                DB::raw('COALESCE(image_maintenance, 0) as image_maintenance'),
+                DB::raw('COALESCE(discipline, 0) as discipline'),
+            )
             ->get();
 
         foreach ($staffs as $staff) {
-            $staff->work_targets = DB::table('work_targets')
-                ->where('assigned_id', $staff->id)
-                ->whereYear('created_at', $period)
-                ->select(
-                    'work_targets.*',
-                )
-                ->orderBy('work_targets.name')
-                ->get();
+            $work_targets = $workTargets->where('assigned_id', $staff->id)->values();
+            $staff->work_targets = $work_targets;
+            $staff->average_first_quarter_score = array_reduce($work_targets->toArray(), function ($carry, $item) {
+                return $carry + ($item->first_quarter_score ?? 0);
+            }, 0) / max(count($work_targets), 1);
+            $staff->average_second_quarter_score = array_reduce($work_targets->toArray(), function ($carry, $item) {
+                return $carry + ($item->second_quarter_score ?? 0);
+            }, 0) / max(count($work_targets), 1);
+            $staff->average_third_quarter_score = array_reduce($work_targets->toArray(), function ($carry, $item) {
+                return $carry + ($item->third_quarter_score ?? 0);
+            }, 0) / max(count($work_targets), 1);
+            $staff->average_fourth_quarter_score = array_reduce($work_targets->toArray(), function ($carry, $item) {
+                return $carry + ($item->fourth_quarter_score ?? 0);
+            }, 0) / max(count($work_targets), 1);
 
-            $staff->bukti_kinerja_folder_id = DB::table('folders')
-                ->where('type', 'kinerja')
-                ->where('user_id', $staff->id)
-                ->value('id');
+            $staff->bukti_kinerja_folder_id = $folders->firstWhere('user_id', $staff->id)->id ?? null;
 
-            $staff->user_attitude_evaluation = DB::table('user_attitude_evaluations')
-                ->where('user_id', $staff->id)
-                ->whereYear('created_at', $period)
-                ->select(
-                    DB::raw('COALESCE(communication, 0) as communication'),
-                    DB::raw('COALESCE(teamwork, 0) as teamwork'),
-                    DB::raw('COALESCE(collaboration, 0) as collaboration'),
-                    DB::raw('COALESCE(solidarity, 0) as solidarity'),
-                    DB::raw('COALESCE(work_ethic, 0) as work_ethic'),
-                    DB::raw('COALESCE(technology_usage, 0) as technology_usage'),
-                    DB::raw('COALESCE(work_smart, 0) as work_smart'),
-                    DB::raw('COALESCE(initiative, 0) as initiative'),
-                    DB::raw('COALESCE(role_model, 0) as role_model'),
-                    DB::raw('COALESCE(responsibility, 0) as responsibility'),
-                    DB::raw('COALESCE(professional_ethic, 0) as professional_ethic'),
-                    DB::raw('COALESCE(image_maintenance, 0) as image_maintenance'),
-                    DB::raw('COALESCE(discipline, 0) as discipline'),
-                )
-                ->first();
+            $staff->user_attitude_evaluation = $userAttitudeEvaluations->firstWhere('user_id', $staff->id) ?? [
+                'communication' => 0,
+                'teamwork' => 0,
+                'collaboration' => 0,
+                'solidarity' => 0,
+                'work_ethic' => 0,
+                'technology_usage' => 0,
+                'work_smart' => 0,
+                'initiative' => 0,
+                'role_model' => 0,
+                'responsibility' => 0,
+                'professional_ethic' => 0,
+                'image_maintenance' => 0,
+                'discipline' => 0,
+            ];
         }
 
         return Inertia::render('work-targets-management/index', [
@@ -307,65 +387,149 @@ class WorkTargetController extends Controller
         $period = $request->query('period');
         $period = $period ? $period : date('Y');
 
-        $staffs = DB::table('work_targets')
-            ->rightJoin('users as assigned', 'assigned.id', '=', 'work_targets.assigned_id')
-            ->leftJoin('users as creator', 'creator.id', '=', 'work_targets.creator_id')
-            ->whereYear('work_targets.created_at', $period)
-            ->where('assigned.role', $role);
+        // $staffs = DB::table('work_targets')
+        //     ->rightJoin('users as assigned', 'assigned.id', '=', 'work_targets.assigned_id')
+        //     ->leftJoin('users as creator', 'creator.id', '=', 'work_targets.creator_id')
+        //     ->whereYear('work_targets.created_at', $period)
+        //     ->where('assigned.role', $role);
+
+        // if ($user->role === 'kaur') {
+        //     $staffs = $staffs->where('assigned.division', $user->division);
+        // } else if ($user->role === 'wadek1') {
+        //     $staffs = $staffs->whereIn('assigned.division', ['academic_service', 'laboratory']);
+        // } else if ($user->role === 'wadek2') {
+        //     $staffs = $staffs->whereIn('assigned.division', ['secretary', 'student_affair', 'finance_logistic_resource']);
+        // }
+
+        // $staffs = $staffs->select(
+        //     'assigned.*',
+        //     DB::raw('COALESCE(CEIL(AVG(first_quarter_score)), 0) as average_first_quarter_score'),
+        //     DB::raw('COALESCE(CEIL(AVG(second_quarter_score)), 0) as average_second_quarter_score'),
+        //     DB::raw('COALESCE(CEIL(AVG(third_quarter_score)), 0) as average_third_quarter_score'),
+        //     DB::raw('COALESCE(CEIL(AVG(fourth_quarter_score)), 0) as average_fourth_quarter_score'),
+        // )
+        //     ->groupBy('assigned.id')
+        //     ->orderBy('assigned.name')
+        //     ->get();
+
+        // foreach ($staffs as $staff) {
+        //     $staff->work_targets = DB::table('work_targets')
+        //         ->where('assigned_id', $staff->id)
+        //         ->whereYear('created_at', $period)
+        //         ->select(
+        //             'work_targets.*',
+        //         )
+        //         ->orderBy('work_targets.name')
+        //         ->get();
+
+        //     $staff->bukti_kinerja_folder_id = DB::table('folders')
+        //         ->where('type', 'kinerja')
+        //         ->where('user_id', $staff->id)
+        //         ->value('id');
+
+        //     $staff->user_attitude_evaluation = DB::table('user_attitude_evaluations')
+        //         ->where('user_id', $staff->id)
+        //         ->whereYear('created_at', $period)
+        //         ->select(
+        //             DB::raw('COALESCE(communication, 0) as communication'),
+        //             DB::raw('COALESCE(teamwork, 0) as teamwork'),
+        //             DB::raw('COALESCE(collaboration, 0) as collaboration'),
+        //             DB::raw('COALESCE(solidarity, 0) as solidarity'),
+        //             DB::raw('COALESCE(work_ethic, 0) as work_ethic'),
+        //             DB::raw('COALESCE(technology_usage, 0) as technology_usage'),
+        //             DB::raw('COALESCE(work_smart, 0) as work_smart'),
+        //             DB::raw('COALESCE(initiative, 0) as initiative'),
+        //             DB::raw('COALESCE(role_model, 0) as role_model'),
+        //             DB::raw('COALESCE(responsibility, 0) as responsibility'),
+        //             DB::raw('COALESCE(professional_ethic, 0) as professional_ethic'),
+        //             DB::raw('COALESCE(image_maintenance, 0) as image_maintenance'),
+        //             DB::raw('COALESCE(discipline, 0) as discipline'),
+        //         )
+        //         ->first();
+        // }
+
+        $staffs = DB::table('users')
+            ->where('role', $role);
 
         if ($user->role === 'kaur') {
-            $staffs = $staffs->where('assigned.division', $user->division);
+            $staffs = $staffs->where('division', $user->division);
         } else if ($user->role === 'wadek1') {
-            $staffs = $staffs->whereIn('assigned.division', ['academic_service', 'laboratory']);
+            $staffs = $staffs->whereIn('division', ['academic_service', 'laboratory']);
         } else if ($user->role === 'wadek2') {
-            $staffs = $staffs->whereIn('assigned.division', ['secretary', 'student_affair', 'finance_logistic_resource']);
+            $staffs = $staffs->whereIn('division', ['secretary', 'student_affair', 'finance_logistic_resource']);
         }
 
-        $staffs = $staffs->select(
-            'assigned.*',
-            DB::raw('COALESCE(CEIL(AVG(first_quarter_score)), 0) as average_first_quarter_score'),
-            DB::raw('COALESCE(CEIL(AVG(second_quarter_score)), 0) as average_second_quarter_score'),
-            DB::raw('COALESCE(CEIL(AVG(third_quarter_score)), 0) as average_third_quarter_score'),
-            DB::raw('COALESCE(CEIL(AVG(fourth_quarter_score)), 0) as average_fourth_quarter_score'),
-        )
-            ->groupBy('assigned.id')
-            ->orderBy('assigned.name')
+        $staffs = $staffs->orderBy('name')->get();
+
+        $staffIds = $staffs->pluck('id');
+
+        $workTargets = DB::table('work_targets')
+            ->whereIn('assigned_id', $staffIds)
+            ->whereYear('created_at', $period)
+            ->select()
+            ->get();
+
+        // dd($workTargets);
+
+        $folders = DB::table('folders')
+            ->whereIn('user_id', $staffIds)
+            ->where('type', 'kinerja')
+            ->get();
+
+        $userAttitudeEvaluations = DB::table('user_attitude_evaluations')
+            ->whereIn('user_id', $staffIds)
+            ->whereYear('created_at', $period)
+            ->select(
+                'user_id',
+                DB::raw('COALESCE(communication, 0) as communication'),
+                DB::raw('COALESCE(teamwork, 0) as teamwork'),
+                DB::raw('COALESCE(collaboration, 0) as collaboration'),
+                DB::raw('COALESCE(solidarity, 0) as solidarity'),
+                DB::raw('COALESCE(work_ethic, 0) as work_ethic'),
+                DB::raw('COALESCE(technology_usage, 0) as technology_usage'),
+                DB::raw('COALESCE(work_smart, 0) as work_smart'),
+                DB::raw('COALESCE(initiative, 0) as initiative'),
+                DB::raw('COALESCE(role_model, 0) as role_model'),
+                DB::raw('COALESCE(responsibility, 0) as responsibility'),
+                DB::raw('COALESCE(professional_ethic, 0) as professional_ethic'),
+                DB::raw('COALESCE(image_maintenance, 0) as image_maintenance'),
+                DB::raw('COALESCE(discipline, 0) as discipline'),
+            )
             ->get();
 
         foreach ($staffs as $staff) {
-            $staff->work_targets = DB::table('work_targets')
-                ->where('assigned_id', $staff->id)
-                ->whereYear('created_at', $period)
-                ->select(
-                    'work_targets.*',
-                )
-                ->orderBy('work_targets.name')
-                ->get();
+            $work_targets = $workTargets->where('assigned_id', $staff->id)->values();
+            $staff->work_targets = $work_targets;
+            $staff->average_first_quarter_score = array_reduce($work_targets->toArray(), function ($carry, $item) {
+                return $carry + ($item->first_quarter_score ?? 0);
+            }, 0) / max(count($work_targets), 1);
+            $staff->average_second_quarter_score = array_reduce($work_targets->toArray(), function ($carry, $item) {
+                return $carry + ($item->second_quarter_score ?? 0);
+            }, 0) / max(count($work_targets), 1);
+            $staff->average_third_quarter_score = array_reduce($work_targets->toArray(), function ($carry, $item) {
+                return $carry + ($item->third_quarter_score ?? 0);
+            }, 0) / max(count($work_targets), 1);
+            $staff->average_fourth_quarter_score = array_reduce($work_targets->toArray(), function ($carry, $item) {
+                return $carry + ($item->fourth_quarter_score ?? 0);
+            }, 0) / max(count($work_targets), 1);
 
-            $staff->bukti_kinerja_folder_id = DB::table('folders')
-                ->where('type', 'kinerja')
-                ->where('user_id', $staff->id)
-                ->value('id');
+            $staff->bukti_kinerja_folder_id = $folders->firstWhere('user_id', $staff->id)->id ?? null;
 
-            $staff->user_attitude_evaluation = DB::table('user_attitude_evaluations')
-                ->where('user_id', $staff->id)
-                ->whereYear('created_at', $period)
-                ->select(
-                    DB::raw('COALESCE(communication, 0) as communication'),
-                    DB::raw('COALESCE(teamwork, 0) as teamwork'),
-                    DB::raw('COALESCE(collaboration, 0) as collaboration'),
-                    DB::raw('COALESCE(solidarity, 0) as solidarity'),
-                    DB::raw('COALESCE(work_ethic, 0) as work_ethic'),
-                    DB::raw('COALESCE(technology_usage, 0) as technology_usage'),
-                    DB::raw('COALESCE(work_smart, 0) as work_smart'),
-                    DB::raw('COALESCE(initiative, 0) as initiative'),
-                    DB::raw('COALESCE(role_model, 0) as role_model'),
-                    DB::raw('COALESCE(responsibility, 0) as responsibility'),
-                    DB::raw('COALESCE(professional_ethic, 0) as professional_ethic'),
-                    DB::raw('COALESCE(image_maintenance, 0) as image_maintenance'),
-                    DB::raw('COALESCE(discipline, 0) as discipline'),
-                )
-                ->first();
+            $staff->user_attitude_evaluation = $userAttitudeEvaluations->firstWhere('user_id', $staff->id) ?? [
+                'communication' => 0,
+                'teamwork' => 0,
+                'collaboration' => 0,
+                'solidarity' => 0,
+                'work_ethic' => 0,
+                'technology_usage' => 0,
+                'work_smart' => 0,
+                'initiative' => 0,
+                'role_model' => 0,
+                'responsibility' => 0,
+                'professional_ethic' => 0,
+                'image_maintenance' => 0,
+                'discipline' => 0,
+            ];
         }
 
         return Inertia::render('work-targets-management/index', [
