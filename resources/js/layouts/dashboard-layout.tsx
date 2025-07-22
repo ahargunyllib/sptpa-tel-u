@@ -24,7 +24,7 @@ export default function DashboardLayout({
 	children,
 }: PropsWithChildren<{ header?: string | ReactNode }>) {
 	const user = useUser();
-	const { period, setPeriod, getCurrentYear, getAvailableYears } = usePeriod();
+	const { handleChangePeriod, getCurrentYear, getAvailableYears } = usePeriod();
 
 	return (
 		<RootLayout>
@@ -65,7 +65,7 @@ export default function DashboardLayout({
 											{getAvailableYears().map((year) => (
 												<DropdownMenuItem
 													key={year}
-													onClick={() => setPeriod(new Date(year, 0, 1))}
+													onClick={() => handleChangePeriod(year)}
 												>
 													{year}
 												</DropdownMenuItem>

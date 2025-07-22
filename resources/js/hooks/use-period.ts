@@ -26,26 +26,42 @@ export const usePeriod = () => {
 		return years;
 	};
 
-	useEffect(() => {
-		const currentYear = period.getFullYear();
+	// useEffect(() => {
+	// 	const currentYear = period.getFullYear();
+	// 	const url = new URL(window.location.href);
+	// 	url.searchParams.set("period", currentYear.toString());
+	// 	router.get(
+	// 		window.location.pathname,
+	// 		{
+	// 			period: currentYear.toString(),
+	// 		},
+	// 		{
+	// 			preserveState: true,
+	// 			preserveScroll: false,
+	// 		},
+	// 	);
+	// }, [period]);
+
+	const handleChangePeriod = (year: number) => {
 		const url = new URL(window.location.href);
-		url.searchParams.set("period", currentYear.toString());
+		url.searchParams.set("period", year.toString());
 		router.get(
 			window.location.pathname,
 			{
-				period: currentYear.toString(),
+				period: year.toString(),
 			},
 			{
-				preserveState: true,
+				// preserveState: true,
 				preserveScroll: false,
 			},
 		);
-	}, [period]);
+		setPeriod(new Date(year, 0, 1));
+	};
 
 	return {
 		period,
-		setPeriod,
 		getCurrentYear,
 		getAvailableYears,
+		handleChangePeriod,
 	};
 };
